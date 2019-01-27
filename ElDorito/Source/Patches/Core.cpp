@@ -675,7 +675,7 @@ namespace
 
 		*(int *)0x537483 = get_spartan_representation_index();
 		*(int *)0x53761B = get_spartan_representation_index();
-		*(int *)0x539EBB = get_spartan_representation_index();
+		*(int *)0x539EBA = get_spartan_representation_index();
 		*(int *)0x539FBE = get_spartan_representation_index();
 		*(int *)0x53A739 = get_spartan_representation_index();
 		*(int *)0x53A7C7 = get_spartan_representation_index();
