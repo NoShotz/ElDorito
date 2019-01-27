@@ -1,0 +1,167 @@
+@font-face{font-family:"Conduit ITC";src:url(dew://lib/Conduit-ITC.woff);}
+
+html {
+    position: relative;
+    color: #FFF;
+    font-family: "Conduit ITC", sans-serif;
+    font-weight: 500;
+}
+
+#weaponOffsets {
+    width: 350px;
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
+    font-size: 17px;
+    font-weight: 500;
+    line-height:29px;
+    text-transform: uppercase;
+	background-image: -webkit-linear-gradient( -90deg, rgba(27,41,70,0.94902) 0%, rgba(24,39,69,0.9) 20%, rgba(24,39,69,0.90196) 20%, rgba(6,16,37,0.85098) 100%);
+    padding: 11px;
+    padding-bottom: 0px;
+}
+
+.header {
+    font-size: 24px;
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.56);
+    margin: -10px;
+    margin-bottom: 5px;
+    padding: 4px;
+    padding-left: 13px;
+    font-size: 19px;
+}
+
+span{
+    width: 342px;
+    display: table;
+    height:30px;
+    margin-left: -10px;
+    padding: 0px 14px;
+    margin-bottom: 1px;
+}
+
+.setting{
+    width: 223px;
+    margin-top:5px;
+    height:20px;
+    float:right;
+    color: #98b3d3;
+    background-color: rgba(0,0,0,0);
+    border: none;
+}
+
+input[type=range].setting {
+    margin-top:4px;
+}
+
+input[type=text].setting{
+    height: 16px;
+    width: 216px;
+    padding-left: 4px;
+}
+
+.hasTiny{
+    width:153px;
+    float:right;
+    margin-right: 0px;
+    margin-left: 3px;
+}
+
+.tinySetting{
+    float:right;
+    width: 60px;
+    height:14px;
+    z-index:-2;
+    margin-top:4px;
+    margin-bottom: -2px;
+    background-color: rgba(0,0,0,0);
+	height:18px;
+	text-align:left;
+	font-weight:300;
+	color: #98b3d3;
+    border: none;
+    padding-left: 4px;
+}
+
+button {
+	position: relative;
+    height: 35px;
+    line-height: 35px;
+    font-size: 15px;
+	font-weight: 100;
+	color: white;
+	background-color: rgba(0,0,0,0);
+	border: none;
+	z-index: 3;
+	text-align: left;
+	vertical-align: middle;
+	box-sizing: border-box;
+	padding: none;
+}
+
+button:hover{
+	text-decoration: underline;
+}
+
+.selectedElement{
+	background-image: url(dew://assets/ux/buttonhover.svg);
+	background-position: center;
+	background-repeat: no-repeat;
+	color: white;
+}
+
+.selectedElement .setting, .selectedElement .tinySetting{
+	color: white;
+}
+
+select option{
+	color:black;
+}
+
+button img{
+	display:none;
+	position:relative;
+	height: 30px;
+	float: left;
+    margin-right: 4px;
+    top: 2px;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    background:none;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+.selectedElement input[type=range]::-webkit-slider-thumb{
+	background-color: white;
+}
+
+input[type=range]::-webkit-slider-runnable-track , input[type=range]:focus::-webkit-slider-runnable-track{
+    height: .4vh;
+    border: none;
+    width: 100%;
+    vertical-align: middle;
+    background-color: rgba(152, 179, 211, .35);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    width: .6vh;
+    height: 1.2vh;
+    margin-top: -.4vh;
+    -webkit-appearance: none;
+    border: none;
+    background-color: rgba(152, 179, 211, 1);
+}
+
+#buttonBar{
+    margin-top: 5px;
+    background-color:black;
+    padding:2px 15px;
+    margin-left:-11px;
+    width: 342px;
+}

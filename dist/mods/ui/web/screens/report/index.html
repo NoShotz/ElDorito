@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Report</title>
+    <script src="dew://lib/dew.js"></script>
+    <script src="dew://lib/jquery-2.2.1.min.js"></script>
+    <script src="dew://lib/window-resize.js"></script>
+    <link rel="stylesheet" type="text/css" href="dew://lib/window-resize.css" />
+    <link rel="stylesheet" type="text/css" href="report.css" />
+    <link rel="stylesheet" type="text/css" href="dew://lib/css/popup.css" />
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+    <style>
+        body { background:none;}
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="page_content">
+            <div id="reportContainer" class="report_container">
+                <div class="report_overlay"></div>
+                <div class="report_window dialog">
+                    <div class="report_submitting">
+                        <span class="report_loader_status">Reporting Player</span>
+                        <div class="lds-dual-ring"></div>
+                    </div>
+                    <div id="reportForm" class="report_form">
+                        <div class="report_window_header">
+                            <span id="reportTitle" class="report_window_title">Report a player</span>
+                        </div>
+                        <div class="report_window_body">
+                           <span id="reportErrorStatus" class="report_error_status"></span>
+                            <div class="report_form_group">
+                                <label for="reportReason">Reason: </label>
+                                <select id="reportReason">
+                                    <option value="cheating">Cheating</option>
+                                    <option value="betraying">Team Killing</option>
+                                    <option value="offensiveLanguage">Offensive Language</option>
+                                    <option value="offensiveName">Offensive Name</option>
+                                    <option value="unsporting">Unsporting</option>
+                                    <option value="threatening">Threatening</option>
+                                    <option value="afk">AFK</option>
+                                    <option value="chatAbuse">Chat Abuse</option>
+                                    <option value="voipAbuse">VoIP Abuse</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="report_form_group">
+                                <label for="reportDetail">Detail: </label>
+                                <textarea class="report_detail_input" id="reportDetail" maxlength="140" rows="4"></textarea>
+                            </div>
+                            <div class="report_form_group">
+                                <div class="report_form_group_horizontal">
+                                    <label for="reportContactType">How can we contact you?: </label>
+                                    </br>
+                                    <select id="reportContactType">
+                                        <option value="email">E-mail</option>
+                                        <option value="discord">Discord</option>
+                                        <option value="reddit">Reddit</option>
+                                        <option value="none">No contact</option>
+                                    </select>
+                                    <input type="text" id="reportContactInfo" placeholder="Contact info...">
+                                </div>
+                            </div>
+                            <div class="report_form_group">
+                                <label>Captcha: </label>
+                                <div class="report_captcha">
+                                    <div id="recaptcha-service" class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LfYmF8UAAAAAOMgspthygM7g5lroiPfIWYalYZE"></div>
+
+                                </div>
+                            </div>
+                          
+                        </div>
+                        <div class="report_window_footer">
+                            <button id="reportSubmit">
+                                <img class="button" style="display: none;">Submit</button>
+                            <button id="reportCancel">
+                                <img class="button" style="display: none;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="report.js"></script>
+</body>
+
+</html>

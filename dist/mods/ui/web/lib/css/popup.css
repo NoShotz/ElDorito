@@ -1,0 +1,107 @@
+@font-face{font-family:"Conduit ITC";src:url(dew://lib/Conduit-ITC.woff);}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: rgba(0, 0, 0, 0.8);
+    font-family: "Conduit ITC", sans-serif;
+}
+
+button {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(0,0,0,0);
+    border: none;
+    font-size: 15px;
+    /* font-weight: bold; */
+    text-align: left;
+    line-height: 35px;
+    /* margin-top: 10px; */
+    min-width: 50px;
+    margin-right: 8px;
+    float: left;
+    padding: 0;
+}
+.alertButtonContainerBottom {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.36);
+    height: 36px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding-left: 25%;
+    border-top: 1px solid rgba(77, 155, 193, 0.11);
+}
+button:focus {
+    outline: 0;
+}
+
+
+button:hover{
+    text-decoration: underline;
+}
+
+button img{
+	display:none;
+	position:relative;
+	height: 30px;
+	float: left;
+    margin-right: 2px;
+    top: 2px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.dialog {
+	color: rgba(148, 164, 183, 0.75);
+	background: 	linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.4) 100%),
+								linear-gradient(to right, rgba(11,25,51,1) 0%,rgba(14,25,45,1) 70%,rgba(9,22,46,1) 100%);
+
+	border-top: 1px solid rgba(98, 111, 121, 0.38);
+	border-bottom: 1px solid rgba(98, 111, 121, 0.05);
+	width: 100%;
+	font-size: 20px;
+	position: absolute;
+	text-align: left;
+	padding-top: 20px;
+	padding-left: 25%;
+	padding-right: 25%;
+	padding-bottom: 50px;
+	box-sizing: border-box;
+}
+
+#text {
+    padding: 4px;
+    width: 100%;
+    margin-left: -6px;
+    font-weight: 700;
+    resize: none;
+}
+
+#text:focus{
+    outline: 0;
+}
+
+#title {
+    font-size: 36px;
+    margin-bottom: 0;
+    color: rgba(240, 240, 240, 0.75);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+#description {
+    /* padding: 16px 0; */
+    color: rgba(148, 164, 183, 0.75);
+		margin-bottom: 20px;
+}

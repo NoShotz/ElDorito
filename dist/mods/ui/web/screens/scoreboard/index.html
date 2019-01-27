@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+    <head>
+        <title>ElDewrito Scoreboard</title>
+
+        <!-- Common Include -->
+        <script src="dew://lib/dew.js"></script>
+        <script src="dew://lib/jquery-2.2.1.min.js"></script>
+        
+        <!-- Window Resize-->
+        <script src="dew://lib/window-resize.js"></script>
+        <link rel="stylesheet" type="text/css" href="dew://lib/window-resize.css"/>
+        
+        <!-- Scoreboard -->
+        <script src="scoreboard.js"></script>
+        <link rel="stylesheet" type="text/css" href="scoreboard.css"/>
+        <link rel="stylesheet" type="text/css" href="dew://lib/ingame_voting/ingame_voting.css"/>
+        <!-- Context Menu-->
+        <link rel="stylesheet" type="text/css" href="jquery.contextMenu.min.css"/>
+        <script src="jquery.contextMenu.min.js"></script>
+    </head>
+    <body>
+    <div id="container">
+        <div class="page_content">
+            <div id="chatVoteWidget" class="chat_vote_widget">
+            </div>
+            <div id="window">
+            <div id="winnerText"></div>
+                <table id="scoreboard">
+                    <thead>
+                        <tr id="header"></tr>
+                    </thead>
+                    <tbody id="singlePlayers"></tbody>
+                </table>
+            </div>
+            <div id="playerBreakdown">
+                <div class="statsHeader">PLAYER STATS</div>
+                <div id="playerName"></div>
+                <div id="playerKills"></div>
+                <div id="playerDeaths"></div>
+                <div id="playerKDSpread"></div>
+                <div id="playerSuicides"></div>
+                <br>
+                <div id="toolOfDestruction"><table><thead><tr><td>Tool of Destruction:</tr></td></thead><tbody></tbody></table></div>
+                <br>
+                <table id="killedMost"><thead><tr><td>Killed Most</td><td style="text-align:center;">Kills</td></tr></thead><tbody></tbody></table>
+                <table id="killedMostBy"><thead><tr><td>Killed Most By</td><td style="text-align:center;">Kills</td></tr></thead><tbody></tbody></table>
+                <div id="bigMedal">
+                    <span class="medalName"></span>
+                    <span class="medalDesc"></span>
+                </div>
+                <div id="medalBox"></div>
+                <div class="bottomBar">
+                    <button id="previousPlayer"><img class='button'>Previous Player</button>
+                    <button id="nextPlayer"><img class='button'>Next Player</button>
+                    <button id="windowClose" onclick="$('#playerBreakdown').hide();"><img class='button'>Close</button>
+                </div>
+            </div>
+            <div id="serverName"></div>
+            <div id="mapName"></div>
+            <div id="closeButton">Close<img class='button'></div>
+        </div>
+    </div>
+    </body>
+    <script src="dew://lib/ingame_voting/ingame_voting.js"></script>
+</html>

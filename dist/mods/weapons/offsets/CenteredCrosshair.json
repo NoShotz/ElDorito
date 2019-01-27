@@ -1,0 +1,460 @@
+{
+    "Weapons": [
+        {
+            "Name": "assault_bomb",
+            "Offset": [
+                -0.08,
+                0.0,
+                -0.02
+            ]
+        },
+        {
+            "Name": "assault_rifle",
+            "Offset": [
+                -0.036,
+                0.0,
+                -0.017
+            ]
+        },
+        {
+            "Name": "assault_rifle_acc",
+            "Offset": [
+                -0.036,
+                0.0,
+                -0.017
+            ]
+        },
+        {
+            "Name": "assault_rifle_dmg",
+            "Offset": [
+                -0.036,
+                0.0,
+                -0.017
+            ]
+        },
+        {
+            "Name": "assault_rifle_pwr",
+            "Offset": [
+                -0.036,
+                0.0,
+                -0.017
+            ]
+        },
+        {
+            "Name": "assault_rifle_rof",
+            "Offset": [
+                -0.036,
+                0.0,
+                -0.017
+            ]
+        },
+        {
+            "Name": "battle_rifle",
+            "Offset": [
+                -0.008,
+                0.008999,
+                -0.021999
+            ]
+        },
+        {
+            "Name": "battle_rifle_acc",
+            "Offset": [
+                -0.008,
+                0.008999,
+                -0.021999
+            ]
+        },
+        {
+            "Name": "battle_rifle_amm",
+            "Offset": [
+                -0.008,
+                0.008999,
+                -0.021999
+            ]
+        },
+        {
+            "Name": "battle_rifle_dmg",
+            "Offset": [
+                -0.008,
+                0.008999,
+                -0.021999
+            ]
+        },
+        {
+            "Name": "battle_rifle_pwr",
+            "Offset": [
+                -0.008,
+                0.008999,
+                -0.021999
+            ]
+        },
+        {
+            "Name": "battle_rifle_rng",
+            "Offset": [
+                -0.008,
+                0.008999,
+                -0.021999
+            ]
+        },
+        {
+            "Name": "battle_rifle_rof",
+            "Offset": [
+                -0.008,
+                0.009999,
+                -0.017
+            ]
+        },
+        {
+            "Name": "beam_rifle",
+            "Offset": [
+                -0.045,
+                0.017999,
+                -0.028
+            ]
+        },
+        {
+            "Name": "brute_shot",
+            "Offset": [
+                -0.059999,
+                -0.009999,
+                -0.079999
+            ]
+        },
+        {
+            "Name": "covenant_carbine",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "covenant_carbine_acc",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "covenant_carbine_amm",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "covenant_carbine_dmg",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "covenant_carbine_pwr",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "covenant_carbine_rng",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "covenant_carbine_rof",
+            "Offset": [
+                -0.032,
+                0.007,
+                -0.020999
+            ]
+        },
+        {
+            "Name": "dmr",
+            "Offset": [
+                -0.030999,
+                0.014999,
+                -0.008
+            ]
+        },
+        {
+            "Name": "dmr_acc",
+            "Offset": [
+                -0.030999,
+                0.014999,
+                -0.008
+            ]
+        },
+        {
+            "Name": "dmr_amm",
+            "Offset": [
+                -0.028,
+                0.014999,
+                -0.008
+            ]
+        },
+        {
+            "Name": "dmr_dmg",
+            "Offset": [
+                -0.030999,
+                0.014999,
+                -0.008
+            ]
+        },
+        {
+            "Name": "dmr_pwr",
+            "Offset": [
+                -0.030999,
+                0.014999,
+                -0.0065
+            ]
+        },
+        {
+            "Name": "dmr_rng",
+            "Offset": [
+                -0.030999,
+                0.014999,
+                -0.008
+            ]
+        },
+        {
+            "Name": "dmr_rof",
+            "Offset": [
+                -0.030999,
+                0.014999,
+                -0.0065
+            ]
+        },
+        {
+            "Name": "energy_sword",
+            "Offset": [
+                0.012,
+                0.0,
+                -0.05
+            ]
+        },
+        {
+            "Name": "energy_sword_hilt",
+            "Offset": [
+                0.012,
+                0.0,
+                -0.05
+            ]
+        },
+        {
+            "Name": "flag",
+            "Offset": [
+                -0.01,
+                0,
+                -0.025
+            ]
+        },
+        {
+            "Name": "flak_cannon",
+            "Offset": [
+                -0.032,
+                -0.016,
+                0.012
+            ]
+        },
+        {
+            "Name": "gravity_hammer",
+            "Offset": [
+                0.014999,
+                -0.029999,
+                -0.07
+            ]
+        },
+        {
+            "Name": "magnum",
+            "Offset": [
+                -0.048,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "magnum_dmg",
+            "Offset": [
+                -0.048,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "magnum_pwr",
+            "Offset": [
+                -0.048,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "mauler",
+            "Offset": [
+                -0.029999,
+                0.004999,
+                -0.009999
+            ]
+        },
+        {
+            "Name": "mauler_pwr",
+            "Offset": [
+                -0.029999,
+                0.004999,
+                -0.009999
+            ]
+        },
+        {
+            "Name": "needler",
+            "Offset": [
+                -0.057,
+                0.0,
+                -0.003
+            ]
+        },
+        {
+            "Name": "oddball",
+            "Offset": [
+                -0.04,
+                0.0,
+                -0.03
+            ]
+        },
+        {
+            "Name": "plasma_pistol",
+            "Offset": [
+                -0.08,
+                0.0,
+                -0.027
+            ]
+        },
+        {
+            "Name": "plasma_pistol_pwr",
+            "Offset": [
+                -0.08,
+                0.0,
+                -0.027
+            ]
+        },
+        {
+            "Name": "plasma_rifle",
+            "Offset": [
+                0.02,
+                0.0,
+                -0.037
+            ]
+        },
+        {
+            "Name": "plasma_rifle_pwr",
+            "Offset": [
+                0.02,
+                0.0,
+                -0.037
+            ]
+        },
+        {
+            "Name": "rocket_launcher",
+            "Offset": [
+                -0.019999,
+                -0.0012,
+                0.004499
+            ]
+        },
+        {
+            "Name": "sentinel_gun",
+            "Offset": [
+                -0.155,
+                0.0,
+                -0.059999
+            ]
+        },
+        {
+            "Name": "shotgun",
+            "Offset": [
+                0.014999,
+                0.007,
+                -0.028
+            ]
+        },
+        {
+            "Name": "smg",
+            "Offset": [
+                -0.052,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "smg_acc",
+            "Offset": [
+                -0.052,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "smg_dmg",
+            "Offset": [
+                -0.052,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "smg_pwr",
+            "Offset": [
+                -0.052,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "smg_rof",
+            "Offset": [
+                -0.052,
+                0.0,
+                -0.035
+            ]
+        },
+        {
+            "Name": "sniper_rifle",
+            "Offset": [
+                -0.039999,
+                -0.009999,
+                -0.027
+            ]
+        },
+        {
+            "Name": "spartan_laser",
+            "Offset": [
+                -0.014999,
+                -0.002,
+                0.004999
+            ]
+        },
+        {
+            "Name": "spike_rifle",
+            "Offset": [
+                -0.024,
+                0.0,
+                -0.025
+            ]
+        },
+        {
+            "Name": "unarmed",
+            "Offset": [
+                -0.02,
+                0.0,
+                -0.018
+            ]
+        }
+    ]
+}

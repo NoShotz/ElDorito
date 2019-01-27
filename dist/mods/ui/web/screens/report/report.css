@@ -1,0 +1,280 @@
+@font-face{font-family:"Conduit ITC";src:url(dew://lib/Conduit-ITC.woff);}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: rgba(0, 0, 0, 0.8);
+    font-family: "Conduit ITC", sans-serif;
+}
+
+button {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(0,0,0,0);
+    border: none;
+    font-size: 15px;
+    /* font-weight: bold; */
+    text-align: left;
+    line-height: 35px;
+    /* margin-top: 10px; */
+    min-width: 50px;
+    margin-right: 8px;
+    float: left;
+    padding: 0;
+}
+.alertButtonContainerBottom {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.36);
+    height: 36px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding-left: 25%;
+    border-top: 1px solid rgba(77, 155, 193, 0.11);
+}
+button:focus {
+    outline: 0;
+}
+
+
+button:hover{
+    text-decoration: underline;
+}
+
+button img{
+	display:none;
+	position:relative;
+	height: 30px;
+	float: left;
+    margin-right: 2px;
+    top: 2px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+/* report player */
+.report_container {
+    box-sizing:border-box;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+.report_container_visible {
+    opacity: 1;
+}
+
+
+
+.report_window {
+    transition: 0.25s;
+    opacity: 0.0;
+}
+
+.report_container_visible .report_window {
+    opacity: 1;
+}
+
+
+.report_overlay {
+    background: rgba(0, 0, 0, 0.85);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+}
+
+.report_window {
+    background:rgb(0, 0, 0);
+    width:37.7%;
+    margin-left: auto;
+    margin-right:auto;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+
+.report_window_header {
+    display:flex;
+    flex-direction:column;
+    font-size: 1.5em;
+}
+
+.report_window_title {
+    font-size: 36px;
+    margin-bottom: 0;
+    color: rgba(240, 240, 240, 0.75);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+
+.report_window_body {
+    display:flex;
+    flex-direction:column;
+    margin-bottom: 20px;
+}
+
+.report_window_footer {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.36);
+    height: 36px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding-left: 25%;
+    border-top: 1px solid rgba(77, 155, 193, 0.11);
+}
+
+.report_window_body .report_form_group {
+    display:flex;
+    flex-direction:column;
+    padding: 5px 0px;
+}
+
+.report_detail_input {
+    width:100%;
+}
+
+.report_form label {
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+textarea {
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+.report_form input, select, textarea {
+    padding:4px;
+}
+
+#reportContactInfo {
+    width: 400px;
+}
+
+button:hover {
+    text-decoration: underline;
+}
+
+
+
+#reportForm {
+    transition: 0.1s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.report_state_none #reportForm {
+    opacity: 1.0;
+    pointer-events: all;
+}
+
+
+.report_state_submitting #reportForm {
+    opacity: 0;
+
+}
+
+.report_submitting {
+    opacity: 0;
+    position:absolute;
+    top:0px;
+    left:0px;
+    transition: 0.25s;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    width:100%;
+    height:100%;
+    pointer-events: none;
+    transform:translate(0,50px);
+}
+
+
+.report_state_submitting .report_submitting {
+    opacity:1;
+    transform:translate(0,0);
+}
+
+.report_loader_status {
+    font-size: 1.25em;
+    margin-bottom:20px;
+    display:block;
+}
+
+.report_error_status {
+    color:#CA2F32;
+    text-transform: uppercase;
+}
+
+.report_shake {
+
+}
+
+.lds-dual-ring {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 46px;
+    height: 46px;
+    margin: 1px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+.shake {
+    animation: shakeAnimation 0.3s;
+}
+
+@keyframes shakeAnimation {
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}

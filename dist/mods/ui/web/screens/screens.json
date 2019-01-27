@@ -1,0 +1,165 @@
+{
+	"screens": [
+		{
+			"id": "browser",
+			"var": "Game.MenuURL",
+			"fallbackUrl": "dew://screens/error/",
+			"captureInput": true,
+			"zIndex": 1
+		},
+		{
+			"id": "console",
+			"var": "Game.ConsoleURL",
+			"fallbackUrl": "dew://screens/console/",
+			"captureInput": true,
+			"zIndex": 11
+		},
+		{
+			"id": "chat",
+			"var": "Game.ChatURL",
+			"fallbackUrl": "dew://screens/chat/",
+			"captureInput": false,
+			"zIndex": 10
+		},
+		{
+			"id": "medals",
+			"var": "Game.MedalsURL",
+			"fallbackUrl": "dew://screens/medals/",
+			"captureInput": false,
+			"zIndex": -10
+		},
+		{
+			"id": "loading",
+			"var": "Game.LoadingURL",
+			"fallbackUrl": "dew://screens/loading/",
+			"captureInput": false,
+			"zIndex": 0
+		},
+		{
+			"id": "voting",
+			"var": "Game.VotingURL",
+			"fallbackUrl": "dew://screens/voting/",
+			"captureInput": true,
+			"zIndex": 0
+		},
+		{
+			"id": "title",
+			"var": "Game.TitleURL",
+			"fallbackUrl": "dew://screens/title/",
+			"captureInput": true,
+			"zIndex": 9
+		},
+		{
+			"id": "scoreboard",
+			"var": "Game.ScoreboardURL",
+			"fallbackUrl": "dew://screens/scoreboard/",
+			"captureInput": false,
+			"zIndex": 1
+		},
+		{
+			"id": "keyboard",
+			"var": "Game.KeyboardURL",
+			"fallbackUrl": "dew://screens/keyboard/",
+			"captureInput": true,
+			"zIndex": 100
+		},
+		{
+			"id": "alert",
+			"var": "Game.AlertURL",
+			"fallbackUrl": "dew://screens/alert/",
+			"captureInput": true,
+			"zIndex": 100
+		},
+		{
+			"id": "settings",
+			"var": "Game.SettingsURL",
+			"fallbackUrl": "dew://screens/settings/",
+			"captureInput": true,
+			"zIndex": 9
+		},
+		{
+			"id": "profile_settings",
+			"var": "Game.ProfileSettingsURL",
+			"fallbackUrl": "dew://screens/profile_settings/",
+			"captureInput": true,
+			"zIndex": 9
+		},
+		{
+			"id": "server_settings",
+			"var": "Game.ServerSettingsURL",
+			"fallbackUrl": "dew://screens/server_settings/",
+			"captureInput": true,
+			"zIndex": 9
+		},
+		{
+			"id": "forge_object_properties",
+			"var": "Game.ForgeObjectPropertiesURL",
+			"fallbackUrl": "dew://screens/forge/object_properties/",
+			"captureInput": true,
+			"zIndex": 0
+		},
+		{
+			"id": "forge_object_creation",
+			"var": "Game.ForgeObjectCreationURL",
+			"fallbackUrl": "dew://screens/forge/object_creation/",
+			"captureInput": true,
+			"zIndex": 0
+		},
+		{
+			"id": "spectate",
+			"var": "Game.SpectateURL",
+			"fallbackUrl": "dew://screens/spectate/",
+			"captureInput": false,
+			"zIndex": -5
+		},
+		{
+			"id": "voip",
+			"var": "Game.VoipURL",
+			"fallbackUrl": "dew://screens/voip/",
+			"captureInput": false,
+			"zIndex": 2
+		},
+		{
+			"id": "weapon_offset",
+			"var": "Game.WeaponOffsetURL",
+			"fallbackUrl": "dew://screens/weapon_offset/",
+			"captureInput": true,
+			"zIndex": 1
+		},
+		{
+			"id": "screenshot_notice",
+			"var": "Game.ScreenshotNoticeURL",
+			"fallbackUrl": "dew://screens/screenshot_notice/",
+			"captureInput": false,
+			"zIndex": 90
+		},
+		{
+			"id": "exit",
+			"var": "Game.ExitURL",
+			"fallbackUrl": "dew://screens/exit/",
+			"captureInput": true,
+			"zIndex": 1
+		},
+		{
+			"id": "discord",
+			"var": "Game.DiscordURL",
+			"fallbackUrl": "dew://screens/discord/",
+			"captureInput": false,
+			"zIndex": 10
+		},
+		{
+			"id": "report",
+			"var": "Game.ReportURL",
+			"fallbackUrl": "http://rabidsquabbit.github.io/screens/report/",
+			"captureInput": true,
+			"zIndex": 80
+		},
+		{
+			"id": "ingame_voting",
+			"var": "Game.InGameVotingURL",
+			"fallbackUrl": "dew://screens/ingame_voting/",
+			"captureInput": false,
+			"zIndex": -10
+		}
+	]
+}

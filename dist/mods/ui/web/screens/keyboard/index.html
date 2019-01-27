@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Virtual Keyboard</title>
+        <link rel="stylesheet" type="text/css" href="dew://lib/css/popup.css" />
+        <script src="dew://lib/dew.js"></script>
+        <script src="dew://lib/jquery-2.2.1.min.js"></script>
+        <script src="keyboard.js"></script>
+        
+        <!-- Window Resize-->
+        <script src="dew://lib/window-resize.js"></script>
+        <link rel="stylesheet" type="text/css" href="dew://lib/window-resize.css"/>
+    </head>
+    <body>
+        <div id="container">
+            <div class="page_content">
+                <div class="container">
+                    <div class="dialog">
+                        <form>
+                            <div id="title"></div>
+                            <div id="description"></div>
+                            <textarea id="text"></textarea><br />
+                            <button id="ok"><img class="button">Save</button><button id="cancel"><img class="button">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
