@@ -21,15 +21,19 @@
 
 #include "../Blam/BlamData.hpp"
 #include "../Blam/BlamEvents.hpp"
+#include "../Blam/BlamInput.hpp"
 #include "../Blam/BlamPlayers.hpp"
 #include "../Blam/BlamNetwork.hpp"
 #include "../Blam/BlamObjects.hpp"
 #include "../Blam/BlamTypes.hpp"
 
+#include "../Modules/ModuleCamera.hpp"
 #include "../Modules/ModuleCampaign.hpp"
 #include "../Modules/ModuleGame.hpp"
+#include "../Modules/ModuleInput.hpp"
 #include "../Modules/ModulePlayer.hpp"
 #include "../Modules/ModuleServer.hpp"
+#include "../Modules/ModuleSettings.hpp"
 #include "../Modules/ModuleTweaks.hpp"
 
 #include "../Console.hpp"
@@ -48,6 +52,7 @@
 #include <game\game_globals.hpp>
 #include <memory\data.hpp>
 #include <objects\object_types.hpp>
+#include <players\player_data.hpp>
 #include <structures\scenario_structure_bsp.hpp>
 
 namespace
@@ -91,6 +96,11 @@ namespace
 	void *__cdecl LevelDataGetHook();
 	void PrintLevelInfo();
 
+	uint32_t LevelStringToInt(const std::string& value)
+	{
+		return value == "low" ? 0 : value == "medium" ? 1 : 2;
+	}
+
 	void preferences_set_defaults_hook()
 	{
 		static const auto preferences_set_defaults = reinterpret_cast<void(*)()>(0x50A520);
@@ -98,6 +108,45 @@ namespace
 		preferences_set_defaults();
 
 		Blam::Preferences *preferences = ElDorito::GetMainTls(0x18)[0];
+
+		const auto& moduleSettings = Modules::ModuleSettings::Instance();
+		const auto& moduleCamera = Modules::ModuleCamera::Instance();
+		const auto& moduleInput = Modules::ModuleInput::Instance();
+
+		int screenResolutionWidth, screenResolutionHeight;
+		moduleSettings.GetScreenResolution(&screenResolutionWidth, &screenResolutionHeight);
+
+		preferences->Fullscreen = uint8_t(moduleSettings.VarFullscreen->ValueInt);
+		preferences->Contrast = moduleSettings.VarContrast->ValueInt;
+		preferences->Brightness = moduleSettings.VarBrightness->ValueInt;
+		preferences->ScreenResolution.Width = screenResolutionWidth;
+		preferences->ScreenResolution.Height = screenResolutionHeight;
+		preferences->TextureResolution = LevelStringToInt(moduleSettings.VarTextureResolution->ValueString);
+		preferences->ShadowQuality = LevelStringToInt(moduleSettings.VarShadowQuality->ValueString);
+		preferences->TextureFilteringQuality = LevelStringToInt(moduleSettings.VarTextureFilteringQuality->ValueString);
+		preferences->LightingQuality = LevelStringToInt(moduleSettings.VarLightingQuality->ValueString);
+		preferences->EffectsQuality = LevelStringToInt(moduleSettings.VarEffectsQuality->ValueString);
+		preferences->DetailsQuality = LevelStringToInt(moduleSettings.VarDetailsQuality->ValueString);
+		preferences->PostprocessingQuality = LevelStringToInt(moduleSettings.VarPostprocessingQuality->ValueString);
+		preferences->MotionBlur = uint8_t(moduleSettings.VarMotionBlur->ValueInt);
+		preferences->VSync = uint8_t(moduleSettings.VarVSync->ValueInt);
+		preferences->Antialiasing = uint8_t(moduleSettings.VarAntialiasing->ValueInt);
+		preferences->HideWatermark = 1;
+		preferences->SoundsControls.MasterVolume = moduleSettings.VarMasterVolume->ValueInt;
+		preferences->SoundsControls.SfxVolume = moduleSettings.VarSfxVolume->ValueInt;
+		preferences->SoundsControls.MusicVolume = moduleSettings.VarMusicVolume->ValueInt;
+		preferences->ToggleCrouch = uint8_t(moduleSettings.VarToggleCrouch->ValueInt);
+		preferences->HUDShake = uint8_t(moduleSettings.VarHUDShake->ValueInt);
+		preferences->TeamColor = moduleSettings.VarPlayerMarkerColors->ValueInt;
+		preferences->CameraFov = moduleCamera.VarCameraFov->ValueFloat;
+		preferences->ControlsMethod = moduleSettings.VarGamepadEnabled->ValueInt;
+		preferences->MouseSensitivityHorizontal = moduleSettings.VarMouseSensitivityHorizontal->ValueInt;
+		preferences->MouseSensitivityVertical = moduleSettings.VarMouseSensitivityVertical->ValueInt;
+		preferences->MouseSensitivityVehicleHorizontal = moduleSettings.VarMouseSensitivityVehicleHorizontal->ValueInt;
+		preferences->MouseSensitivityVehicleVertical = moduleSettings.VarMouseSensitivityVehicleVertical->ValueInt;
+		preferences->MouseAcceleration = moduleSettings.VarMouseAcceleration->ValueInt;
+		preferences->MouseFilter = uint8_t(moduleSettings.VarMouseFilter->ValueInt);
+		preferences->InvertMouse = uint8_t(moduleSettings.VarInvertMouse->ValueInt);
 
 		preferences->HideWatermark = 1;
 		preferences->Unknown00 = 1;
@@ -366,6 +415,18 @@ namespace
 
 		return array->Get(handle);
 	}
+
+	bool __cdecl player_action_test_cinematic_skip(blam::player_action action)
+	{
+		if (Blam::Input::GetKeyTicks(Blam::Input::eKeyCodeEnd, Blam::Input::eInputTypeUi) > 0)
+			return true;
+		else if (Blam::Input::GetKeyTicks(Blam::Input::eKeyCodeEnd, Blam::Input::eInputTypeGame) > 0)
+			return true;
+		else if (Blam::Input::GetKeyTicks(Blam::Input::eKeyCodeEnd, Blam::Input::eInputTypeSpecial) > 0)
+			return true;
+
+		return ((bool(__cdecl *)(blam::player_action)) 0x5CFF70)(action);
+	}
 }
 
 namespace Patches::Core
@@ -505,6 +566,9 @@ namespace Patches::Core
 		Hook(0x2E59A0, campaign_scoring_sub_6E59A0).Apply();
 		Hook(0x1332E9, campaign_metagame_update, HookFlags::IsCall).Apply();
 		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();
+
+		// cinematic skip hack
+		Hook(0x1D05A2, player_action_test_cinematic_skip, HookFlags::IsCall).Apply();
 
 		// optional single or multithreading
 		Hook(0x2E2C0, is_multithreaded_sub_42E2C0).Apply();
