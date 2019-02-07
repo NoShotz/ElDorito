@@ -4,7 +4,7 @@
 namespace FMOD {
 
 	// Max number of channels (real and virtual). Each channel represents a sound.
-	const int FMOD_MAX_CHANNELS = 1024;
+	const int FMOD_MAX_CHANNELS = 255;
 
 	//Get the FMOD::System class pointer
 	void* GetSystemPointer();

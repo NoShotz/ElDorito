@@ -23,7 +23,7 @@ namespace Blam::Sounds
 	{
 		Sound* sound = (Sound*)tag_get('snd!', soundTagIndex);
 		PitchRange pitchRange = sound->PitchRanges[pitchRangeIndex];
-		float unknown = pitchRange.Unknown3;
+		float unknown = (float)pitchRange.Unknown3;
 		if (pitchRangeIndex == -1 || pitchRange.Name == -20 || unknown == 0.0)
 		{
 			if ((((int8_t)sound->PlaybackParameters.OverrideFlags) >> 1) & 1)
@@ -335,7 +335,7 @@ namespace Blam::Sounds
 		}
 		//v39=v7
 		float pitch20 = soundSource->Pitch_field_20;
-		float pitchA0 = soundSource->Pitch_field_A0;
+		float pitchA0 = (float)soundSource->Pitch_field_A0;
 		auto scaleBlock = GetScale(soundDefinition);
 
 		float pitchModifier = ((scaleBlock->PitchModifier.Upper - scaleBlock->PitchModifier.Lower) * pitch20 + scaleBlock->PitchModifier.Lower) + pitchA0;

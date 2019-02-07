@@ -427,6 +427,16 @@ namespace
 
 		return ((bool(__cdecl *)(blam::player_action)) 0x5CFF70)(action);
 	}
+
+	int __cdecl sub_5F46C0_hook(int structure_bsp_index, int seam_mapping_index)
+	{
+		auto *tls = (Blam::Memory::tls_data *)ElDorito::Instance().GetMainTls();
+
+		if (!tls || !tls->structure_seam_globals)
+			return -1;
+
+		return ((int(__cdecl *)(int, int))0x5F46C0)(structure_bsp_index, seam_mapping_index);
+	}
 }
 
 namespace Patches::Core
@@ -566,6 +576,13 @@ namespace Patches::Core
 		Hook(0x2E59A0, campaign_scoring_sub_6E59A0).Apply();
 		Hook(0x1332E9, campaign_metagame_update, HookFlags::IsCall).Apply();
 		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();
+
+		// structure hacks
+		Hook(0x35FD97, sub_5F46C0_hook, HookFlags::IsCall).Apply();
+		Hook(0x5462B9, sub_5F46C0_hook, HookFlags::IsCall).Apply();
+		Hook(0x546523, sub_5F46C0_hook, HookFlags::IsCall).Apply();
+		Hook(0x548E37, sub_5F46C0_hook, HookFlags::IsCall).Apply();
+		Hook(0x548EBE, sub_5F46C0_hook, HookFlags::IsCall).Apply();
 
 		// cinematic skip hack
 		Hook(0x1D05A2, player_action_test_cinematic_skip, HookFlags::IsCall).Apply();
