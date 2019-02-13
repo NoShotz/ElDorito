@@ -9,7 +9,7 @@ enum HookFlags : int
 	None = 0,
 	IsCall = 1,
 	IsJmpIfEqual = 2,
-	IsJmpIfNotEqual = 4 // unimplemented
+	IsJmpIfNotEqual = 4
 };
 
 size_t GetMainThreadId();

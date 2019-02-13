@@ -183,7 +183,7 @@ $(document).ready(function(){
             });
         }
 		
-        dew.command('Game.PlaySound 0x0B00');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
     });
     $('.colorForm input, .armorForm input').off('click').on('change click', function(e){
         $(this).parent().parent().parent().find('.chosenElement').removeClass('chosenElement');
@@ -573,7 +573,7 @@ function effectReset(){
         return;
     exiting = true;
 
-    dew.command('Game.PlaySound 0x0B04');
+    dew.command('Game.PlaySound sound\\game_sfx\\ui\\back1.snd!');
     dew.getSessionInfo().then(function(i){
         if(i.mapName == "mainmenu"){
             $('#blackLayer').fadeIn(200, function(){
@@ -688,7 +688,7 @@ function updateSelection(item, sound, move, direct){
             $(elem+' .selectedElement')[0].scrollIntoView(false);
         }
         if(sound){
-            dew.command('Game.PlaySound 0xAFE');
+            dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\cursor_horzontal.snd!');
         }
     }
 }
@@ -793,9 +793,9 @@ function hideInputBox(sound,condition){
     activePage = activePage.replace('inputBox', '');
     if(sound){
         if(condition=='ok'){
-            dew.command('Game.PlaySound 0x0B00');
+            dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
         }else if(condition=='dismiss'){
-            dew.command('Game.PlaySound 0x0B04');
+            dew.command('Game.PlaySound sound\\game_sfx\\ui\\back1.snd!');
         }
     }
 }
@@ -869,7 +869,7 @@ function selectElement(){
     }else if($(activePage + ' form:visible')){
         $(activePage+' .selectedElement').find('input').click();
     }
-    dew.command('Game.PlaySound 0x0B00');
+    dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
 }
 
 function exitSubform(){
@@ -878,7 +878,7 @@ function exitSubform(){
         activePage = location.hash;
         itemNumber = $(activePage+' span').has('.setting').index($('span:has(.selectedElement)'));
         colorPicker = null;
-        dew.command('Game.PlaySound 0x0B04');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\back1.snd!');
         $(activePage + ' form:visible').hide();
         $(activePage + ' #infoBox').hide();
     }

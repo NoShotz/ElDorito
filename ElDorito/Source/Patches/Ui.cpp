@@ -56,6 +56,7 @@ namespace
 	void UI_GetHUDGlobalsIndexHook();
 	void __fastcall UI_GameVariantSavePromptFix(void *thisptr, void *unused, int a2);
 
+	void __fastcall c_main_menu_screen_widget_item_select_hook(void* thisptr, void* unused, int a2, Blam::Text::StringID a3, void* a4, void* a5);
 	void __fastcall c_start_menu_pane_screen_widget__handle_spinner_chosen_hook(void *thisptr, void *unused, uint8_t *widget);
 	void __fastcall c_ui_view_draw_hook(void* thisptr, void* unused);
 	void __fastcall c_gui_bitmap_widget_update_render_data_hook(void* thisptr, void* unused, void* renderData, int a3, int a4, int a5, int a6, int a7);
@@ -259,7 +260,7 @@ namespace Patches::Ui
 		// enable controller buttons in HUD messages
 		Patch(0x6BC5D7, { 0x98,0xDE, 0x44, 0x02, 01 }).Apply();
 
-		//Pointer(0x0169FCE0).Write(uint32_t(&c_main_menu_screen_widget_item_select_hook));
+		Pointer(0x0169FCE0).Write(uint32_t(&c_main_menu_screen_widget_item_select_hook));
 
 		// fix change team/gametype spinner display value
 		Pointer(0x016A0158).Write(uint32_t(&c_start_menu_pane_screen_widget__handle_spinner_chosen_hook)); // game_editor
@@ -1171,6 +1172,42 @@ namespace
 			mov eax, 0xABCA79
 			jmp eax
 		}
+	}
+
+	void __fastcall c_main_menu_screen_widget_item_select_hook(void* thisptr, void* unused, int a2, Blam::Text::StringID screenName, void* a4, void* a5)
+	{
+		static const auto c_main_menu_screen_widget_item_select = (void(__thiscall*)(void* thisptr, int a2, int a3, void* dataSource, void* a5))0xAE77D0;
+
+		if (screenName == 0x10083) // main_menu
+		{
+			uint32_t id;
+			auto itemIndex = (*(int(__thiscall **)(void*))(*(uint8_t**)a4 + 0x18))(a4);
+			if ((*(bool(__thiscall **)(void*, uint32_t, uint32_t, uint32_t*))(*(uint8_t**)a5 + 0x34))(a5, itemIndex, 0x2AA, &id))
+			{
+				// TODO: Maybe check the menu item's text over the index?
+
+				switch (id)
+				{
+				case 0x10075: // matchmaking: Server Browser
+					Web::Ui::ScreenLayer::Show("browser", "{}");
+					return;
+
+				case 0x1036A: // local: Local Games
+					ShowLanBrowser();
+					return;
+
+				case 0x1007C: // theater: Customization
+					Web::Ui::ScreenLayer::Show("profile_settings", "{}");
+					return;
+
+				case 0x55: // exit: Exit
+					Web::Ui::ScreenLayer::Show("exit", "{}");
+					return;
+				}
+			}
+		}
+
+		c_main_menu_screen_widget_item_select(thisptr, a2, screenName, a4, a5);
 	}
 
 	int GetHUDGlobalsIndexForRepresentation(void* playerRepresentation)

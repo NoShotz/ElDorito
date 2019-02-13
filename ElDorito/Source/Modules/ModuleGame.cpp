@@ -828,6 +828,19 @@ namespace
 	{
 		if (str.length() == 0)
 			return false;
+		
+		if ((str.rfind("0x", 0) == std::string::npos) &&
+			(str.find(".") != std::string::npos))
+		{
+			auto tokens = Utils::String::SplitString(str, '.');
+			
+			std::reverse(tokens[1].begin(), tokens[1].end());
+			const char *tag = tokens[1].c_str();
+
+			*value = Blam::Tags::TagInstance::Find(*(Blam::Tags::Tag *)tag, tokens[0]).Index;
+
+			return *value != 0xFFFF;
+		}
 
 		auto c_str = str.c_str();
 		char* endp;

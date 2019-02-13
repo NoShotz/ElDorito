@@ -340,7 +340,7 @@ void ElDorito::OnMainMenuShown()
 	executeCommandQueue = true;
 	if (isDedicated)
 		Server::DedicatedServer::Init();
-	else if (Modules::ModuleGame::Instance().VarSkipIntroVideos->ValueInt == 0)
+	else if (!Modules::ModuleGame::Instance().VarSkipIntroVideos->ValueInt)
 		Web::Ui::ScreenLayer::Show("title", "{}");
 }
 
