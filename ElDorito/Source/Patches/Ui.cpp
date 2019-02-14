@@ -1200,6 +1200,10 @@ namespace
 					Web::Ui::ScreenLayer::Show("profile_settings", "{}");
 					return;
 
+				case 0x3FA3: // settings: Settings
+					Web::Ui::ScreenLayer::Show("settings", "{}");
+					return;
+
 				case 0x55: // exit: Exit
 					Web::Ui::ScreenLayer::Show("exit", "{}");
 					return;

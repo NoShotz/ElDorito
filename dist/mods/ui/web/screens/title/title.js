@@ -122,7 +122,7 @@ function hideScreen(){
     $( "body" ).fadeOut( 500, function() {
         dew.hide();
     });
-	dew.command('Game.PlaySound 0x0B00');
+	dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
 }
 
 function closeAnnounce(){
@@ -135,7 +135,7 @@ function closeAnnounce(){
             dew.command('writeconfig');
         });
     }
-	dew.command('Game.PlaySound 0x0B00');
+	dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
 }
 
 function parseVersion(str) { 

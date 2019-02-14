@@ -88,7 +88,7 @@ $(document).ready(function(){
                 }
             };
         });
-        dew.command('Game.PlaySound 0x0B00');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
     });
     $('#applyButton').on('click', function(e){
         applyButton();
@@ -526,7 +526,7 @@ function effectReset(){
         return;
     exiting = true;
 
-    dew.command('Game.PlaySound 0x0B04');
+    dew.command('Game.PlaySound sound\\game_sfx\\ui\\back1.snd!');
     dew.getSessionInfo().then(function(i){
         if(i.mapName == "mainmenu"){
             $('#blackLayer').fadeIn(200, function(){
@@ -595,7 +595,7 @@ function updateSelection(item, sound, move){
         $('#'+selectedItem).parent()[0].scrollIntoView(false);
     }
     if(sound){
-        dew.command('Game.PlaySound 0xAFE');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\cursor_horzontal.snd!');
     }
     setInfoBox(selectedItem);
 }
@@ -742,14 +742,14 @@ function alertBox(alertText, dismissButton){
     $('#wDescription').text(alertText);
     $('#alertBox').fadeIn(100);
     activePage = activePage+'alertBox';
-    dew.command('Game.PlaySound 0x0B02');
+    dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\x_button.snd!');
 }
 
 function hideAlert(sound){
     $('#alertBox').hide();
     activePage = activePage.replace('alertBox', ''); 
     if(sound){
-        dew.command('Game.PlaySound 0x0B04');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\back1.snd!');
     }
 }
 

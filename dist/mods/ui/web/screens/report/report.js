@@ -4,9 +4,9 @@ let reportWindow = document.querySelector('.report_window');
 let previousState = null;
 
 let SOUNDS = {
-    select: 0xb00,
-    back: 0xb01,
-    error: 0xafd
+    select: "sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!",
+    back: "sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!",
+    error: "sound\\game_sfx\\ui\\error.snd!"
 };
 
 let REPORT_STATES = {
@@ -79,7 +79,7 @@ function hide() {
 }
 
 function playSound(tagIndex) {
-    dew.command(`Game.PlaySound 0x${tagIndex.toString(16)}`);
+    dew.command(`Game.PlaySound ${tagIndex}`);
 }
 
 function setErrorStatus(text) {

@@ -61,7 +61,7 @@ dew.ui = (function () {
             var tagIndex = getUiSoundTagIndex(index);
             if (tagIndex == -1)
                 return;
-            dew.command('Game.PlaySound 0x' + tagIndex.toString(16));
+            dew.command('Game.PlaySound ' + tagIndex.toString(16));
         },
 
         Actions: UiAction,
@@ -70,18 +70,18 @@ dew.ui = (function () {
 
     function getUiSoundTagIndex(index) {
         switch (index) {
-            case UiSound.Error: return 0xafd;
-            case UiSound.VerticalNavigation: return 0xafe;
-            case UiSound.HorizontalNavigation: return 0xaff;
-            case UiSound.A: return 0xb00;
-            case UiSound.B: return 0xb01;
-            case UiSound.X: return 0xb02;
-            case UiSound.Start: return 0xb03;
-            case UiSound.Back: return 0xb04;
-            case UiSound.LeftBumper: return 0xb05;
-            case UiSound.RightBumper: return 0xb06;
-            case UiSound.LeftTrigger: return 0xb05;
-            case UiSound.RightTrigger: return 0xb06;
+            case UiSound.Error: return "sound\\game_sfx\\ui\\error.snd!";
+            case UiSound.VerticalNavigation: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\cursor_horzontal.snd!";
+            case UiSound.HorizontalNavigation: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\cursor_vertical.snd!";
+            case UiSound.A: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!";
+            case UiSound.B: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!";
+            case UiSound.X: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\x_button.snd!";
+            case UiSound.Start: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\start_button.snd!";
+            case UiSound.Back: return "sound\\game_sfx\\ui\\back1.snd!";
+            case UiSound.LeftBumper: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\left_bumper.snd!";
+            case UiSound.RightBumper: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\right_bumper.snd!";
+            case UiSound.LeftTrigger: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\left_bumper.snd!";
+            case UiSound.RightTrigger: return "sound\\game_sfx\\ui\\button_based_ui_sounds\\right_bumper.snd!";
             default: return -1;
         }
     }

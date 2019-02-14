@@ -171,7 +171,7 @@ function leftToggle(){
     }   
     if(document.getElementById(selectedItem).computedRole == "combobox" || document.getElementById(selectedItem).computedRole == "slider"){
         $('#'+selectedItem).trigger('change');
-        dew.command('Game.PlaySound 0x0B00');  
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');  
     }    
 }
 
@@ -191,7 +191,7 @@ function rightToggle(){
     }        
     if(document.getElementById(selectedItem).computedRole == "combobox" || document.getElementById(selectedItem).computedRole == "slider"){
         $('#'+selectedItem).trigger('change');
-        dew.command('Game.PlaySound 0x0B00');  
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');  
     }
 }
 

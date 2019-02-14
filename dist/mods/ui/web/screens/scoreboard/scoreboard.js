@@ -234,7 +234,7 @@ $(document).ready(function(){
                                         var playerName = $(this).attr('data-name');
 
                                         if(result.playerInfo.Uid === playerUid) {
-                                            dew.command('Game.PlaySound 0xafd');
+                                            dew.command('Game.PlaySound sound\\game_sfx\\ui\\error.snd!');
                                             return;
                                         }
 

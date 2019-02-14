@@ -76,7 +76,7 @@ $(document).ready(function(){
     });
 
     $('#showButton').off('click').on('click', function() {
-        dew.command('Game.PlaySound 0xb02');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\x_button.snd!');
         compactMode = false;
         onShow();
         
@@ -95,7 +95,7 @@ function veto(){
 
 function hideScreen(){
     if(!compactMode) {
-        dew.command('Game.PlaySound 0xb01');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!');
     }
     compactMode = true;
     onShow();
@@ -134,7 +134,7 @@ function vote(number) {
         $(".vetoBox img").attr('src','dew://assets/buttons/' + settingsArray['Game.IconSet'] + '_X.png');
     }
     if (WinnerChosen.length <= 0) {
-        dew.command('Game.PlaySound 0x0B00');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
     }
 }
 
@@ -147,7 +147,7 @@ dew.on("show", function(event) {
 
 
     if(event.data.userInvoked && compactMode && !event.data.compact) {
-        dew.command('Game.PlaySound 0xb02');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\x_button.snd!');
     }
     compactMode = event.data.compact;
     onShow();
@@ -325,7 +325,7 @@ function updateSelection(item, sound){
     if (WinnerChosen.length <= 0) {
         $('#'+item).addClass('selected');
         if(sound){
-            dew.command('Game.PlaySound 0xAFE');
+            dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\cursor_horzontal.snd!');
         }
     }
 }

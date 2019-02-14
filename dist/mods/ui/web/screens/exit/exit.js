@@ -24,7 +24,7 @@ $(document).ready(function() {
     });
     
     $('#cancel').off('click').on('click', function(e){
-        dew.command('Game.PlaySound 0xb01');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!');
         dew.hide();
     });
     
@@ -34,7 +34,7 @@ $(document).ready(function() {
     });
     $(document).keyup(function(e) {
         if (e.keyCode === 27 || e.keyCode === 66 || e.keyCode === 78){ //Escape, B, N
-            dew.command('Game.PlaySound 0xb01');
+            dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!');
             dew.hide();
 		}
     });

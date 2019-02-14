@@ -65,7 +65,7 @@ dew.on("show", function (event) {
                              dew.show('alert',{"title":"Error", "body":error.message});
                         });
                     }
-					dew.command('Game.PlaySound 0xb00');
+					dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\a_button.snd!');
                     dew.hide();
                 };
             }
@@ -81,7 +81,7 @@ dew.on("show", function (event) {
 					e.preventDefault();
 					$(this).parent().parent().parent().remove();
 					if(!$('.dialog').length){
-						dew.command('Game.PlaySound 0xb01');
+						dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!');
 						dew.hide();
 					};
 				}
