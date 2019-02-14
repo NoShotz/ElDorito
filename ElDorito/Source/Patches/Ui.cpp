@@ -2038,7 +2038,7 @@ namespace
 					//so another hook can check the icon and give them a marker. 
 					//The exception to this is infection, which gives the last man standing a marker. 
 					//So that's handled here. 
-					if (gamemode == GameType::Infection) 
+					if (gamemode == GameType::eGameTypeInfection) 
 					{ 
 						bool thereIsALastManStanding = Pointer(ElDorito::GetMainTls(0x48 + 0xE6DC)).Read<uint16_t>() == 1; 
 						bool iAmAlive = Pointer(0x2161808).Read<uint8_t>() == 1; 
@@ -2068,26 +2068,26 @@ namespace
 		{ 
 			default: 
 				break; 
-			case GameType::Assault: 
+			case GameType::eGameTypeAssault: 
 				if (markerIconIndex == PlayerMarkerIconIndex::Bomb) 
 					return true; 
 				break; 
-			case GameType::CTF: 
+			case GameType::eGameTypeCTF: 
 				if (markerIconIndex == PlayerMarkerIconIndex::Flag) 
 					return true; 
 				break; 
-			case GameType::Oddball: 
+			case GameType::eGameTypeOddball: 
 				if (markerIconIndex == PlayerMarkerIconIndex::Skull) 
 					return true; 
 				break; 
-			case GameType::Juggernaut: 
+			case GameType::eGameTypeJuggernaut: 
 				if (markerIconIndex == PlayerMarkerIconIndex::Juggernaut) 
 					return true; 
 				break; 
-			case GameType::VIP: 
+			case GameType::eGameTypeVIP: 
 				if (markerIconIndex == PlayerMarkerIconIndex::VIP) 
 					return true; 
-				break; 
+				break;
 		} 
  
 		return false; 
