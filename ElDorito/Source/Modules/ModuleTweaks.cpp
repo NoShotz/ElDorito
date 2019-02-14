@@ -1,11 +1,19 @@
 #include "ModuleTweaks.hpp"
 #include "../Patches/Ui.hpp"
+#include "../Patches/Tweaks.hpp"
 
 namespace
 {
 	bool VariableFlatHUDUpdated(const std::vector<std::string>& arguments, std::string& returnInfo)
 	{
 		Patches::Ui::UpdateHUDDistortion();
+		return true;
+	}
+
+	bool VariableEliteHUDUpdated(const std::vector<std::string>& arguments, std::string& returnInfo)
+	{
+		Patches::Ui::eliteHUD = Modules::ModuleTweaks::Instance().VarEliteHUD->ValueInt;
+		Patches::Tweaks::UpdateUnitHUD();
 		return true;
 	}
 }
@@ -41,6 +49,10 @@ namespace Modules
 		VarFlatHUD = AddVariableInt("FlatHUD", "flathud", "Removes distortion from the HUD.", eCommandFlagsArchived, 0, VariableFlatHUDUpdated);
 		VarFlatHUD->ValueIntMin = 0;
 		VarFlatHUD->ValueIntMax = 1;
+
+		VarEliteHUD = AddVariableInt("EliteHUD", "elitehud", "Switches to the elite HUD.", eCommandFlagsArchived, 0, VariableEliteHUDUpdated);
+		VarEliteHUD->ValueIntMin = 0;
+		VarEliteHUD->ValueIntMax = 1;
 
 		VarSinglethreaded = AddVariableInt("Singlethreaded", "singlethreaded", "Enables singlethreaded mode.", eCommandFlagsArchived, 0);
 		VarSinglethreaded->ValueIntMin = 0;
