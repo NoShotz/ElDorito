@@ -69,6 +69,7 @@ namespace
 	void LoadLevelHook(uint8_t* mapinfo, char a2, char *mapsPath, char a4);
 	void GameStartHook();
 	void __fastcall EdgeDropHook(void* thisptr, void* unused, int a2, int a3, int a4, float* a5);
+	void* __fastcall SurfaceIndexHook(void* thisptr, void* unused, int mopp_data, short a3, int collision_resource_small_bsp, int collision_resource_large_bsp, int a6, char a7, char a8, int a9, int surface_index, int a11, int mopp_flags, int a13);
 	void __cdecl BipedFeetZoneOffsetHook(uint32_t bipedObjectIndex, Blam::Math::RealVector3D *position, float *height, float *radius);
 	char GetBinkVideoPathHook(int p_VideoID, char *p_DestBuf);
 	void DirtyDiskErrorHook();
@@ -437,6 +438,14 @@ namespace
 
 		return ((int(__cdecl *)(int, int))0x5F46C0)(structure_bsp_index, seam_mapping_index);
 	}
+
+	void* __fastcall SurfaceIndexHook(void* thisptr, void* unused, int mopp_data, short a3, int collision_resource_small_bsp, int collision_resource_large_bsp, int a6, char a7, char a8, int a9, int surface_index, int a11, int mopp_flags, int a13) {
+		static auto sub_75DB80 = (void*(__fastcall*)(void* thisptr, void* unused, int mopp_data, short a3, int resource_1, int resource_2, int a6, char a7, char a8, int a9, int surface_index, int a11, int mopp_flags, int a13))(0x75DB80);
+		int surface_index_fixed = surface_index;
+		if (mopp_data & 0x20000000 && collision_resource_small_bsp != 0)
+			surface_index_fixed = 0xFFFF & surface_index;
+		return sub_75DB80(thisptr, unused, mopp_data, a3, collision_resource_small_bsp, collision_resource_large_bsp, a6, a7, a8, a9, surface_index_fixed, a11, mopp_flags, a13);
+	}
 }
 
 namespace Patches::Core
@@ -593,6 +602,9 @@ namespace Patches::Core
 		// decal hack
 		Hook(0x2947FE, sub_6948C0_hook, HookFlags::IsCall).Apply();
 		Hook(0x15B6D0, datum_get_hook).Apply();
+
+		// mopp freeze hack (fixes the surface index so that if it's in a small bsp, then the index is <= 0xFFFF
+		Hook(0x35F2C5, SurfaceIndexHook, HookFlags::IsCall).Apply();
 	}
 
 	void OnShutdown(ShutdownCallback callback)
