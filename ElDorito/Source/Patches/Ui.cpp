@@ -103,7 +103,7 @@ namespace
 	int GetBrokenChudStateFlags21Values();
 	int GetBrokenChudStateFlags31Values();
 	int GetBrokenChudStateFlags33Values();
-	void MenuSelectedMapIDChangedHook();
+	void c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions();
 	void GetGlobalDynamicColorHook();
 	void GetWeaponOutlineColorHook();
 
@@ -300,7 +300,7 @@ namespace Patches::Ui
 		Pointer(0x016A6240).Write(uint32_t(&c_gui_bitmap_widget_update_render_data_hook));
 
 		//Fix map images in the selection menu.
-		Hook(0x6DA0FE, MenuSelectedMapIDChangedHook).Apply();
+		Hook(0x6DA0FE, c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions).Apply();
 
 		// remove recent maps, fileshare menu items
 		Pointer(0x0169E270).Write(uint32_t(&c_gui_map_category_datasource_init));
@@ -852,7 +852,7 @@ namespace
 	}
 
 	unsigned int selectionMenuMapID = 0;
-	__declspec(naked) void MenuSelectedMapIDChangedHook()
+	__declspec(naked) void c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions()
 	{
 		__asm
 		{
@@ -877,7 +877,7 @@ namespace
 		if (!foundMapImages)
 			return;
 
-		if (name != 67196 && name != 67149) // unknown_film_image, woohoo!
+		if (name != 67196 && name != 67149) // unknown_film_image, map_image_type
 			return;
 
 		static int bitmapIndex = 0;
