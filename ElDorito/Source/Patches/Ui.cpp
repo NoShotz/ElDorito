@@ -885,10 +885,7 @@ namespace
 
 		if (name == 67196)
 		{
-			auto session = Blam::Network::GetActiveSession();
-
-			if (session && session->IsEstablished())
-				mapID = session->Parameters.MapVariant.MapID;
+			mapID = Pointer(0x18603F0).Read<uint32_t>();
 		}
 		else if (name == 67149)
 		{
