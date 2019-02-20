@@ -254,8 +254,10 @@ namespace Game::Armor
 	{
 		using namespace Blam::Math;
 
+		auto isElite = Modules::ModulePlayer::Instance().VarRepresentation->ValueString == "elite";
+
 		// Try to get the UI player biped
-		uint32_t uiPlayerBiped = GetCharPlatformBiped(2);
+		uint32_t uiPlayerBiped = GetCharPlatformBiped(isElite ? 3 : 2);
 		if (uiPlayerBiped == 0xFFFFFFFF)
 			return;
 

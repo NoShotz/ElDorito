@@ -581,10 +581,10 @@ namespace Patches::Core
 		Hook(0x109020, hash_verification).Apply();
 		Hook(0x1254A0, campaign_save_exists).Apply();
 
-		// campaign metagame hacks
+		/* campaign metagame hacks
 		Hook(0x2E59A0, campaign_scoring_sub_6E59A0).Apply();
 		Hook(0x1332E9, campaign_metagame_update, HookFlags::IsCall).Apply();
-		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();
+		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();*/
 
 		// structure hacks
 		Hook(0x35FD97, sub_5F46C0_hook, HookFlags::IsCall).Apply();
