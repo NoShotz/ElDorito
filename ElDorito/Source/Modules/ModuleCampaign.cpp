@@ -15,7 +15,7 @@ namespace
 			return false;
 
 		// these changes take effect on map load
-		if (gameGlobalsPtr->level_data.MapType == Blam::eMapTypeCampaign)
+		if (gameGlobalsPtr->game_options.MapType == Blam::eMapTypeCampaign)
 			if (Pointer(0x165C83C).Read<int>() != Modules::ModuleCampaign::Instance().VarFrameLimit->ValueInt)
 				Pointer(0x165C83C).Write<int>(Modules::ModuleCampaign::Instance().VarFrameLimit->ValueInt);
 		else

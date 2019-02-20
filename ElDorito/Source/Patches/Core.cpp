@@ -65,7 +65,7 @@ namespace
 	void GrenadeLoadoutHook();
 	void ShutdownHook();
 	const char *GetMapsFolderHook();
-	bool LoadMapHook(Blam::LevelData *data);
+	bool LoadMapHook(Blam::GameOptions *data);
 	void LoadLevelHook(uint8_t* mapinfo, char a2, char *mapsPath, char a4);
 	void GameStartHook();
 	void __fastcall EdgeDropHook(void* thisptr, void* unused, int a2, int a3, int a4, float* a5);
@@ -94,7 +94,7 @@ namespace
 	std::vector<Patches::Core::MapLoadedCallback> mapLoadedCallbacks;
 	std::vector<Patches::Core::GameStartCallback> gameStartCallbacks;
 
-	void *__cdecl LevelDataGetHook();
+	void *__cdecl GameOptionsGetHook();
 	void PrintLevelInfo();
 
 	uint32_t LevelStringToInt(const std::string& value)
@@ -567,8 +567,8 @@ namespace Patches::Core
 		// hsc print functionality
 		Hook(0x32FE9A, HsPrintHook, HookFlags::IsCall).Apply();
 
-		// level data get
-		Hook(0x1322D0, LevelDataGetHook).Apply();
+		// game options get
+		Hook(0x1322D0, GameOptionsGetHook).Apply();
 
 		//Hook(0x769CF0, unit_action_submit_hook).Apply();
 
@@ -759,9 +759,9 @@ namespace
 		return 3;
 	}
 
-	bool LoadMapHook(Blam::LevelData *data)
+	bool LoadMapHook(Blam::GameOptions *data)
 	{
-		typedef bool(*LoadMapPtr)(Blam::LevelData *data);
+		typedef bool(*LoadMapPtr)(Blam::GameOptions *data);
 		auto LoadMap = reinterpret_cast<LoadMapPtr>(0x566EF0);
 		if (!LoadMap(data))
 			return false;
@@ -949,10 +949,10 @@ namespace
 	{
 		auto *tls = (Blam::Memory::tls_data *)ElDorito::Instance().GetMainTls();
 		auto gameGlobalsPtr = tls->game_globals;
-		if (!gameGlobalsPtr || gameGlobalsPtr->level_data.FrameLimit == 60)
+		if (!gameGlobalsPtr || gameGlobalsPtr->game_options.FrameLimit == 60)
 			return 0.5f;
 
-		return 30.0f / gameGlobalsPtr->level_data.FrameLimit;
+		return 30.0f / gameGlobalsPtr->game_options.FrameLimit;
 	}
 
 	void __fastcall EdgeDropHook(void* thisptr, void* unused, int a2, int a3, int a4, float* a5)
@@ -1084,7 +1084,7 @@ namespace
 		return true;
 	}
 
-	bool IsMap(Blam::LevelData *data, std::string map_name)
+	bool IsMap(Blam::GameOptions *data, std::string map_name)
 	{
 		if (std::string(data->ScenarioPath).find(map_name) == std::string::npos)
 			return false;
@@ -1092,7 +1092,7 @@ namespace
 	}
 
 	// todo: make these user configurable, campaign_prefs.cfg?
-	void *NewLevelData(Blam::LevelData *data)
+	void *NewGameOptions(Blam::GameOptions *data)
 	{
 		if (data->MapType == Blam::eMapTypeCampaign)
 		{
@@ -1111,14 +1111,14 @@ namespace
 		return (void *)data;
 	}
 
-	void *__cdecl LevelDataGetHook()
+	void *__cdecl GameOptionsGetHook()
 	{
 		auto *tls = (Blam::Memory::tls_data *)ElDorito::Instance().GetMainTls();
 		auto gameGlobalsPtr = tls->game_globals;
 		if (!gameGlobalsPtr)
 			return false;
 
-		return NewLevelData(&gameGlobalsPtr->level_data);
+		return NewGameOptions(&gameGlobalsPtr->game_options);
 	}
 
 	void PrintLevelInfo()
@@ -1127,7 +1127,7 @@ namespace
 		auto gameGlobalsPtr = tls->game_globals;
 		if (!gameGlobalsPtr)
 			return;
-		auto LevelData = &gameGlobalsPtr->level_data;
+		auto GameOptions = &gameGlobalsPtr->game_options;
 
 		std::string bool_string[2]
 		{
@@ -1140,44 +1140,44 @@ namespace
 
 		ss << "\tBSP is loaded: " << bool_string[gameGlobalsPtr->bsp_load_state] << std::endl << std::endl;
 
-		ss << "\tFrame Limit: " << LevelData->FrameLimit << std::endl;
-		ss << "\tGame Simulation: " << Blam::GameSimulationNames[LevelData->GameSimulation] << std::endl;
-		ss << "\tDeterminism Version: " << LevelData->DeterminismVersion << std::endl << std::endl;
+		ss << "\tFrame Limit: " << GameOptions->FrameLimit << std::endl;
+		ss << "\tGame Simulation: " << Blam::GameSimulationNames[GameOptions->GameSimulation] << std::endl;
+		ss << "\tDeterminism Version: " << GameOptions->DeterminismVersion << std::endl << std::endl;
 
-		ss << "\tGame Playback: " << Blam::GamePlaybackNames[LevelData->GamePlayback] << std::endl;
-		ss << "\tTheater Mode: " << bool_string[LevelData->GamePlayback == Blam::eGamePlaybackLocal] << std::endl << std::endl;
+		ss << "\tGame Playback: " << Blam::GamePlaybackNames[GameOptions->GamePlayback] << std::endl;
+		ss << "\tTheater Mode: " << bool_string[GameOptions->GamePlayback == Blam::eGamePlaybackLocal] << std::endl << std::endl;
 
 		ss << "\tCinematic Debug Mode: " << bool_string[Pointer(0x24B0A3E).Read<bool>()] << std::endl << std::endl;
 
-		ss << "\tMap type: " << Blam::MapTypeNames[LevelData->MapType] << std::endl;
+		ss << "\tMap type: " << Blam::MapTypeNames[GameOptions->MapType] << std::endl;
 
-		ss << "\tMap Id: " << LevelData->MapId << std::endl;
-		ss << "\tMap Path: " << LevelData->ScenarioPath << std::endl << std::endl;
+		ss << "\tMap Id: " << GameOptions->MapId << std::endl;
+		ss << "\tMap Path: " << GameOptions->ScenarioPath << std::endl << std::endl;
 
-		if (LevelData->MapType == Blam::eMapTypeCampaign)
+		if (GameOptions->MapType == Blam::eMapTypeCampaign)
 		{
-			ss << "\tCampaign Id: " << LevelData->CampaignId << std::endl;
-			ss << "\tRally Point: " << Blam::CampaignInsertionPointNames[LevelData->CampaignInsertionPoint] << std::endl;
-			ss << "\tZoneset Index: " << LevelData->ZonesetIndex << std::endl << std::endl;
+			ss << "\tCampaign Id: " << GameOptions->CampaignId << std::endl;
+			ss << "\tRally Point: " << Blam::CampaignInsertionPointNames[GameOptions->CampaignInsertionPoint] << std::endl;
+			ss << "\tZoneset Index: " << GameOptions->ZonesetIndex << std::endl << std::endl;
 
-			ss << "\tCampaign Difficulty: " << Blam::GameDifficultNames[LevelData->CampaignDifficultyLevel] << std::endl;
-			ss << "\tMetagame Enable: " << bool_string[LevelData->CampaignMetagameEnabled] << std::endl;
-			ss << "\tMetagame Scoring: " << Blam::CampaignMetagameScoringOptionNames[LevelData->CampaignMetagameScoringOption] << std::endl;
-			ss << "\tSurvival Mode Enable: " << bool_string[LevelData->SurvivalModeEnabled] << std::endl << std::endl;
+			ss << "\tCampaign Difficulty: " << Blam::GameDifficultNames[GameOptions->CampaignDifficultyLevel] << std::endl;
+			ss << "\tMetagame Enable: " << bool_string[GameOptions->CampaignMetagameEnabled] << std::endl;
+			ss << "\tMetagame Scoring: " << Blam::CampaignMetagameScoringOptionNames[GameOptions->CampaignMetagameScoringOption] << std::endl;
+			ss << "\tSurvival Mode Enable: " << bool_string[GameOptions->SurvivalModeEnabled] << std::endl << std::endl;
 
 			// TODO: figure out / fix
-			//ss << "\tActive Primary Skulls: " << Blam::SkullNames[LevelData->CampaignSkullsPrimary] << std::endl;
-			//ss << "\tActive Secondary Skulls: " << Blam::SkullNames[LevelData->CampaignSkullsSecondary] << std::endl << std::endl;
+			//ss << "\tActive Primary Skulls: " << Blam::SkullNames[GameOptions->CampaignSkullsPrimary] << std::endl;
+			//ss << "\tActive Secondary Skulls: " << Blam::SkullNames[GameOptions->CampaignSkullsSecondary] << std::endl << std::endl;
 		}
 		else
 		{
-			auto GameVariant = (Blam::GameVariant *)LevelData->GameVariant;
+			auto GameVariant = (Blam::GameVariant *)GameOptions->GameVariant;
 			ss << "\t(Game Variant)->Game Type: " << Blam::GameTypeNames[GameVariant->GameType] << std::endl;
 			ss << "\t(Game Variant)->Name: " << Utils::String::ThinString(GameVariant->Name) << std::endl;
 			ss << "\t(Game Variant)->Author: " << GameVariant->Author << std::endl;
 			ss << "\t(Game Variant)->Description: " << GameVariant->Description << std::endl << std::endl;
 
-			auto MapVariant = (Blam::MapVariant *)LevelData->MapVariant;
+			auto MapVariant = (Blam::MapVariant *)GameOptions->MapVariant;
 			ss << "\t(Map Variant)->Base Map Id: " << MapVariant->MapId << std::endl;
 			ss << "\t(Map Variant)->Name: " << Utils::String::ThinString(MapVariant->ContentHeader.Name) << std::endl;
 			ss << "\t(Map Variant)->Author: " << MapVariant->ContentHeader.Author << std::endl;
@@ -1199,7 +1199,7 @@ namespace
 			ss << "Initial Participants Array:" << std::endl;
 
 			auto player_index = 0;
-			auto participant = LevelData->InitialParticipantsArray;
+			auto participant = GameOptions->InitialParticipantsArray;
 			do
 			{
 				auto properties = (Blam::Players::PlayerProperties *)participant->PlayerProperties;
@@ -1230,7 +1230,7 @@ namespace
 		}
 		ss << std::endl << std::endl;
 
-		if (!IsMap(LevelData, "mainmenu"))
+		if (!IsMap(GameOptions, "mainmenu"))
 			Console::WriteLine(ss.str());
 	}
 }

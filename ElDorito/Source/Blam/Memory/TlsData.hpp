@@ -437,7 +437,7 @@ namespace Blam::Memory
 		unsigned long bsp_load_state;
 		unsigned long unknown8;
 		unsigned long unknownC;
-		Blam::LevelData level_data;
+		Blam::GameOptions game_options;
 		unsigned long unknown24B58; // mapname string_id?
 
 		struct 

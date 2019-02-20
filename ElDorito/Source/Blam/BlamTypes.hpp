@@ -250,7 +250,7 @@ namespace Blam
 		"Free For All"
 	};
 
-	struct LevelData
+	struct GameOptions
 	{
 		MapType MapType;
 		GameSimulation GameSimulation;
@@ -262,9 +262,7 @@ namespace Blam
 		int32_t DeterminismVersion;
 		int32_t CampaignId;
 		int32_t MapId;
-		char ScenarioPath[256];
-
-		uint32_t dword124;
+		char ScenarioPath[260];
 
 		int16_t ZonesetIndex;
 
@@ -317,7 +315,7 @@ namespace Blam
 			char PlayerProperties[0x1620]; // Blam::Players::PlayerProperties
 		} InitialParticipantsArray[16];
 	};
-	static_assert(sizeof(LevelData) == 0x24B48);
+	static_assert(sizeof(GameOptions) == 0x24B48);
 
 	enum NetworkMode : int32_t
 	{
@@ -551,7 +549,7 @@ namespace Blam
 		uint32_t Unknown1; // 0
 		uint32_t Unknown2; // 1
 		uint32_t Unknown3; // 0
-		uint32_t Size; // 0xE1F0 for maps, 0x3BC for variants
+		uint32_t Size; // 0xE1F0 for maps, 0x3BC for variants, 0x25B80 for saved films
 		uint32_t Unknown4; // 0
 		uint64_t Timestamp;
 		uint32_t Unknown6; // 0

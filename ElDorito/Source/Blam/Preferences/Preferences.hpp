@@ -109,7 +109,7 @@ namespace Blam
 				uint8_t Unknown3;
 				uint8_t Unknown4[0x10];
 				SavedFilmDescription SavedFilmDescription;
-				Blam::LevelData LevelData;
+				Blam::GameOptions GameOptions;
 				uint8_t Unknown24E78[8];
 			};
 			static_assert(sizeof(TheaterData) == 0x24E80);
