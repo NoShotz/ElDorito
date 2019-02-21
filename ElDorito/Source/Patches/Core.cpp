@@ -581,10 +581,10 @@ namespace Patches::Core
 		Hook(0x109020, hash_verification).Apply();
 		Hook(0x1254A0, campaign_save_exists).Apply();
 
-		/* campaign metagame hacks
-		Hook(0x2E59A0, campaign_scoring_sub_6E59A0).Apply();
+		// campaign metagame hacks
+		//Hook(0x2E59A0, campaign_scoring_sub_6E59A0).Apply();
 		Hook(0x1332E9, campaign_metagame_update, HookFlags::IsCall).Apply();
-		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();*/
+		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();
 
 		// structure hacks
 		Hook(0x35FD97, sub_5F46C0_hook, HookFlags::IsCall).Apply();
@@ -759,6 +759,23 @@ namespace
 		return 3;
 	}
 
+	void hook_apply_loop(void *hook, void *orig, bool apply, std::vector<size_t> offsets)
+	{
+		for (auto offset : offsets)
+			Hook(offset, (apply ? hook : orig), HookFlags::IsCall).Apply();
+	}
+
+	void campaign_scoring_hook_apply()
+	{
+		std::vector<size_t> offsets = {
+			0x14D8F0, 0x14E44C, 0x14E54F, 0x1A09CF, 0x288BD5, 
+			0x288E94, 0x2E68EA, 0x2E6905, 0x2E6CC0, 0x2E6D30, 
+			0x2E6D58, 0x2E6D9C, 0x2E6E6F, 0x5DA376, 0x5DBD1C, 
+			0x5DC982, 0x5DCA2B, 0x5DCB2C, 0x5DCC1A
+		};
+		hook_apply_loop(campaign_scoring_sub_6E59A0, (void *)0x6E59A0, game_is_campaign(), offsets);
+	}
+
 	bool LoadMapHook(Blam::GameOptions *data)
 	{
 		typedef bool(*LoadMapPtr)(Blam::GameOptions *data);
@@ -789,6 +806,8 @@ namespace
 			if (*(float *)((*soundSystemPtr) + 0x44) == 0.0f)
 				*(float *)((*soundSystemPtr) + 0x44) = 1.0f;
 		}
+
+		campaign_scoring_hook_apply(); // big hax
 
 		for (auto &&callback : mapLoadedCallbacks)
 			callback(data->ScenarioPath); // hax
