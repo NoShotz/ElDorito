@@ -69,7 +69,6 @@ namespace
 	void LoadLevelHook(uint8_t* mapinfo, char a2, char *mapsPath, char a4);
 	void GameStartHook();
 	void __fastcall EdgeDropHook(void* thisptr, void* unused, int a2, int a3, int a4, float* a5);
-	void* __fastcall SurfaceIndexHook(void* thisptr, void* unused, int mopp_data, short a3, int collision_resource_small_bsp, int collision_resource_large_bsp, int a6, char a7, char a8, int a9, int surface_index, int a11, int mopp_flags, int a13);
 	void __cdecl BipedFeetZoneOffsetHook(uint32_t bipedObjectIndex, Blam::Math::RealVector3D *position, float *height, float *radius);
 	char GetBinkVideoPathHook(int p_VideoID, char *p_DestBuf);
 	void DirtyDiskErrorHook();
@@ -439,13 +438,74 @@ namespace
 		return ((int(__cdecl *)(int, int))0x5F46C0)(structure_bsp_index, seam_mapping_index);
 	}
 
-	void* __fastcall SurfaceIndexHook(void* thisptr, void* unused, int mopp_data, short a3, int collision_resource_small_bsp, int collision_resource_large_bsp, int a6, char a7, char a8, int a9, int surface_index, int a11, int mopp_flags, int a13) {
-		static auto sub_75DB80 = (void*(__fastcall*)(void* thisptr, void* unused, int mopp_data, short a3, int resource_1, int resource_2, int a6, char a7, char a8, int a9, int surface_index, int a11, int mopp_flags, int a13))(0x75DB80);
-		int surface_index_fixed = surface_index;
-		if (mopp_data & 0x20000000 && collision_resource_small_bsp != 0)
-			surface_index_fixed = 0xFFFF & surface_index;
-		return sub_75DB80(thisptr, unused, mopp_data, a3, collision_resource_small_bsp, collision_resource_large_bsp, a6, a7, a8, a9, surface_index_fixed, a11, mopp_flags, a13);
+	int __stdcall fixMoppAddress(int currentAddress) {
+		if (((currentAddress & 0x00010000) >> 16) == 1) {
+			currentAddress = currentAddress & 0xFF00FFFF;
+			currentAddress = currentAddress + 0x04000000;
+		}
+		return currentAddress;
 	}
+	
+	void __declspec(naked) loc_D0E9E3_hook()
+	{
+		__asm
+		{
+			mov     esi, [esi + 0x2C]
+			add     esi, ecx
+			push	esi
+			call	fixMoppAddress
+			mov     esi, eax
+			//pop		eax
+			mov     eax, [ebp + 0x10]		// a4 
+			push	0xD0E9EB
+			ret
+		}
+	}
+
+	void __declspec(naked) loc_D0D919_hook()
+	{
+		__asm
+		{
+			mov     ecx, [ebp + 0x8]
+			mov     esi, [ecx + 0x18]
+			mov     ecx, [ebx + 0x64]
+			mov     edx, [ecx]
+			mov     edx, [edx + 0x14]
+			add     esi, eax
+
+			push	ecx
+			push    ebx
+			push	edx
+
+			push	esi
+			call	fixMoppAddress
+			mov     esi, eax
+			//pop		eax
+
+			pop		edx
+			pop     ebx
+			pop     ecx
+
+			push	0xD0D929
+			ret
+		}
+	}
+
+	void __declspec(naked) loc_D0F505_hook() {
+
+		__asm {
+			mov     esi, [esi + 0x1C]
+			mov     ebp, [ebp + 0x0]
+			add     esi, eax
+			push	esi
+			call	fixMoppAddress
+			mov     esi, eax
+			//pop		eax
+			push	0xD0F50D
+			ret
+		}
+	}
+	
 }
 
 namespace Patches::Core
@@ -603,8 +663,10 @@ namespace Patches::Core
 		Hook(0x2947FE, sub_6948C0_hook, HookFlags::IsCall).Apply();
 		Hook(0x15B6D0, datum_get_hook).Apply();
 
-		// mopp freeze hack (fixes the surface index so that if it's in a small bsp, then the index is <= 0xFFFF
-		Hook(0x35F2C5, SurfaceIndexHook, HookFlags::IsCall).Apply();
+		// mopp freeze hack (fixes the surface index so that if it's in a small bsp, then the index is <= 0xFFFF. HALO 3 ONLY. (ODST doesn<t require any of this)
+		Hook(0xD0E9E3 - 0x400000, loc_D0E9E3_hook).Apply();
+		Hook(0xD0D919 - 0x400000, loc_D0D919_hook).Apply();
+		Hook(0xD0F505 - 0x400000, loc_D0F505_hook).Apply();
 	}
 
 	void OnShutdown(ShutdownCallback callback)
