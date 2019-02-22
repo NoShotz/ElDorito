@@ -438,15 +438,62 @@ namespace
 		return ((int(__cdecl *)(int, int))0x5F46C0)(structure_bsp_index, seam_mapping_index);
 	}
 
-	int __stdcall fixMoppAddress(int currentAddress) {
-		if (((currentAddress & 0x00010000) >> 16) == 1) {
+	int __stdcall fixMoppAddress(int currentAddress)
+	{
+		if (((currentAddress & 0x00010000) >> 16) == 1)
+		{
 			currentAddress = currentAddress & 0xFF00FFFF;
 			currentAddress = currentAddress + 0x04000000;
 		}
+
 		return currentAddress;
 	}
+
+	std::vector<std::string> halo3_map_names =
+	{
+		"maps\\005_intro",
+		"maps\\010_jungle",
+		"maps\\020_base",
+		"maps\\030_outskirts",
+		"maps\\040_voi",
+		"maps\\050_floodvoi",
+		"maps\\070_waste",
+		"maps\\100_citadel",
+		"maps\\110_hc",
+		"maps\\120_halo",
+		"maps\\130_epilogue",
+		"maps\\armory",
+		"maps\\bunkerworld",
+		"maps\\chill",
+		"maps\\chillout",
+		"maps\\construct",
+		"maps\\cyberdyne",
+		"maps\\deadlock",
+		"maps\\descent",
+		"maps\\docks",
+		"maps\\fortress",
+		"maps\\ghosttown",
+		"maps\\guardian",
+		"maps\\isolation",
+		"maps\\lockout",
+		"maps\\midship",
+		"maps\\riverworld",
+		"maps\\s3d_avalanche",
+		"maps\\s3d_edge",
+		"maps\\s3d_reactor",
+		"maps\\s3d_turf",
+		"maps\\salvation",
+		"maps\\sandbox",
+		"maps\\shrine",
+		"maps\\sidewinder",
+		"maps\\snowbound",
+		"maps\\spacecamp",
+		"maps\\warehouse",
+		"maps\\zanzibar"
+	};
 	
-	void __declspec(naked) loc_D0E9E3_hook()
+	Hook *halo3_mopp_fixup_D0E9E3_hook = nullptr;
+	void __declspec(naked) halo3_mopp_fixup_D0E9E3()
 	{
 		__asm
 		{
@@ -462,7 +509,8 @@ namespace
 		}
 	}
 
-	void __declspec(naked) loc_D0D919_hook()
+	Hook *halo3_mopp_fixup_D0D919_hook = nullptr;
+	void __declspec(naked) halo3_mopp_fixup_D0D919()
 	{
 		__asm
 		{
@@ -491,9 +539,11 @@ namespace
 		}
 	}
 
-	void __declspec(naked) loc_D0F505_hook() {
-
-		__asm {
+	Hook *halo3_mopp_fixup_D0F505_hook = nullptr;
+	void __declspec(naked) halo3_mopp_fixup_D0F505()
+	{
+		__asm
+		{
 			mov     esi, [esi + 0x1C]
 			mov     ebp, [ebp + 0x0]
 			add     esi, eax
@@ -505,7 +555,6 @@ namespace
 			ret
 		}
 	}
-	
 }
 
 namespace Patches::Core
@@ -664,9 +713,9 @@ namespace Patches::Core
 		Hook(0x15B6D0, datum_get_hook).Apply();
 
 		// mopp freeze hack (fixes the surface index so that if it's in a small bsp, then the index is <= 0xFFFF. HALO 3 ONLY. (ODST doesn<t require any of this)
-		Hook(0xD0E9E3 - 0x400000, loc_D0E9E3_hook).Apply();
-		Hook(0xD0D919 - 0x400000, loc_D0D919_hook).Apply();
-		Hook(0xD0F505 - 0x400000, loc_D0F505_hook).Apply();
+		halo3_mopp_fixup_D0E9E3_hook = new Hook(0x90E9E3, halo3_mopp_fixup_D0E9E3);
+		halo3_mopp_fixup_D0D919_hook = new Hook(0x90D919, halo3_mopp_fixup_D0D919);
+		halo3_mopp_fixup_D0F505_hook = new Hook(0x90F505, halo3_mopp_fixup_D0F505);
 	}
 
 	void OnShutdown(ShutdownCallback callback)
@@ -840,6 +889,26 @@ namespace
 
 	bool LoadMapHook(Blam::GameOptions *data)
 	{
+		if (Modules::ModuleTweaks::Instance().VarHalo3MoppFixup->ValueInt == 1)
+		{
+			auto isHalo3 = false;
+
+			auto map_name = std::string(data->ScenarioPath);
+
+			for (auto halo3_map_name : halo3_map_names)
+			{
+				if (map_name == halo3_map_name)
+				{
+					isHalo3 = true;
+					break;
+				}
+			}
+
+			halo3_mopp_fixup_D0D919_hook->Apply(isHalo3);
+			halo3_mopp_fixup_D0E9E3_hook->Apply(isHalo3);
+			halo3_mopp_fixup_D0F505_hook->Apply(isHalo3);
+		}
+
 		typedef bool(*LoadMapPtr)(Blam::GameOptions *data);
 		auto LoadMap = reinterpret_cast<LoadMapPtr>(0x566EF0);
 		if (!LoadMap(data))

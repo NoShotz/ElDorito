@@ -33,13 +33,6 @@ Patch::Patch(size_t Offset, size_t byteValue, size_t numBytes, Pointer base /*= 
 	base(Offset).Read(Orig.data(), Orig.size());
 }
 
-Hook::Hook() :
-	Offset(0), Flags(0)
-{
-	Orig.resize(5);
-	Pointer::Base(Offset).Read(Orig.data(), Orig.size());
-}
-
 Hook::Hook(size_t Offset, void* destFunc, int flags, std::initializer_list<uint8_t> Reset) :
 	Offset(Offset), DestFunc(destFunc), Flags(flags), Orig(Reset)
 {

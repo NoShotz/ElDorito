@@ -15,6 +15,7 @@ namespace Modules
 		Command *VarFlatHUD;
 		Command *VarSinglethreaded;
 		Command *VarDisableMetagame;
+		Command *VarHalo3MoppFixup;
 
 		ModuleTweaks();
 	};
