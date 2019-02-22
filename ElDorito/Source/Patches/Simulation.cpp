@@ -39,7 +39,7 @@ namespace Patches::Simulation
 		Hook(0xC8E91, c_simulation_generic_entity_definition__spawn_object_hook, HookFlags::IsCall).Apply();
 
 		Patches::Network::OnMapVariantRequestChange(OnMapVariantRequestChange);
-		Hook(0x000B2E1B, ScenerySyncHook, HookFlags::IsCall).Apply();
+		//Hook(0x000B2E1B, ScenerySyncHook, HookFlags::IsCall).Apply();
 
 		Hook(0x0077862A, ProjectileAttachmentHook).Apply();
 
