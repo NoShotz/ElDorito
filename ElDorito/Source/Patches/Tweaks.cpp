@@ -54,11 +54,33 @@ namespace Patches::Tweaks
 		}
 
 		EnableHitmarkers(Modules::ModuleServer::Instance().VarHitMarkersEnabledClient->ValueInt != 0);
+
+		UpdateUnitHUD();
 	}
 
 	void EnableHitmarkers(bool enabled)
 	{
 		EnableHitmarkersInternal(enabled);
+	}
+
+	void UpdateUnitHUD()
+	{ 
+		using namespace Blam::Tags; 
+ 
+		using Blam::Tags::Objects::Biped; 
+ 
+		auto masterChief = TagInstance::Find('bipd', "objects\\characters\\masterchief\\mp_masterchief\\mp_masterchief"); 
+		if (masterChief.Index == 0xFFFF) 
+			return; 
+ 
+		auto masterChiefDefinition = masterChief.GetDefinition<Biped>(); 
+		if (masterChiefDefinition->Unit.HudInterfaces.Count < 3) 
+			return; 
+ 
+		if (Modules::ModuleTweaks::ModuleTweaks::Instance().VarEliteHUD->ValueInt) 
+			masterChiefDefinition->Unit.HudInterfaces[0].UnitHudInterface = masterChiefDefinition->Unit.HudInterfaces[2].UnitHudInterface; 
+		else 
+			masterChiefDefinition->Unit.HudInterfaces[0].UnitHudInterface = masterChiefDefinition->Unit.HudInterfaces[1].UnitHudInterface; 
 	}
 }
 

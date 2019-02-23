@@ -73,6 +73,7 @@ var settingsToLoad = [
     ['tGruntBirthdayParty', 'Tweaks.GruntBirthdayParty', 'Grunt Birthday Party', 'Confetti flies from headshots as the children cheer.'],
     ['tReachFrags','Tweaks.ReachStyleFrags', 'Reach Style Frags', 'Give tossed grenades a Halo: Reach styled orangey-yellow trail.'],
     ['tIntelBloomPatch','Tweaks.IntelBloomPatch', 'Bloom Patch', 'Fixes extreme brightness on sunny maps.'],
+    ['tEliteHUD','Tweaks.EliteHUD', 'Elite HUD', 'Enables the Elite HUD.'],
     ['sAudioDevice','Settings.AudioOutputDevice', 'Audio Device', 'Specifies which audio device the game should use.'],
     ['sContrast','Settings.Contrast', 'Contrast', 'Adjusts the game\'s contrast.'],
     ['controllerVibration', 'Input.ControllerVibrationIntensity', 'Controller Vibration', 'Adjusts the strength of controller vibration.'],
