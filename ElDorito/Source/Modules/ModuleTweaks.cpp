@@ -49,9 +49,5 @@ namespace Modules
 		VarDisableMetagame = AddVariableInt("DisableMetagame", "disable_metagame", "Disables the campaign metagame.", eCommandFlagsArchived, 1);
 		VarDisableMetagame->ValueIntMin = 0;
 		VarDisableMetagame->ValueIntMax = 1;
-
-		VarHalo3MoppFixup = AddVariableInt("Halo3MoppFixup", "h3_mopp_fixup", "Enables fixups for ported Halo 3 havok mopp code.", eCommandFlagsArchived, 1);
-		VarHalo3MoppFixup->ValueIntMin = 0;
-		VarHalo3MoppFixup->ValueIntMax = 1;
 	}
 }
