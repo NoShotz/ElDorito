@@ -432,5 +432,8 @@ namespace Modules
 		AddCommand("JSON.List", "weap_json_list", "This lists all available weapon offset configs.", (CommandFlags)(eCommandFlagsOmitValueInList | eCommandFlagsHidden), CommandListWeaponsJSON);
 		AddCommand("List", "weap_list", "Lists all weapons available in the mulg tag.", eCommandFlagsNone, CommandWeaponList);
 		AddCommand("Equipped", "weap_equipped", "Gives info on the currently equipped weapon.", eCommandFlagsNone, CommandGetEquippedWeaponInfo, { "Format: null, json, csv" });
+		VarFOVScaling = AddVariableInt("FovScaling", "weap_fov_scale", "This scales weapon fov.", eCommandFlagsArchived, 0);
+		VarFOVScaling->ValueIntMin = 0;
+		VarFOVScaling->ValueIntMax = 1;
 	}
 }

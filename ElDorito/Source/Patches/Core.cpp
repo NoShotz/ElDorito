@@ -27,6 +27,8 @@
 #include "../Blam/BlamObjects.hpp"
 #include "../Blam/BlamTypes.hpp"
 
+#include "Weapon.hpp"
+
 #include "../Modules/ModuleCamera.hpp"
 #include "../Modules/ModuleCampaign.hpp"
 #include "../Modules/ModuleGame.hpp"
@@ -35,6 +37,7 @@
 #include "../Modules/ModuleServer.hpp"
 #include "../Modules/ModuleSettings.hpp"
 #include "../Modules/ModuleTweaks.hpp"
+#include "../Modules/ModuleWeapon.hpp"
 
 #include "../Console.hpp"
 
@@ -506,7 +509,29 @@ namespace
 			ret
 		}
 	}
-	
+
+	template<typename T>
+	T map(double x, double in_min, double in_max, double out_min, double out_max)
+	{
+		return (T)((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+	}
+
+	double __cdecl sub_B44080_hook(__int16 a1, float fov_rads, int a3)
+	{
+		auto result = ((double(__cdecl *)(__int16 a1, float fov_rads, int a3))0xB44080)(a1, fov_rads, a3);
+		if (Modules::ModuleWeapon::Instance().VarFOVScaling->ValueInt != 1)
+			return result;
+
+		auto *weaponDefinition = Blam::Tags::TagInstance(Patches::Weapon::GetEquippedWeapon().Index).GetDefinition<Blam::Tags::Items::Weapon>();
+		auto fov = (float)(fov_rads / 0.0174533);
+
+		// TODO: aim slightly up
+		*(float *)0x1913434 = fov < 90 ? *(float *)0x1913434 : map<float>(fov, 90, 120, 1.0, 0.62);
+		weaponDefinition->FirstPersonWeaponOffset.I = fov < 90 ? 0 : map<float>(fov, 90, 120, 0, -0.01);
+		weaponDefinition->FirstPersonWeaponOffset.K = fov < 90 ? 0 : map<float>(fov, 90, 120, 0, 0.004);
+
+		return result;
+	}
 }
 
 namespace Patches::Core
@@ -674,6 +699,9 @@ namespace Patches::Core
 		Hook(0xD0E9E3 - 0x400000, loc_D0E9E3_hook).Apply();
 		Hook(0xD0D919 - 0x400000, loc_D0D919_hook).Apply();
 		Hook(0xD0F505 - 0x400000, loc_D0F505_hook).Apply();
+
+		// weapon fov scaling
+		Hook(0x25FADE, sub_B44080_hook, HookFlags::IsCall).Apply();
 	}
 
 	void OnShutdown(ShutdownCallback callback)
