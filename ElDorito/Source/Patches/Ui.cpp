@@ -289,50 +289,52 @@ namespace Patches::Ui
 		Hook(0x193370, CameraModeChangedHook, HookFlags::IsCall).Apply();
 
 		//Fix Chud Widget State Data
-		Hook(0x686FA4, StateDataFlags2Hook).Apply();
-		Hook(0x686E7B, StateDataFlags3Hook).Apply();
-		Hook(0x687094, StateDataFlags5Hook).Apply();
-		Hook(0x687BF0, StateDataFlags21Hook).Apply();
-		Hook(0x685A5A, StateDataFlags31Hook).Apply();
-
-		//Various color fixes.
-		Hook(0x6D5B5F, GetGlobalDynamicColorHook).Apply();
-		Hook(0x6CA009, GetWeaponOutlineColorHook).Apply();
-
+		Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
+		
 		// use the correct hud globals for the player representation
-		Hook(0x6895E7, UI_GetHUDGlobalsIndexHook).Apply();
+		Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 
 		//Show the talking player's name on the HUD
 		Hook(0x6CA978, chud_talking_player_name_hook, HookFlags::IsCall).Apply();
-		
+
+		/* TODO: Fix these:
+		Hook(0x686E7B, StateDataFlags3Hook).Apply();
+		Hook(0x687094, StateDataFlags5Hook).Apply();
+		Hook(0x687BF0, StateDataFlags21Hook).Apply();
+		Hook(0x685A5A, StateDataFlags31Hook).Apply();*/
+
+		/* TODO: Fix these: Various color fixes.
+		Hook(0x6D5B5F, GetGlobalDynamicColorHook).Apply();
+		Hook(0x6CA009, GetWeaponOutlineColorHook).Apply();*/
+
 		//Show speaking player markers
-		Hook(0x349450, chud_update_player_marker_state_hook).Apply();
+		//Hook(0x349450, chud_update_player_marker_state_hook).Apply();
 		
-		//Restore player marker waypoints1 bitmap.
-		Hook(0x349469, chud_update_player_marker_sprite_hook).Apply();
-		Hook(0x6CED6A, chud_update_marker_sprite_hook).Apply();
+		// TODO: FIX THIS: Restore player marker waypoints1 bitmap.
+		//Hook(0x349469, chud_update_player_marker_sprite_hook).Apply();
+		//Hook(0x6CED6A, chud_update_marker_sprite_hook).Apply();
 
-		//Jump over player marker waypoints2 bitmap code.
-		Patch(0x6C6A11, { 0xEB }).Apply();
+		// TODO: FIX THIS: Jump over player marker waypoints2 bitmap code.
+		//Patch(0x6C6A11, { 0xEB }).Apply();
 
-		//Stop the assault bomb from overwriting the player marker bitmap sprite index.
-		Patch(0x2E805F, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }).Apply();
+		// TODO: FIX THIS: Stop the assault bomb from overwriting the player marker bitmap sprite index.
+		//Patch(0x2E805F, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }).Apply();
 
-		//Moves the icon above the name on player markers.
-		Patch(0x6CF0B3, { 0x90, 0x90, 0x90 }).Apply(); //Keep name at bottom
-		Hook(0x6CF0A0, chud_update_player_marker_icon_height_hook).Apply(); //Move icon above name if necessary
+		// TODO: FIX THESE: Moves the icon above the name on player markers.
+		//Patch(0x6CF0B3, { 0x90, 0x90, 0x90 }).Apply(); //Keep name at bottom
+		//Hook(0x6CF0A0, chud_update_player_marker_icon_height_hook).Apply(); //Move icon above name if necessary
 
-		// allow hiding nametags
-		Hook(0x68AA21, chud_add_player_marker_hook, HookFlags::IsCall).Apply();
+		// TODO: FIX THIS: allow hiding nametags
+		//Hook(0x68AA21, chud_add_player_marker_hook, HookFlags::IsCall).Apply();
 
-		//Fixes monitor crosshair position.
-		Patch(0x25F9D5, { 0x4c }).Apply();
+		// TODO: FIX THIS: Fixes monitor crosshair position.
+		//Patch(0x25F9D5, { 0x4c }).Apply();
+
+		// TODO: FIX THIS: Fix map images in the selection menu.
+		//Hook(0x6DA0FE, c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions).Apply();
 
 		//Fix map images in lobby.
 		Pointer(0x016A6240).Write(uint32_t(&c_gui_bitmap_widget_update_render_data_hook));
-
-		//Fix map images in the selection menu.
-		Hook(0x6DA0FE, c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions).Apply();
 
 		// remove recent maps, fileshare menu items
 		Pointer(0x0169E270).Write(uint32_t(&c_gui_map_category_datasource_init));
