@@ -168,6 +168,8 @@ namespace
 		uint32_t file_pointer;
 	};
 
+	static const auto game_is_campaign = (BOOL(*)())0x531A60;
+
 	static const auto global_game_state_initialized = (bool *)0x2497CD0;
 	static const auto global_game_state_data = (void **)0x2497CD4;
 	static const auto global_game_state_size = (DWORD *)0x2497CDC;
@@ -532,6 +534,14 @@ namespace
 
 		return result;
 	}
+
+	bool __cdecl simulation_player_left_game_hook(void *a1)
+	{
+		if (game_is_campaign())
+			return false;
+
+		return ((bool(__cdecl *)(void *))0x4A81D0)(a1);
+	}
 }
 
 namespace Patches::Core
@@ -702,6 +712,9 @@ namespace Patches::Core
 
 		// weapon fov scaling
 		Hook(0x25FADE, sub_B44080_hook, HookFlags::IsCall).Apply();
+
+		// campaign simulation hacks
+		Hook(0x1A857B, simulation_player_left_game_hook).Apply(); // jmp, not call
 	}
 
 	void OnShutdown(ShutdownCallback callback)
@@ -797,8 +810,6 @@ namespace
 
 		SpawnScreenEffect(scnrDefinition->DefaultScreenFx.TagIndex, -1, -1, *(void **)0x189CF00, *(void **)0x189CF60);
 	}
-
-	static const auto game_is_campaign = (BOOL(*)())0x531A60;
 
 	int get_spartan_representation_index()
 	{
