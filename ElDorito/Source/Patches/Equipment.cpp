@@ -81,6 +81,9 @@ namespace Patches::Equipment
 		// reimplmented so that unrelated screen effects aren't deleted
 		Hook(0x789462, VisionEndHook, HookFlags::IsCall).Apply();
 		Hook(0x788703, VisionEndHook2, HookFlags::IsCall).Apply();
+
+		// allow equipment to be picked up in campaign
+		Patch::NopFill(Pointer::Base(0x13985F), 5);
 	}
 }
 
