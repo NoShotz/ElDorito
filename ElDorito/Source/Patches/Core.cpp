@@ -702,8 +702,8 @@ namespace Patches::Core
 		Hook(0x2E2C0, is_multithreaded_sub_42E2C0).Apply();
 
 		// decal hack
-		Hook(0x2947FE, sub_6948C0_hook, HookFlags::IsCall).Apply();
-		Hook(0x15B6D0, datum_get_hook).Apply();
+		//Hook(0x2947FE, sub_6948C0_hook, HookFlags::IsCall).Apply();
+		//Hook(0x15B6D0, datum_get_hook).Apply();
 
 		// mopp freeze hack (fixes the surface index so that if it's in a small bsp, then the index is <= 0xFFFF. HALO 3 ONLY. (ODST doesn<t require any of this)
 		Hook(0xD0E9E3 - 0x400000, loc_D0E9E3_hook).Apply();
