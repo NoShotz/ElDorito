@@ -83,7 +83,7 @@ namespace Patches::Equipment
 		Hook(0x788703, VisionEndHook2, HookFlags::IsCall).Apply();
 
 		// allow equipment to be picked up in campaign
-		Patch::NopFill(Pointer::Base(0x13985F), 5);
+		//Patch::NopFill(Pointer::Base(0x13985F), 5);
 	}
 }
 

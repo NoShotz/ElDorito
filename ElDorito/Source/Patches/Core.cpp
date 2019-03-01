@@ -714,7 +714,7 @@ namespace Patches::Core
 		Hook(0x25FADE, sub_B44080_hook, HookFlags::IsCall).Apply();
 
 		// campaign simulation hacks
-		Hook(0x1A857B, simulation_player_left_game_hook).Apply(); // jmp, not call
+		//Hook(0x1A857B, simulation_player_left_game_hook).Apply(); // jmp, not call
 	}
 
 	void OnShutdown(ShutdownCallback callback)
