@@ -10,6 +10,8 @@
 #include "../Blam/Tags/Objects/Biped.hpp"
 #include "../Patch.hpp"
 
+#include <game\game.hpp>
+
 namespace
 {
 	using Blam::Math::RealVector3D;
@@ -574,13 +576,11 @@ namespace
 
 	bool BipedCanStandUnobstructed(uint32_t bipedObjectIndex, Blam::Math::RealVector3D *point, bool a3)
 	{
-		const auto game_is_campaign = (bool(*)())(0x00531A60);
-		const auto game_is_survival = (bool(*)())(0x00531E20);
 		const auto scenario_location_from_point = (void(*)(uint16_t *pClusterIndex, Blam::Math::RealVector3D *point))(0x004EA940);
 		const auto sub_5C8010 = (bool(*)(void *shape, uint32_t havokComponentIndex, Blam::Math::RealMatrix4x3 *transform, uint32_t collisionFilterInfo))(0x5C8010);
 		const auto sub_6D6AC0 = (bool(*)(uint32_t a1, uint32_t a2, Blam::Math::RealVector3D *a3, int a4, int a5, signed int *a6))(0x6D6AC0);
 
-		if (!game_is_campaign() || game_is_survival())
+		if (!blam::game_is_campaign() || blam::game_is_survival())
 		{
 			auto bipedObject = Blam::Objects::Get(bipedObjectIndex);
 			if (!bipedObject)
@@ -914,10 +914,9 @@ namespace
 
 	bool PlayerCollisionDamageHook(uint32_t bipedObjectIndex, uint32_t otherBipedObjectIndex)
 	{
-		const auto game_is_multiplayer = (bool(*))(0x00531AF0);
 		const auto multiplayer_object_should_cause_collision_damage = (bool(*)(uint32_t objectIndex, uint32_t otherObjectIndex))(0x00763710);
 
-		if (game_is_multiplayer)
+		if (blam::game_is_multiplayer())
 		{
 			auto objectHeaderA = Blam::Objects::GetObjects().Get(bipedObjectIndex);
 			auto objectHeaderB = Blam::Objects::GetObjects().Get(otherBipedObjectIndex);

@@ -189,6 +189,7 @@
     <ClInclude Include="new\cseries\integer_math.hpp" />
     <ClInclude Include="new\cseries\real_math.hpp" />
     <ClInclude Include="new\effects\particles.hpp" />
+    <ClInclude Include="new\game\game.hpp" />
     <ClInclude Include="new\game\game_globals.hpp" />
     <ClInclude Include="new\game\game_mode.hpp" />
     <ClInclude Include="new\hs\hs.hpp" />

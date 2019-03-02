@@ -1,6 +1,10 @@
 #include "Camera.hpp"
+
 #include "../Blam/BlamObjects.hpp"
 #include "../Modules/ModuleCamera.hpp"
+
+#include <game\game.hpp>
+
 #include <cstdint>
 
 namespace
@@ -50,11 +54,9 @@ namespace
 {
 	float GetScriptedCameraFovHook()
 	{
-		const auto game_is_mainmenu = (bool(*)())(0x00531E90);
-
 		auto fov = 0.0f;
 
-		if (game_is_mainmenu())
+		if (blam::game_is_mainmenu())
 		{
 			fov = 70.0f;
 		}

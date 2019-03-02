@@ -52,6 +52,7 @@
 
 // new headers
 #include <effects\particles.hpp>
+#include <game\game.hpp>
 #include <game\game_globals.hpp>
 #include <memory\data.hpp>
 #include <objects\object_types.hpp>
@@ -167,8 +168,6 @@ namespace
 		uint32_t file_handle;
 		uint32_t file_pointer;
 	};
-
-	static const auto game_is_campaign = (BOOL(*)())0x531A60;
 
 	static const auto global_game_state_initialized = (bool *)0x2497CD0;
 	static const auto global_game_state_data = (void **)0x2497CD4;
@@ -298,8 +297,6 @@ namespace
 	void __fastcall campaign_scoring_sub_6E59A0(char *scoreboard, void *, Blam::DatumHandle handle, Blam::Events::EventType event_type, short a4, Blam::ePlayerStatType player_stat_type, char a6)
 	{
 		static const auto data_array_sub_55B710 = reinterpret_cast<unsigned long(__cdecl *)(Blam::DataArrayBase *, Blam::DatumHandle)>(0x55B710);
-		static const auto game_get_current_engine = reinterpret_cast<int(*)()>(0x5CE150);
-		static const auto game_is_team_game = reinterpret_cast<bool(__cdecl *)()>(0x5565E0);
 		static const auto scoreboard_sub_6E5A90 = reinterpret_cast<void(__thiscall *)(char *, unsigned int, Blam::Events::EventType, short, int)>(0x6E5A90);
 
 		if (Modules::ModuleTweaks::Instance().VarDisableMetagame->ValueInt != 0)
@@ -346,7 +343,7 @@ namespace
 
 		if (a6)
 		{
-			if (game_get_current_engine() && game_is_team_game())
+			if (blam::game_get_current_engine() && blam::game_is_team_game())
 			{
 				auto player_datum = (Blam::Players::PlayerDatum*)data_array_sub_55B710(ElDorito::Instance().GetMainTls(0x40).Read<Blam::DataArray<Blam::Players::PlayerDatum>*>(), handle);
 
@@ -378,7 +375,7 @@ namespace
 	{
 		const auto sub_694430 = (int(__fastcall *)(void * /*this*/, void * /*unused*/, int))0x694430;
 
-		if (!game_is_campaign())
+		if (!blam::game_is_campaign())
 		{
 			((void(__cdecl *)(int))0x6948C0)(a1);
 			return;
@@ -540,7 +537,7 @@ namespace
 
 	bool __cdecl simulation_player_left_game_hook(void *a1)
 	{
-		if (game_is_campaign())
+		if (blam::game_is_campaign())
 			return false;
 
 		return ((bool(__cdecl *)(void *))0x4A81D0)(a1);
@@ -831,7 +828,7 @@ namespace
 			*multiplayer_name = Blam::Cache::StringIDCache::Instance.GetStringID("mp_spartan");
 		}
 
-		auto name = game_is_campaign() ? *campaign_name : *multiplayer_name;
+		auto name = blam::game_is_campaign() ? *campaign_name : *multiplayer_name;
 
 		auto matg = Blam::Tags::TagInstance::Find('matg', "globals\\globals").GetDefinition<Blam::Tags::Game::Globals>();
 
@@ -859,7 +856,7 @@ namespace
 			*multiplayer_name = Blam::Cache::StringIDCache::Instance.GetStringID("mp_elite");
 		}
 
-		auto name = game_is_campaign() ? *campaign_name : *multiplayer_name;
+		auto name = blam::game_is_campaign() ? *campaign_name : *multiplayer_name;
 
 		auto matg = Blam::Tags::TagInstance::Find('matg', "globals\\globals").GetDefinition<Blam::Tags::Game::Globals>();
 

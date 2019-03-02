@@ -26,6 +26,8 @@
 #include "../Web/Ui/ScreenLayer.hpp"
 #include "../Server/Signaling.hpp"
 
+#include <game/game.hpp>
+
 namespace
 {
 	char* Network_GetIPStringFromInAddr(void* inaddr);

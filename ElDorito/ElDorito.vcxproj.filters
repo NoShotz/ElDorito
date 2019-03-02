@@ -1481,6 +1481,7 @@
     <ClInclude Include="Source\Blam\Tags\Bitmap\Sprite.hpp" />
     <ClInclude Include="Source\Blam\Tags\Bitmap\Image.hpp" />
     <ClInclude Include="Source\Blam\Tags\Bitmap\BitmapResource.hpp" />
+    <ClInclude Include="new\game\game.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\ElDorito.rc" />
