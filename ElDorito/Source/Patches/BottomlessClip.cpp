@@ -4,7 +4,7 @@
 #include "../Blam/BlamObjects.hpp"
 #include "../Blam/BlamPlayers.hpp"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 namespace
 {

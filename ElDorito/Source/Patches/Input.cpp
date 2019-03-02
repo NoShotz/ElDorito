@@ -12,7 +12,7 @@
 #include "../Console.hpp"
 #include "../ElDorito.hpp"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 using namespace Patches::Input;
 using namespace Blam::Input;

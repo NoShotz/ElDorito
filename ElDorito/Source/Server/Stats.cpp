@@ -15,6 +15,8 @@
 #include "../Patches/Network.hpp"
 #include <iomanip>
 
+#include <game\game_globals.hpp>
+
 namespace Server::Stats
 {
 	static const uint32_t playerInfoBase = 0x2162E08;
@@ -221,11 +223,9 @@ namespace Server::Stats
 		std::wstring mapVariantName((wchar_t*)Pointer(0x1863ACA));
 		std::wstring variantName((wchar_t*)Pointer(0x23DAF4C));
 
-		Pointer &gameModePtr = ElDorito::GetMainTls(GameGlobals::GameInfo::TLSOffset)[0](GameGlobals::GameInfo::GameMode);
-		uint32_t gameMode = gameModePtr.Read<uint32_t>();
 		int32_t variantType = Pointer(0x023DAF18).Read<int32_t>();
 		
-		if ((gameMode == 3) && (mapName == "mainmenu"))
+		if ((blam::game_globals_get()->current_game_mode == blam::game_mode::mainmenu) && (mapName == "mainmenu"))
 		{
 			mapName = std::string((char*)Pointer(0x19A5E49));
 			variantName = std::wstring((wchar_t*)Pointer(0x179254));

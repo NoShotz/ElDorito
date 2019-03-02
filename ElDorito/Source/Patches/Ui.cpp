@@ -37,7 +37,7 @@
 #include <unordered_map>
 #include "../Web/Ui/ScreenLayer.hpp"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 using namespace Patches::Ui;
 

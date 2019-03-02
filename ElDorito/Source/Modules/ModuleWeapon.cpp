@@ -8,7 +8,7 @@
 #include "../ThirdParty/rapidjson/writer.h"
 #include "../ThirdParty/rapidjson/stringbuffer.h"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 namespace
 {

@@ -4,7 +4,8 @@
 #include "../BlamData.hpp"
 #include "../BlamObjects.hpp"
 #include "../BlamPlayers.hpp"
-#include "../../../new/game/game_globals.hpp"
+
+#include <game\game.hpp>
 
 namespace Blam::Memory
 {

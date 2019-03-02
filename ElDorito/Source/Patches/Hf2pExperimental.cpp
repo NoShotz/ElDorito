@@ -20,7 +20,7 @@
 #include "../Blam/Tags/Scenario/Scenario.hpp"
 #include "../Game/Armor.hpp"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 namespace
 {

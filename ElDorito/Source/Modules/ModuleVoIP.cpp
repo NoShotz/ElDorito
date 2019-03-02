@@ -8,7 +8,7 @@
 #include "../ThirdParty/rapidjson/stringbuffer.h"
 #include "../Blam/Tags/TagInstance.hpp"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 namespace
 {

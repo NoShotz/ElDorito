@@ -26,7 +26,8 @@
 #include "../Web/Ui/ScreenLayer.hpp"
 #include "../Server/Signaling.hpp"
 
-#include <game/game.hpp>
+#include <game\game.hpp>
+#include <game\game_globals.hpp>
 
 namespace
 {
@@ -168,10 +169,8 @@ namespace Patches::Network
 					Utils::String::BytesToHexString((char*)Pointer(0x2247b80), 0x10, xnkid);
 					Utils::String::BytesToHexString((char*)Pointer(0x2247b90), 0x10, xnaddr);
 
-					Pointer &gameModePtr = ElDorito::GetMainTls(GameGlobals::GameInfo::TLSOffset)[0](GameGlobals::GameInfo::GameMode);
-					uint32_t gameMode = gameModePtr.Read<uint32_t>();
 					int32_t variantType = Pointer(0x023DAF18).Read<int32_t>();
-					if (gameMode == 3)
+					if (blam::game_globals().current_game_mode == blam::game_mode::mainmenu)
 					{
 						if (mapName == "mainmenu")
 						{

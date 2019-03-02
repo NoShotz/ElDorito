@@ -22,7 +22,7 @@
 #include "../../Modules/ModuleGame.hpp"
 #include "../../Console.hpp"
 
-#include "../../../new/game/game.hpp"
+#include <game\game.hpp>
 
 using namespace Blam::Input;
 using namespace Blam::Events;

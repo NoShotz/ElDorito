@@ -36,7 +36,7 @@
 #include "../ThirdParty/rapidjson/stringbuffer.h"
 #include "../ThirdParty/rapidjson/prettywriter.h"
 
-#include "../../new/game/game.hpp"
+#include <game\game.hpp>
 
 namespace
 {
