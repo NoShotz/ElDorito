@@ -542,6 +542,66 @@ namespace
 
 		return ((bool(__cdecl *)(void *))0x4A81D0)(a1);
 	}
+
+	void dirty_disk_error_debug(const char *name)
+	{
+		MessageBoxA(NULL, name, "dirty_disk_error", MB_ICONERROR);
+		((void(*)())0xA9F6D0)(); // 0xA9F6C0 crashes right away whereas 0xA9F6D0 only crashes if 0x5260711 returns true otherwise returns to mainmenu
+	}
+
+	// if there's a way to do this in a single function lmk
+	void dirty_disk_error_505847()
+	{
+		dirty_disk_error_debug("0x505847");
+	}
+	void dirty_disk_error_50F56E()
+	{
+		dirty_disk_error_debug("0x50F56E");
+	}
+	void dirty_disk_error_510239()
+	{
+		dirty_disk_error_debug("0x510239");
+	}
+	void dirty_disk_error_510830()
+	{
+		dirty_disk_error_debug("0x510830");
+	}
+	void dirty_disk_error_510E4E()
+	{
+		dirty_disk_error_debug("0x510E4E");
+	}
+	void dirty_disk_error_5679FC()
+	{
+		dirty_disk_error_debug("0x5679FC");
+	}
+	void dirty_disk_error_4EA78C()
+	{
+		dirty_disk_error_debug("0x4EA78C");
+	}
+	void dirty_disk_error_5FB40C()
+	{
+		dirty_disk_error_debug("0x5FB40C");
+	}
+	void dirty_disk_error_5FB42C()
+	{
+		dirty_disk_error_debug("0x5FB42C");
+	}
+	void dirty_disk_error_5FB44C()
+	{
+		dirty_disk_error_debug("0x5FB44C");
+	}
+	void dirty_disk_error_6EBD90()
+	{
+		dirty_disk_error_debug("0x6EBD90");
+	}
+	void dirty_disk_error_6EC10C()
+	{
+		dirty_disk_error_debug("0x6EC10C");
+	}
+	void dirty_disk_error_6EC21C()
+	{
+		dirty_disk_error_debug("0x6EC21C");
+	}
 }
 
 namespace Patches::Core
@@ -601,8 +661,25 @@ namespace Patches::Core
 		Hook(0x1030EA, TagsLoadedHook).Apply();
 
 #ifndef _DEBUG
-		// Dirty disk error at 0x0xA9F6D0 is disabled in this build
+		// Dirty disk error at 0xA9F6D0 is disabled in this build
 		Hook(0x69F6C0, DirtyDiskErrorHook).Apply();
+#endif
+
+#ifdef _DEBUG
+		// Dirty disk error at 0xA9F6C0
+		Hook(0x105847, dirty_disk_error_505847, HookFlags::IsCall).Apply();
+		Hook(0x10F56E, dirty_disk_error_50F56E, HookFlags::IsCall).Apply();
+		Hook(0x110239, dirty_disk_error_510239, HookFlags::IsCall).Apply();
+		Hook(0x110830, dirty_disk_error_510830, HookFlags::IsCall).Apply();
+		Hook(0x110E4E, dirty_disk_error_510E4E, HookFlags::IsCall).Apply();
+		Hook(0x1679FC, dirty_disk_error_5679FC, HookFlags::IsCall).Apply();
+		Hook(0x0EA78C, dirty_disk_error_4EA78C, HookFlags::IsCall).Apply();
+		Hook(0x1FB40C, dirty_disk_error_5FB40C, HookFlags::IsCall).Apply();
+		Hook(0x1FB42C, dirty_disk_error_5FB42C, HookFlags::IsCall).Apply();
+		Hook(0x1FB44C, dirty_disk_error_5FB44C, HookFlags::IsCall).Apply();
+		Hook(0x2EBD90, dirty_disk_error_6EBD90, HookFlags::IsCall).Apply();
+		Hook(0x2EC10C, dirty_disk_error_6EC10C, HookFlags::IsCall).Apply();
+		Hook(0x2EC21C, dirty_disk_error_6EC21C, HookFlags::IsCall).Apply();
 #endif
 
 		// Prevent FOV from being overridden when the game loads
