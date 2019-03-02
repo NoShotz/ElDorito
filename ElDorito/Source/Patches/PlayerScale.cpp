@@ -11,6 +11,7 @@
 #include "../Patch.hpp"
 
 #include <game\game.hpp>
+#include <game\game_globals.hpp>
 
 namespace
 {
@@ -916,7 +917,7 @@ namespace
 	{
 		const auto multiplayer_object_should_cause_collision_damage = (bool(*)(uint32_t objectIndex, uint32_t otherObjectIndex))(0x00763710);
 
-		if (blam::game_is_multiplayer())
+		if (blam::game_globals_simulation_has_dist_server())
 		{
 			auto objectHeaderA = Blam::Objects::GetObjects().Get(bipedObjectIndex);
 			auto objectHeaderB = Blam::Objects::GetObjects().Get(otherBipedObjectIndex);

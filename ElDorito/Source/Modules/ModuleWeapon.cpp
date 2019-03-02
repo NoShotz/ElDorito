@@ -8,14 +8,14 @@
 #include "../ThirdParty/rapidjson/writer.h"
 #include "../ThirdParty/rapidjson/stringbuffer.h"
 
+#include "../../new/game/game.hpp"
+
 namespace
 {
 	using Blam::Cache::StringIDCache;
 	using Blam::Math::RealVector3D;
 	using Blam::Tags::TagInstance;
 	using Blam::Tags::Items::Weapon;
-
-	auto IsMainMenu = (bool(*)())(0x531E90);
 
 	RealVector3D ToOffset(std::string I, std::string J, std::string K);
 	void GetTypes(Blam::Tags::Items::Weapon *WeaponDefinition, std::string MultiplayerWeaponType, std::string WeaponType, std::string TrackingType, std::string SpecialHUDType);
@@ -59,7 +59,7 @@ namespace
 
 	bool CommandWeaponOffsetReset(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
-		if (IsMainMenu())
+		if (blam::game_is_mainmenu())
 		{
 			returnInfo = "This command is unavailable at the moment, please try again when not on the mainmenu.";
 			return false;
@@ -116,7 +116,7 @@ namespace
 
 	bool CommandSaveWeaponsJSON(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
-		if (IsMainMenu())
+		if (blam::game_is_mainmenu())
 		{
 			returnInfo = "This command is unavailable at the moment, please try again when not on the mainmenu.";
 			return false;
@@ -130,7 +130,7 @@ namespace
 
 	bool CommandWeaponList(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
-		if (IsMainMenu())
+		if (blam::game_is_mainmenu())
 		{
 			returnInfo = "This command is unavailable at the moment, please try again when not on the mainmenu.";
 			return false;
@@ -147,7 +147,7 @@ namespace
 
 	bool CommandGetEquippedWeaponInfo(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
-		if (IsMainMenu())
+		if (blam::game_is_mainmenu())
 		{
 			returnInfo = "This command is unavailable at the moment, please try again when not on the mainmenu.";
 			return false;
@@ -244,7 +244,7 @@ namespace
 
 	bool CommandGetEquippedWeaponJSON(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
-		if (IsMainMenu())
+		if (blam::game_is_mainmenu())
 		{
 			returnInfo = "This command is unavailable at the moment, please try again when not on the mainmenu.";
 			return false;

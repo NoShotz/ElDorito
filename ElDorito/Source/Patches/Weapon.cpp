@@ -36,6 +36,8 @@
 #include "../ThirdParty/rapidjson/stringbuffer.h"
 #include "../ThirdParty/rapidjson/prettywriter.h"
 
+#include "../../new/game/game.hpp"
+
 namespace
 {
 	int __cdecl DualWieldHook(unsigned short objectIndex);
@@ -81,8 +83,6 @@ namespace Patches::Weapon
 	using Blam::Math::RealVector3D;
 	using Blam::Tags::TagInstance;
 
-	bool IsMainMenu;
-
 	bool AddSupportedWeapons();
 	std::vector<WeaponInfo> weapon_infos;
 
@@ -95,14 +95,8 @@ namespace Patches::Weapon
 		auto separatorIndex = currentMap.find_first_of("\\/");
 		auto mapName = currentMap.substr(separatorIndex + 1);
 
-		if (mapName == "mainmenu")
+		if (!blam::game_is_mainmenu())
 		{
-			IsMainMenu = true;
-		}
-		else
-		{
-			IsMainMenu = false;
-
 			AddSupportedWeapons();
 			SetOffsetDefaultAll();
 
@@ -326,7 +320,8 @@ namespace Patches::Weapon
 
 	bool SetOffsetDefaultAll()
 	{
-		if (IsMainMenu) return false;
+		if (blam::game_is_mainmenu())
+			return false;
 
 		for (auto &weapon : weapon_infos)
 			SetOffsetModified(weapon.Name, weapon.Offset.Default);
@@ -336,7 +331,8 @@ namespace Patches::Weapon
 
 	bool SetOffsetDefault(std::string &weaponName)
 	{
-		if (IsMainMenu) return false;
+		if (blam::game_is_mainmenu())
+			return false;
 
 		for (auto &weapon : weapon_infos)
 			if (weapon.Name == weaponName)
@@ -347,8 +343,8 @@ namespace Patches::Weapon
 
 	bool SetOffsetModified(std::string &weaponName, RealVector3D &weaponOffset)
 	{
-
-		if (IsMainMenu) return false;
+		if (blam::game_is_mainmenu())
+			return false;
 
 		for (auto &weapon : weapon_infos)
 		{

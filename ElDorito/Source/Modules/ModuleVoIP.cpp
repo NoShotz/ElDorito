@@ -8,10 +8,11 @@
 #include "../ThirdParty/rapidjson/stringbuffer.h"
 #include "../Blam/Tags/TagInstance.hpp"
 
+#include "../../new/game/game.hpp"
+
 namespace
 {
 	static bool ready = false;
-	static bool isMainMenu = false;
 	static bool isChatting = false;
 
 	bool UpdateVoip(const std::vector<std::string>& Arguments, std::string& returnInfo)
@@ -45,10 +46,6 @@ namespace
 
 	void RendererStarted(const char* map)
 	{
-		if (std::string(map).find("mainmenu") == std::string::npos)
-			isMainMenu = false;
-		else
-			isMainMenu = true;
 		ready = true;
 	}
 
@@ -63,13 +60,13 @@ namespace
 			if (!Modules::ModuleVoIP::Instance().voipConnected)
 				return;
 
-			if (isMainMenu && isUsingController)
+			if (blam::game_is_mainmenu() && isUsingController)
 				return;
 			//keyboard/controller in-game
 			if (isChatting && Blam::Input::GetActionState(Blam::Input::eGameActionVoiceChat)->Ticks == 0)
 			{
 				isChatting = false;
-				if (!isMainMenu)
+				if (!blam::game_is_mainmenu())
 				{
 					Patches::Ui::TogglePTTSound(false);
 				}
@@ -78,7 +75,7 @@ namespace
 			else if (!isChatting && Blam::Input::GetActionState(Blam::Input::eGameActionVoiceChat)->Ticks == 1)
 			{
 				isChatting = true;
-				if (!isMainMenu)
+				if (!blam::game_is_mainmenu())
 				{
 					Patches::Ui::TogglePTTSound(true);
 				}
@@ -95,7 +92,7 @@ namespace
 		GetBindings(0, &bindings);
 
 		//controller in lobby
-		if (isMainMenu && isUsingController && Modules::ModuleVoIP::Instance().VarPTTEnabled->ValueInt == 1)
+		if (blam::game_is_mainmenu() && isUsingController && Modules::ModuleVoIP::Instance().VarPTTEnabled->ValueInt == 1)
 		{
 			if (isChatting && Blam::Input::GetActionState((Blam::Input::GameAction)bindings.ControllerButtons[Blam::Input::eGameActionVoiceChat])->Ticks == 0)
 			{

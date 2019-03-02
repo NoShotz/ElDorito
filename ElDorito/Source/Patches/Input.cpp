@@ -12,6 +12,8 @@
 #include "../Console.hpp"
 #include "../ElDorito.hpp"
 
+#include "../../new/game/game.hpp"
+
 using namespace Patches::Input;
 using namespace Blam::Input;
 
@@ -389,8 +391,6 @@ namespace
 	{
 		typedef void(*UiUpdateControllerInputPtr)(int a0);
 		auto UiUpdateControllerInput = reinterpret_cast<UiUpdateControllerInputPtr>(0xA93A50);
-		typedef bool(*IsMainMenuPtr)();
-		auto IsMainMenu = reinterpret_cast<IsMainMenuPtr>(0x531E90);
 		typedef float(*UiGetTimeDeltaPtr)();
 		auto UiGetTimeDelta = reinterpret_cast<UiGetTimeDeltaPtr>(0xA844E0);
 		typedef void(*UpdateCharPlatformPtr)();
@@ -407,7 +407,7 @@ namespace
 		// manually rotates it.
 
 		static auto firstRotate = true;
-		if (!IsMainMenu())
+		if (!blam::game_is_mainmenu())
 		{
 			// char_platform is only on the main menu
 			firstRotate = true;

@@ -20,6 +20,8 @@
 #include "../Blam/Tags/Scenario/Scenario.hpp"
 #include "../Game/Armor.hpp"
 
+#include "../../new/game/game.hpp"
+
 namespace
 {
 	void Hf2pInitHook();
@@ -100,9 +102,7 @@ namespace
 
 	void SystemMenu()
 	{
-		static auto IsMainMenu = (bool(*)())(0x531E90);
-
-		if (IsMainMenu())
+		if (blam::game_is_mainmenu())
 			return;
 
 		auto uiStartAction = Blam::Input::GetActionState(eGameActionUiStart);
@@ -146,8 +146,6 @@ namespace
 
 		static auto UpdatePreMatchCamera = (bool(*)())(0x72D580);
 		static auto InitMpDirector = (void(*)())(0x0072D560);
-		static auto IsMapLoading = (bool(*)())(0x005670E0);
-		static auto IsMainMenu = (bool(*)())(0x00531E90);
 		static auto s_MatchStarted = false;
 		static auto s_TimerStarted = false;
 		static auto s_TimerLastTicked = 0;
@@ -169,9 +167,9 @@ namespace
 
 		SpawnTimerUpdate();
 
-		if (!IsMapLoading())
+		if (!blam::game_is_map_loading())
 		{
-			if (IsMainMenu())
+			if (blam::game_is_mainmenu())
 			{
 				// armour customizations on mainmenu
 				Game::Armor::UpdateUiPlayerModelArmor();
@@ -310,9 +308,7 @@ namespace
 
 	void game_engine_tick_hook()
 	{
-		const auto game_get_current_engine = (void*(*)())(0x005CE150);
-
-		auto engine = game_get_current_engine();
+		auto engine = blam::game_get_current_engine();
 		if (!engine)
 			return;
 

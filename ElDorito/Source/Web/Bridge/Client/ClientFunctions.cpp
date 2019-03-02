@@ -17,6 +17,8 @@
 #include "../../../ThirdParty/rapidjson/writer.h"
 #include "../../../ThirdParty/rapidjson/stringbuffer.h"
 
+#include "../new/game/game.hpp"
+
 namespace
 {
 	uint16_t PingId;
@@ -619,14 +621,12 @@ namespace Anvil::Client::Rendering::Bridge::ClientFunctions
 
 	QueryError OnIsMapLoading(const rapidjson::Value &p_Args, std::string *p_Result)
 	{
-		static auto IsMapLoading = (bool(*)())(0x005670E0);
-
 		rapidjson::StringBuffer buffer;
 		rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 		writer.StartObject();
 
 		writer.Key("loading");
-		writer.Bool(IsMapLoading());
+		writer.Bool(blam::game_is_map_loading());
 		writer.EndObject();
 
 		*p_Result = buffer.GetString();

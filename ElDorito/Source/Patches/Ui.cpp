@@ -37,6 +37,8 @@
 #include <unordered_map>
 #include "../Web/Ui/ScreenLayer.hpp"
 
+#include "../../new/game/game.hpp"
+
 using namespace Patches::Ui;
 
 namespace
@@ -130,9 +132,6 @@ namespace
 	std::vector<CreateWindowCallback> createWindowCallbacks;
 
 	Patch unused; // for some reason a patch field is needed here (on release builds) otherwise the game crashes while loading map/game variants, wtf?
-
-	static auto IsMapLoading = (bool(*)())(0x005670E0);
-	static auto IsMainMenu = (bool(*)())(0x00531E90);
 
 	uint32_t hudMessagesUnicIndex;
 	uint32_t spartanChdtIndex;
@@ -394,7 +393,7 @@ namespace Patches::Ui
 	bool isPttSoundPlaying;
 	void TogglePTTSound(bool enabled)
 	{
-		if (IsMapLoading() || IsMainMenu())
+		if (blam::game_is_map_loading() || blam::game_is_mainmenu())
 			return;
 
 		if (Modules::ModuleVoIP::Instance().VarPTTSoundEnabled->ValueInt == 0)
