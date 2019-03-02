@@ -524,19 +524,16 @@ namespace
 		return (T)((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
 	}
 
-	double __cdecl sub_B44080_hook(__int16 a1, float fov_rads, int a3)
+	double __cdecl sub_B44080_hook(__int16 a1, float radians, int a3)
 	{
-		auto result = ((double(__cdecl *)(__int16 a1, float fov_rads, int a3))0xB44080)(a1, fov_rads, a3);
+		auto result = ((double(__cdecl *)(__int16 a1, float fov_rads, int a3))0xB44080)(a1, radians, a3);
 		if (Modules::ModuleWeapon::Instance().VarFOVScaling->ValueInt != 1)
 			return result;
 
-		auto *weaponDefinition = Blam::Tags::TagInstance(Patches::Weapon::GetEquippedWeapon().Index).GetDefinition<Blam::Tags::Items::Weapon>();
-		auto fov = (float)(fov_rads / 0.0174533);
-
-		// TODO: aim slightly up
-		*(float *)0x1913434 = fov < 90 ? *(float *)0x1913434 : map<float>(fov, 90, 120, 1.0, 0.62);
-		weaponDefinition->FirstPersonWeaponOffset.I = fov < 90 ? 0 : map<float>(fov, 90, 120, 0, -0.01);
-		weaponDefinition->FirstPersonWeaponOffset.K = fov < 90 ? 0 : map<float>(fov, 90, 120, 0, 0.004);
+		auto fov = (float)(radians / 0.0174533);
+		auto new_val = map<float>(fov, 55, 70, 1.15, 1.0);
+		*(float *)0x1913434 = new_val + fov < 90 ? new_val + 0.0f : fov < 110 ? new_val + 0.05f : fov < 110 ? new_val + 0.15f : new_val + 0.20f;
+		// TODO: Update weapon first person viewmodel offsets with fov
 
 		return result;
 	}
