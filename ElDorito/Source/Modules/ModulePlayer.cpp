@@ -43,9 +43,7 @@ namespace
 		auto &modulePlayer = Modules::ModulePlayer::Instance();
 		modulePlayer.VarPlayerServiceTag->ValueString = value;
 
-#ifdef _DEBUG
 		Patches::PlayerRepresentation::UpdateLocalRepresentation();
-#endif
 		return true;
 	}
 
@@ -53,17 +51,14 @@ namespace
 	{
 		if (!Arguments.size() || (Arguments[0].compare("male") && Arguments[0].compare("female")))
 			return false;
-#ifdef _DEBUG
+
 		Patches::PlayerRepresentation::UpdateLocalRepresentation();
-#endif
 		return true;
 	}
 
 	bool VariablePlayerRepresentationUpdate(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
-#ifdef _DEBUG
 		Patches::PlayerRepresentation::UpdateLocalRepresentation();
-#endif
 		Game::Armor::RefreshUiPlayer();
 		return true;
 	}
@@ -164,7 +159,7 @@ namespace Modules
 		VarColorsVisor = AddVariableString("Colors.Visor", "colors_visor", "The visor colors hex value", eCommandFlagsArchived, "#FF7F00", VariablePlayerArmorUpdate);
 		VarColorsLights = AddVariableString("Colors.Lights", "colors_lights", "The lights colors hex value", eCommandFlagsArchived, "#9685FF", VariablePlayerArmorUpdate);
 
-		VarRepresentation = AddVariableString("Representation", "player_race", "(DEBUG BUILDS ONLY) The representation to display for the player's render mannequin", eCommandFlagsInternal, "spartan", VariablePlayerRepresentationUpdate);
+		VarRepresentation = AddVariableString("Representation", "player_race", "The representation to display for the player's render mannequin", eCommandFlagsArchived, "spartan", VariablePlayerRepresentationUpdate);
 
 		VarPlayerName = AddVariableString("Name", "name", "The players ingame name", CommandFlags(eCommandFlagsArchived|eCommandFlagsNoReset), "Jasper", VariablePlayerNameUpdate);
 		VarPlayerServiceTag = AddVariableString("ServiceTag", "service_tag", "The players service tag", eCommandFlagsArchived, "117", VariablePlayerServiceTagUpdate);
