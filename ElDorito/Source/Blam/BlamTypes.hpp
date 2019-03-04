@@ -6,67 +6,72 @@
 
 namespace Blam
 {
-	enum SkullFlags : int32_t
+	struct e_primary_skull
 	{
-		None = 0,
-		Iron = 1 << 0,
-		BlackEye = 1 << 1,
-		ToughLuck = 1 << 2,
-		Catch = 1 << 3,
-		Fog = 1 << 4,
-		Famine = 1 << 5,
-		Thunderstorm = 1 << 6,
-		Tilt = 1 << 7,
-		Mythic = 1 << 8,
-		Assassin = 1 << 9,
-		Blind = 1 << 10,
-		Superman = 1 << 11,
-		BirthdayParty = 1 << 12,
-		Daddy = 1 << 13,
-		ThirdPerson = 1 << 14,
-		DirectorsCut = 1 << 15
-	};
-	enum Skull : int32_t
-	{
-		eSkullNone = 0,
-		eSkullIron,
-		eSkullBlackEye,
-		eSkullToughLuck,
-		eSkullCatch,
-		eSkullFog,
-		eSkullFamine,
-		eSkullThunderstorm,
-		eSkullTilt,
-		eSkullMythic,
-		eSkullAssassin,
-		eSkullBlind,
-		eSkullSuperman,
-		eSkullBirthdayParty,
-		eSkullDaddy,
-		eSkullThirdPerson,
-		eSkullDirectorsCut,
+		enum : __int32
+		{
+			_iron = 0,
+			_black_eye,
+			_tough_luck,
+			_catch,
+			_fog,
+			_famine,
+			_thunderstorm,
+			_tilt,
+			_mythic,
 
-		eSkullCount
+			k_number_of_primary_skulls
+		} value;
+
+		bool enabled = false;
+
+		const char *GetName()
+		{
+			const char *names[]{
+				"iron",
+				"black eye",
+				"tough luck",
+				"catch",
+				"fog",
+				"famine",
+				"thunderstorm",
+				"tilt",
+				"mythic"
+			};
+			return names[value];
+		}
 	};
-	const std::string SkullNames[eSkullCount]
+
+	struct e_secondary_skull
 	{
-		"None",
-		"Iron",
-		"Black Eye",
-		"Tough Luck",
-		"Catch",
-		"Fog",
-		"Famine",
-		"Thunderstorm",
-		"Tilt",
-		"Mythic",
-		"Assassin",
-		"Blind",
-		"Superman",
-		"Birthday Party",
-		"Daddy",
-		"Third Person",
-		"Directors Cut"
+		enum : __int32
+		{
+			_assassin = 0,
+			_blind,
+			_superman,
+			_birthday_party,
+			_daddy,
+			_third_person,
+			_directors_cut,
+
+			k_number_of_secondary_skulls
+		} value;
+
+		bool enabled = false;
+
+		const char *GetName()
+		{
+			const char *names[]{
+				"assassin",
+				"blind",
+				"superman",
+				"birthday party",
+				"daddy",
+				"third person",
+				"directors cut"
+			};
+			return names[value];
+		}
 	};
 
 	enum GameType : int32_t

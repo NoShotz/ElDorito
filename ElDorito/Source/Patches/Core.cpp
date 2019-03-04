@@ -69,9 +69,10 @@ namespace
 	void GrenadeLoadoutHook();
 	void ShutdownHook();
 	const char *GetMapsFolderHook();
-	bool LoadMapHook(Blam::GameOptions *data);
-	void LoadLevelHook(uint8_t* mapinfo, char a2, char *mapsPath, char a4);
+	bool main_game_change_immediate_hook(Blam::GameOptions *data);
+	void maps_store_map_info_hook(uint8_t* mapinfo, char a2, char *mapsPath, char a4);
 	void GameStartHook();
+	bool __cdecl map_load_hook(int campaign_id, int map_id, char *scenario_path);
 	void __fastcall EdgeDropHook(void* thisptr, void* unused, int a2, int a3, int a4, float* a5);
 	void __cdecl BipedFeetZoneOffsetHook(uint32_t bipedObjectIndex, Blam::Math::RealVector3D *position, float *height, float *radius);
 	char GetBinkVideoPathHook(int p_VideoID, char *p_DestBuf);
@@ -552,55 +553,55 @@ namespace
 	// if there's a way to do this in a single function lmk
 	void dirty_disk_error_505847()
 	{
-		dirty_disk_error_debug("0x505847");
+		dirty_disk_error_debug("0x505847, inside damaged_media_halt_and_display_error.");
 	}
 	void dirty_disk_error_50F56E()
 	{
-		dirty_disk_error_debug("0x50F56E");
+		dirty_disk_error_debug("0x50F56E, inside sub_50F370\nBecause game_state hash verification failed.");
 	}
 	void dirty_disk_error_510239()
 	{
-		dirty_disk_error_debug("0x510239");
+		dirty_disk_error_debug("0x510239, inside sub_510110\nBecause game_state hash verification failed.");
 	}
 	void dirty_disk_error_510830()
 	{
-		dirty_disk_error_debug("0x510830");
+		dirty_disk_error_debug("0x510830, inside game_state_security_verify_signature_internal\nBecause argument a1.");
 	}
 	void dirty_disk_error_510E4E()
 	{
-		dirty_disk_error_debug("0x510E4E");
+		dirty_disk_error_debug("0x510E4E, inside game_state_try_and_load_from_persistent_storage\nBecause game_state hash verification failed.");
 	}
 	void dirty_disk_error_5679FC()
 	{
-		dirty_disk_error_debug("0x5679FC");
+		dirty_disk_error_debug("0x5679FC, inside sub_567850 called from main_game_change_immediate\nBecause sub_52F180 returned false, c_cache_file_tag_resource_runtime_manager related.");
 	}
 	void dirty_disk_error_4EA78C()
 	{
-		dirty_disk_error_debug("0x4EA78C");
+		dirty_disk_error_debug("0x4EA78C, inside sub_4EA730\nbecause (++iterator >= 3), c_cache_file_tag_resource_runtime_manager related.");
 	}
 	void dirty_disk_error_5FB40C()
 	{
-		dirty_disk_error_debug("0x5FB40C");
+		dirty_disk_error_debug("0x5FB40C, inside c_simple_io_result::vftable02\nBecause byte_244627D was true.");
 	}
 	void dirty_disk_error_5FB42C()
 	{
-		dirty_disk_error_debug("0x5FB42C");
+		dirty_disk_error_debug("0x5FB42C, inside c_simple_io_result::vftable01\nBecause byte_244627D was true.");
 	}
 	void dirty_disk_error_5FB44C()
 	{
-		dirty_disk_error_debug("0x5FB44C");
+		dirty_disk_error_debug("0x5FB44C, inside c_simple_io_result::vftable00\nbecause byte_244627D was true");
 	}
 	void dirty_disk_error_6EBD90()
 	{
-		dirty_disk_error_debug("0x6EBD90");
+		dirty_disk_error_debug("0x6EBD90, unknown\nunused function?");
 	}
 	void dirty_disk_error_6EC10C()
 	{
-		dirty_disk_error_debug("0x6EC10C");
+		dirty_disk_error_debug("0x6EC10C, inside sub_6EC010\nbecause CreateFileW returned a bad handle");
 	}
 	void dirty_disk_error_6EC21C()
 	{
-		dirty_disk_error_debug("0x6EC21C");
+		dirty_disk_error_debug("0x6EC21C, inside sub_6EC120\nbecause CreateFileW returned a bad handle");
 	}
 }
 
@@ -642,18 +643,20 @@ namespace Patches::Core
 		Hook(0x2EBD7, ShutdownHook, HookFlags::IsCall).Apply();
 
 		// Map loading
-		Hook(0x10FC2C, LoadMapHook, HookFlags::IsCall).Apply();
-		Hook(0x1671BE, LoadMapHook, HookFlags::IsCall).Apply();
-		Hook(0x167B4F, LoadMapHook, HookFlags::IsCall).Apply();
+		Hook(0x10FC2C, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
+		Hook(0x1671BE, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
+		Hook(0x167B4F, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
 
-		Hook(0x14C7FF, LoadLevelHook, HookFlags::IsCall).Apply();
+		Hook(0x14C7FF, maps_store_map_info_hook, HookFlags::IsCall).Apply();
 
-		Hook(0x152C15, GameStartHook, HookFlags::IsCall).Apply();
+		Hook(0x152C15, GameStartHook, HookFlags::IsCall).Apply(); // game::game_engine::start_game
 		Hook(0x14EB62, GameStartHook, HookFlags::IsCall).Apply();
 		Hook(0x14EB54, GameStartHook, HookFlags::IsCall).Apply();
+				
+		//Hook(0x1679B5, map_load_hook, HookFlags::IsCall).Apply();
 
 		// Hook game ticks
-		Hook(0x105ABA, GameTickHook, HookFlags::IsCall).Apply();
+		Hook(0x105ABA, GameTickHook, HookFlags::IsCall).Apply(); // c_stop_watch::start
 		Hook(0x105AD7, GameTickHook, HookFlags::IsCall).Apply();
 		Hook(0x1063E6, GameTickHook, HookFlags::IsCall).Apply();
 
@@ -944,7 +947,7 @@ namespace
 		return 3;
 	}
 
-	bool LoadMapHook(Blam::GameOptions *data)
+	bool main_game_change_immediate_hook(Blam::GameOptions *data)
 	{
 		typedef bool(*LoadMapPtr)(Blam::GameOptions *data);
 		auto LoadMap = reinterpret_cast<LoadMapPtr>(0x566EF0);
@@ -984,7 +987,7 @@ namespace
 		return true;
 	}
 
-	void LoadLevelHook(uint8_t* mapinfo, char a2, char *mapsPath, char a4)
+	void maps_store_map_info_hook(uint8_t* mapinfo, char a2, char *mapsPath, char a4)
 	{
 		typedef int(__cdecl *LoadLevelPtr)(uint8_t* mapinfo, char a2, char *mapsPath, char a4);
 		auto LoadLevel = reinterpret_cast<LoadLevelPtr>(0x0054A6C0);
@@ -1014,6 +1017,17 @@ namespace
 
 		for (auto& callback : gameStartCallbacks)
 			callback();
+	}
+
+	bool __cdecl map_load_hook(int campaign_id, int map_id, char *scenario_path)
+	{
+		auto result = ((bool(__cdecl *)(int , int , char *))0x4EA5E0)(campaign_id, map_id, scenario_path);
+
+		// this function calls map_load_tags, scenario_tags_fixup and game_startup
+		// we could probably replace TagsLoadedHook with this as 0x5030EA is inside map_load_tags and this calls that
+		// leaving unhooked for now
+
+		return result;
 	}
 
 	__declspec(naked) void TagsLoadedHook()
