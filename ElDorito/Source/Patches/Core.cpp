@@ -546,7 +546,8 @@ namespace
 
 	void dirty_disk_error_debug(const char *name)
 	{
-		MessageBoxA(NULL, name, "dirty_disk_error", MB_ICONERROR);
+		if (!ElDorito::Instance().IsDedicated())
+			MessageBoxA(NULL, name, "dirty_disk_error", MB_ICONERROR);
 		((void(*)())0xA9F6C0)(); // 0xA9F6C0 crashes right away whereas 0xA9F6D0 only crashes if 0x5260711 returns true otherwise returns to mainmenu
 	}
 
