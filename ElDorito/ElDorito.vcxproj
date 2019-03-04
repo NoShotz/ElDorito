@@ -133,7 +133,6 @@
     <ClCompile Include="Source\Patches\PlayerUid.cpp" />
     <ClCompile Include="Source\Patches\RawInput.cpp" />
     <ClCompile Include="Source\Patches\Scoreboard.cpp" />
-    <ClCompile Include="Source\Patches\Script.cpp" />
     <ClCompile Include="Source\Patches\Simulation.cpp" />
     <ClCompile Include="Source\Patches\CharacterHud.cpp" />
     <ClCompile Include="Source\Patches\Spectate.cpp" />
@@ -394,7 +393,6 @@
     <ClInclude Include="Source\Patches\PlayerUid.hpp" />
     <ClInclude Include="Source\Patches\RawInput.hpp" />
     <ClInclude Include="Source\Patches\Scoreboard.hpp" />
-    <ClInclude Include="Source\Patches\Script.hpp" />
     <ClInclude Include="Source\Patches\Simulation.hpp" />
     <ClInclude Include="Source\Patches\Spectate.hpp" />
     <ClInclude Include="Source\Patches\Sprint.hpp" />
@@ -404,8 +402,6 @@
     <ClInclude Include="Source\Patches\Weapon.hpp" />
     <ClInclude Include="Source\Pointer.hpp" />
     <ClInclude Include="Source\resource.h" />
-    <ClInclude Include="Source\Scripting\hs_function_definition.h" />
-    <ClInclude Include="Source\Scripting\hs_function_index.h" />
     <ClInclude Include="Source\Server\BanList.hpp" />
     <ClInclude Include="Source\Server\BanListSync.hpp" />
     <ClInclude Include="Source\Server\DedicatedServer.hpp" />

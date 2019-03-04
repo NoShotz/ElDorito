@@ -37,7 +37,6 @@
 #include "Patches\PlayerScale.hpp"
 #include "Game\Armor.hpp"
 #include "Patches\Experimental.hpp"
-#include "Patches\Script.hpp"
 
 #include <fstream>
 
@@ -81,7 +80,6 @@ namespace Patches
 		Maps::ApplyAll();
 		GameEngineSettings::ApplyAll();
 		DamageSystem::ApplyAll();
-		Script::ApplyAll();
 		Network::PlayerPropertiesExtender::Instance().Add(std::make_shared<Game::Armor::ArmorExtension>());
 
 		PlayerRepresentation::ApplyAll();
@@ -100,10 +98,6 @@ namespace Patches
 
 		if (!isdedicated)
 			DirectXHook::ApplyAll();
-	}
-
-	void ApplyOnFirstTick()
-	{
 	}
 
 	void ApplyAfterTagsLoaded()
@@ -126,7 +120,6 @@ namespace Patches
 		if (appliedFirstTickPatches)
 			return;
 
-		ApplyOnFirstTick();
 		appliedFirstTickPatches = true;
 	}
 }

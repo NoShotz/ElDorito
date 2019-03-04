@@ -549,9 +549,6 @@
     <ClCompile Include="Source\Patches\Experimental.cpp">
       <Filter>Patches</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Patches\Script.cpp">
-      <Filter>Patches</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Blam\Math\Random.cpp">
       <Filter>Blam\Math</Filter>
     </ClCompile>
@@ -1287,9 +1284,6 @@
     <ClInclude Include="Source\Patches\Experimental.hpp">
       <Filter>Patches</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Patches\Script.hpp">
-      <Filter>Patches</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Blam\Preferences\Preferences.hpp" />
     <ClInclude Include="Source\Blam\Sandbox\Sandbox.hpp" />
     <ClInclude Include="Source\Blam\Math\Random.hpp">
@@ -1297,12 +1291,6 @@
     </ClInclude>
     <ClInclude Include="Source\Blam\Sounds\Functions.hpp">
       <Filter>Blam\Sounds</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scripting\hs_function_index.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scripting\hs_function_definition.h">
-      <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Source\Modules\ModuleCampaign.hpp">
       <Filter>Modules</Filter>
