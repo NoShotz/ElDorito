@@ -4,6 +4,8 @@
 #include "../Game/Armor.hpp"
 #include "../Patches/PlayerRepresentation.hpp"
 #include "../Patches/PlayerUid.hpp"
+#include "../Patches/Tweaks.hpp"
+#include "../Patches/Ui.hpp"
 #include <iomanip>
 #include <algorithm>
 #include <unordered_set>
