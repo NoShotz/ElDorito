@@ -5,6 +5,7 @@
 #include "../Patches/Network.hpp"
 #include "../Blam/Tags/Objects/Object.hpp"
 #include "../Blam/BlamObjects.hpp"
+#include "../Blam/BlamEvents.hpp"
 #include "../Patch.hpp"
 
 namespace
@@ -23,6 +24,9 @@ namespace
 
 	void simulation_control_decode(uint8_t *input, uint8_t *output);
 	void simulation_control_encode(uint8_t *input, uint32_t unitObjectIndex, uint8_t *output);
+
+	void __fastcall c_simulation_game_engine_event_definition__event_payload_encode_hook(struct c_simulation_game_engine_event_definition *thisptr,
+		void *unused, long a2, const Blam::Events::Event *event_data, Blam::BitStream *bitstream, bool a5);
 
 	void OnMapVariantRequestChange(Blam::MapVariant *mapVariant);
 
@@ -56,6 +60,9 @@ namespace Patches::Simulation
 
 		// restore h3 backflips
 		Hook(0x007543DF, ClientRagdollDamageHook, HookFlags::IsCall).Apply();
+
+		// fix territories
+		Pointer(0x0163FE48).Write(uint32_t(&c_simulation_game_engine_event_definition__event_payload_encode_hook));
 	}
 }
 
@@ -264,5 +271,17 @@ namespace
 		const auto object_deal_damage = (void(*)(int objectIndex, char *damageData))(0x00B52C50);
 		*(int*)(damageData + 0x54) = 1;
 		object_deal_damage(objectIndex, damageData);
+	}
+
+	void __fastcall c_simulation_game_engine_event_definition__event_payload_encode_hook(struct c_simulation_game_engine_event_definition *thisptr,
+		void *unused, long a2, const Blam::Events::Event *event_data, Blam::BitStream *bitstream, bool a5)
+	{
+		static const auto c_simulation_game_engine_event_definition__event_payload_encode = (void(__thiscall*)(c_simulation_game_engine_event_definition *thisptr,
+			long a2, const Blam::Events::Event *event_data, Blam::BitStream *bitstream, bool a5))(0x004B6310);
+
+		c_simulation_game_engine_event_definition__event_payload_encode(thisptr, a2, event_data, bitstream, a5);
+
+		if (event_data->Type == Blam::Events::eEventTypeTerritories)
+			bitstream->WriteUnsigned(event_data->Unknown24 + 1, 4); // territory index
 	}
 }
