@@ -112,7 +112,6 @@ namespace
 	int GetBrokenChudStateFlags21Values();
 	int GetBrokenChudStateFlags31Values();
 	int GetBrokenChudStateFlags33Values();
-	void chud_input_hook();
 	void c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions();
 	void GetGlobalDynamicColorHook();
 	void GetWeaponOutlineColorHook();
@@ -358,9 +357,7 @@ namespace Patches::Ui
 		Hook(0x6963C6, HUDStateDisplayHook, HookFlags::IsCall).Apply(); 
 
 		// Temp fix for metagame hud.
-		Patch::NopFill(Pointer::Base(0x2074CC), 6);
-		// Temp fix for metagame hud time (data is provided but in an invalid format, this fixes minutes but seconds are 0.)
-		Hook(0x686BED, chud_input_hook).Apply();
+		Patch::NopFill(Pointer::Base(0x207D1F), 7);
  
 		Patches::Events::OnEvent(OnEvent); 
 	}
@@ -2504,26 +2501,4 @@ namespace
  
 		return false; 
 	} 
-
-	__declspec(naked) void chud_input_hook()
-	{
-		__asm
-		{
-
-			//original
-			mov		dword ptr[edi + 0x3AC], -1
-			mov[edi + 0x3B0], eax
-
-			////new
-			mov		eax, 0x564E60		// get seconds elapsed
-			call	eax
-			mov[edi + 0x89C], 60	// Not sure how the HUD takes the time, but it doesn't seem to like seconds, dividing by 60 gets minutes right.
-			fidiv[edi + 0x89C]
-			fstp[edi + 0x89C]
-
-			//return
-			mov		eax, 0xA86BFD
-			jmp		eax
-		}
-	}
 }
