@@ -7,6 +7,10 @@ namespace
 	void __fastcall c_map_variant_initialize_default_hook(Blam::MapVariant* thisptr, void* unused, int mapId);
 	int EnumerateMapsHook(int a1);
 
+	int StartupMapType = -1;
+	std::string StartupMapName = "";
+	int __cdecl GameOptions__LoadIntoGlobalGameOptions_hook(Blam::GameOptions *GameOptions);
+
 	bool TryLoadDefaultMapVariant(int mapId, Blam::MapVariant* buffer);
 }
 
@@ -24,6 +28,8 @@ namespace Patches::Maps
 		Patch(0x14BCA0, { 0xB8, 0x40, 0x01, 0x00, 0x00, 0xC3 }).Apply();
 
 		Patch(0x7004DF, { 0xEB }).Apply();
+
+		Hook(0x166E70, GameOptions__LoadIntoGlobalGameOptions_hook).Apply();
 	}
 
 	void InitializeMapVariant(Blam::MapVariant *mapv, int mapid)
@@ -32,6 +38,12 @@ namespace Patches::Maps
 		// if we can't load the variant in the .map file, default to one generated from the scenario
 		if (!TryLoadDefaultMapVariant(mapid, mapv))
 			c_map_variant_initialize(mapv, mapid);
+	}
+
+	void StartupForceLoad(int type, std::string name)
+	{
+		StartupMapType = type;
+		StartupMapName = name;
 	}
 }
 
@@ -173,5 +185,20 @@ namespace
 		}
 
 		return *(uint32_t *)a1 == 2;
+	}
+
+	bool StartupInitialHasCalled = false;	
+	int __cdecl GameOptions__LoadIntoGlobalGameOptions_hook(Blam::GameOptions *GameOptions)
+	{
+		if (!StartupInitialHasCalled && (StartupMapType > Blam::MapType::eMapTypeNone && StartupMapType < Blam::MapType::eMapTypeCount) && StartupMapName.c_str() != "")
+		{
+			GameOptions->GameVariant.GameType = Blam::GameType::eGameTypeSlayer;
+			GameOptions->GameVariant.RoundTimeLimit = 0;
+			GameOptions->SetMapType(StartupMapType);
+			GameOptions->SetMapPath(StartupMapName.c_str());
+		}
+
+		StartupInitialHasCalled = true;
+		return GameOptions->LoadIntoGlobalGameOptions();
 	}
 }

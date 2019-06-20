@@ -255,73 +255,6 @@ namespace Blam
 		"Free For All"
 	};
 
-	struct GameOptions
-	{
-		MapType MapType;
-		GameSimulation GameSimulation;
-		int16_t FrameLimit;
-		int32_t GameInstance;
-		int16_t wordC[2];
-		int32_t RandomSeed;
-		int32_t Language;
-		int32_t DeterminismVersion;
-		int32_t CampaignId;
-		int32_t MapId;
-		char ScenarioPath[260];
-
-		int16_t ZonesetIndex;
-
-		uint8_t byte12A;
-		uint8_t byte12B;
-		uint8_t byte12C;
-		uint8_t byte14D;
-		uint8_t byte12E;
-		uint8_t byte12F;
-
-		GamePlayback GamePlayback;
-
-		uint8_t byte132;
-		uint8_t byte133;
-		uint32_t dword134;
-		uint32_t dword138;
-
-		CampaignDifficultyLevel CampaignDifficultyLevel;
-		CampaignInsertionPoint CampaignInsertionPoint;
-		CampaignMetagameScoringOption CampaignMetagameScoringOption;
-
-		uint8_t CampaignMetagameEnabled;
-		uint8_t SurvivalModeEnabled;
-
-		uint8_t byte144;
-		uint8_t byte145;
-		uint8_t byte146[0x78];
-		int16_t byte10A;
-		uint8_t byte10C[0x80];
-
-		// these might be bit flags
-		uint32_t CampaignSkullsPrimary;
-		uint32_t CampaignSkullsSecondary;
-
-		uint8_t byte248[0x80];
-		uint8_t byte2AC;
-		uint8_t byte2AD[7];
-		uint8_t byte2B4[0x5C];
-		char GameVariant[0x264]; // Blam::GameVariant
-		char MapVariant[0xE090]; // Blam::MapVariant
-
-		uint8_t MachineArray[0x128];
-		struct
-		{
-			uint8_t IsValid;
-			uint8_t byte1;
-			uint16_t word2;
-			uint32_t dword4;
-			uint8_t unknown8[0x18];
-			char PlayerProperties[0x1620]; // Blam::Players::PlayerProperties
-		} InitialParticipantsArray[16];
-	};
-	static_assert(sizeof(GameOptions) == 0x24B48);
-
 	enum NetworkMode : int32_t
 	{
 		eNetworkModeOpenToPublic = 0,
@@ -694,6 +627,7 @@ namespace Blam
 		uint8_t Unknown66[0xFC];
 		// theres a lot more bytes too
 	} GameVariant, BLAM_GAME_VARIANT, *PBLAM_GAME_VARIANT;
+	static_assert(sizeof(GameVariant) == 0x264, "Invalid GameVariant size");
 
 
 	struct MapVariant
@@ -762,8 +696,103 @@ namespace Blam
 		BudgetEntry Budget[256];
 		char PaddingDF50[320];
 	};
-
 	static_assert(sizeof(MapVariant) == 0xE090, "Invalid MapVariant size");
+
+	struct GameOptions
+	{
+		MapType MapType;
+		GameSimulation GameSimulation;
+		int16_t FrameLimit;
+		int32_t GameInstance;
+		int16_t wordC[2];
+		int32_t RandomSeed;
+		int32_t Language;
+		int32_t DeterminismVersion;
+		int32_t CampaignId;
+		int32_t MapId;
+		char ScenarioPath[260];
+
+		int16_t ZonesetIndex;
+
+		uint8_t byte12A;
+		uint8_t byte12B;
+		uint8_t byte12C;
+		uint8_t byte14D;
+		uint8_t byte12E;
+		uint8_t byte12F;
+
+		GamePlayback GamePlayback;
+
+		uint8_t byte132;
+		uint8_t byte133;
+		uint32_t dword134;
+		uint32_t dword138;
+
+		CampaignDifficultyLevel CampaignDifficultyLevel;
+		CampaignInsertionPoint CampaignInsertionPoint;
+		CampaignMetagameScoringOption CampaignMetagameScoringOption;
+
+		uint8_t CampaignMetagameEnabled;
+		uint8_t SurvivalModeEnabled;
+
+		uint8_t byte144;
+		uint8_t byte145;
+		uint8_t byte146[0x78];
+		int16_t byte10A;
+		uint8_t byte10C[0x80];
+
+		// these might be bit flags
+		uint32_t CampaignSkullsPrimary;
+		uint32_t CampaignSkullsSecondary;
+
+		uint8_t byte248[0x80];
+		uint8_t byte2AC;
+		uint8_t byte2AD[7];
+		uint8_t byte2B4[0x5C];
+		GameVariant GameVariant; // Blam::GameVariant
+		MapVariant MapVariant; // Blam::MapVariant
+
+		uint8_t MachineArray[0x128];
+		struct
+		{
+			uint8_t IsValid;
+			uint8_t byte1;
+			uint16_t word2;
+			uint32_t dword4;
+			uint8_t unknown8[0x18];
+			char PlayerProperties[0x1620]; // Blam::Players::PlayerProperties
+		} InitialParticipantsArray[16];
+
+		int LoadIntoGlobalGameOptions()
+		{
+			auto v1 = this == 0;
+			if (this)
+			{
+				memmove((void *)0x2391800, this, 0x24B48u);
+				v1 = this == 0;
+			}
+
+			*(uint8_t *)0x23917F1 = v1;
+			*(uint8_t *)0x23917F0 = true;
+			if (!this)
+				return 0;
+			return 1;
+		}
+		GameOptions *SetMapType(int val)
+		{
+			MapType = (Blam::MapType)val;
+
+			return this;
+		}
+		GameOptions *SetMapPath(const char *val)
+		{
+			memset(ScenarioPath, 0, 260);
+			strncpy(ScenarioPath, val, 260);
+
+			return this;
+		}
+	};
+	static_assert(sizeof(GameOptions) == 0x24B48);
 }
 
 enum class CameraType : uint8_t

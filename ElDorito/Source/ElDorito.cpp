@@ -30,6 +30,7 @@
 #include "Modules/ModuleInput.hpp"
 #include "Server/Voting.hpp"
 #include "ChatCommands/ChatCommandMap.hpp"
+#include "Patches/Maps.hpp"
 #include "Patches/Weapon.hpp"
 #include "Patches/Memory.hpp"
 #include "Patches/Camera.hpp"
@@ -197,6 +198,9 @@ void ElDorito::Initialize()
 
 			if (arg.compare(L"-lod-increase") == 0)
 				Patches::Camera::IncreaseLOD();
+
+			if (arg.compare(L"-startup-forceload") == 0 && i < numArgs - 2)
+				Patches::Maps::StartupForceLoad(std::stoul(szArgList[i + 1]), Utils::String::ThinString(szArgList[i + 2]));
 
 			size_t pos = arg.find(L'=');
 			if( pos == std::wstring::npos || arg.length() <= pos + 1 ) // if it doesn't contain an =, or there's nothing after the =

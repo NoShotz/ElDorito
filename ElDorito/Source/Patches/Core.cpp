@@ -1374,13 +1374,13 @@ namespace
 		}
 		else
 		{
-			auto GameVariant = (Blam::GameVariant *)GameOptions->GameVariant;
+			auto GameVariant = &GameOptions->GameVariant;
 			ss << "\t(Game Variant)->Game Type: " << Blam::GameTypeNames[GameVariant->GameType] << std::endl;
 			ss << "\t(Game Variant)->Name: " << Utils::String::ThinString(GameVariant->Name) << std::endl;
 			ss << "\t(Game Variant)->Author: " << GameVariant->Author << std::endl;
 			ss << "\t(Game Variant)->Description: " << GameVariant->Description << std::endl << std::endl;
 
-			auto MapVariant = (Blam::MapVariant *)GameOptions->MapVariant;
+			auto MapVariant = &GameOptions->MapVariant;
 			ss << "\t(Map Variant)->Base Map Id: " << MapVariant->MapId << std::endl;
 			ss << "\t(Map Variant)->Name: " << Utils::String::ThinString(MapVariant->ContentHeader.Name) << std::endl;
 			ss << "\t(Map Variant)->Author: " << MapVariant->ContentHeader.Author << std::endl;

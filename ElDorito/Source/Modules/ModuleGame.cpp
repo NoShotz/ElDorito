@@ -236,13 +236,14 @@ namespace
 		std::exit(0);
 		return true;
 	}
-
+	
+	auto GlobalGameOptions = (Blam::GameOptions *)0x2391800;
 	bool CommandGameForceLoad(const std::vector<std::string>& Arguments, std::string& returnInfo)
 	{
 		std::stringstream ss;
 		if (Arguments.size() <= 0)
 		{
-			ss << "Current map: " << std::string((char*)(0x2391824)) << std::endl;
+			ss << "Current map: " << std::string(GlobalGameOptions->ScenarioPath) << std::endl;
 			ss << "Usage: Game.ForceLoad <mapname> [gametype] [maptype]" << std::endl;
 			ss << "Available maps:";
 
@@ -317,16 +318,16 @@ namespace
 		ss << "Loading " << mapName << " gametype: " << Blam::GameTypeNames[gameType] << " maptype: " << Blam::MapTypeNames[mapType];
 
 		// Game Type
-		Pointer(0x2391B2C).Write<uint32_t>(gameType);
+		GlobalGameOptions->GameVariant.GameType = gameType;
 
 		// Infinite play time
-		Pointer(0x2391C51).Write<uint8_t>(0);
+		GlobalGameOptions->GameVariant.RoundTimeLimit = 0;
 
 		// Game Mode
-		Pointer(0x2391800).Write<uint32_t>(mapType);
+		GlobalGameOptions->MapType = mapType;
 
 		// Map Name
-		Pointer(0x2391824).Write(mapName.c_str(), mapName.length() + 1);
+		GlobalGameOptions->SetMapPath(mapName.c_str());
 
 		// Map Reset
 		Pointer(0x23917F0).Write<uint8_t>(0x1);
