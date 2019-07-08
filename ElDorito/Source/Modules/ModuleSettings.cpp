@@ -688,7 +688,7 @@ namespace Modules
 		VarInvertMouse = AddVariableInt("InvertMouse", "invert_mouse", "Controls whether mouse-inversion is enabled (1) or disabled (0)", eCommandFlagsArchived, 0, VariableSettingsInvertMouseUpdate);
 		VarLightingQuality = AddVariableString("LightingQuality", "lighting", "Controls whether the lighting quality level is low, medium or high", eCommandFlagsArchived, "high", VariableSettingsLightingQualityUpdate);
 		VarLookSensitivity = AddVariableInt("LookSensitivity", "look_sensitivity", "Controls the controller look sensitivity (0 - 100)", eCommandFlagsArchived, 50, VariableSettingsLookSensitivityUpdate);
-		VarMotionBlur = AddVariableInt("MotionBlur", "motion_blur", "Controls whether motion blur is enabled (1) or disabled (0)", eCommandFlagsArchived, 1, VariableSettingsMotionBlurUpdate);
+		VarMotionBlur = AddVariableInt("MotionBlur", "motion_blur", "Controls whether motion blur is enabled (1) or disabled (0)", eCommandFlagsArchived, 0, VariableSettingsMotionBlurUpdate);
 		VarMouseAcceleration = AddVariableInt("MouseAcceleration", "mouse_accel", "Controls the level of mouse acceleration (0 - 100)", eCommandFlagsArchived, 0, VariableSettingsMouseAccelerationUpdate);
 		VarMouseFilter = AddVariableInt("MouseFilter", "mouse_filter", "Controls whether mouse-filtering is enabled (1) or disabled (0)", eCommandFlagsArchived, 0, VariableSettingsMouseFilterUpdate);
 		VarGamepadEnabled = AddVariableInt("Gamepad", "gamepad", "Controls whether gamepad is enabled (1) or disabled (0)", eCommandFlagsArchived, 0, VariableSettingsGamepadEnabledUpdate);
@@ -697,7 +697,7 @@ namespace Modules
 		VarMouseSensitivityVehicleHorizontal = AddVariableInt("MouseSensitivityVehicleHorizontal", "mouse_sensitivity_vehicle_hor", "Controls the horizontal mouse sensitivity for vehicles (0 - 100)", eCommandFlagsArchived, 25, VariableSettingsMouseSensitivityVehicleHorizontalUpdate);
 		VarMouseSensitivityVehicleVertical = AddVariableInt("MouseSensitivityVehicleVertical", "mouse_sensitivity_vehicle_vert", "Controls the vertical mouse sensitivity for vehicles (0 - 100)", eCommandFlagsArchived, 25, VariableSettingsMouseSensitivityVehicleVerticalUpdate);
 		VarPlayerMarkerColors = AddVariableString("PlayerMarkerColors", "markers", "Controls whether the player marker colors are default, ally or armor", eCommandFlagsArchived, "default", VariableSettingsPlayerMarkerColorsUpdate);
-		VarPostprocessingQuality = AddVariableString("PostprocessingQuality", "postprocessing", "Controls whether the postprocessing quality level is low, medium or high", eCommandFlagsArchived, "high", VariableSettingsPostprocessingQualityUpdate);
+		VarPostprocessingQuality = AddVariableString("PostprocessingQuality", "postprocessing", "Controls whether the postprocessing quality level is low, medium or high", eCommandFlagsArchived, "medium", VariableSettingsPostprocessingQualityUpdate);
 		VarShadowQuality = AddVariableString("ShadowQuality", "shadows", "Controls whether the shadow quality level is low, medium or high", eCommandFlagsArchived, "high", VariableSettingsShadowQualityUpdate);
 		VarTextureFilteringQuality = AddVariableString("TextureFilteringQuality", "texture_filtering", "Controls whether the texture-filtering quality level is low, medium or high", eCommandFlagsArchived, "high", VariableSettingsTextureFilteringQualityUpdate);
 		VarTextureResolution = AddVariableString("TextureResolution", "textures", "Controls whether the texture resolution level is low, medium or high", eCommandFlagsArchived, "high", VariableSettingsTextureResolutionUpdate);

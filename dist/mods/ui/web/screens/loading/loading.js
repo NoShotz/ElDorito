@@ -1,4 +1,5 @@
 var mapName = "";
+var mapImage = "";
 var gameModes = ["slayer","ctf","slayer","oddball","koth","forge","vip","juggernaut","territories","assault","infection"];
 var safeDomains = ["discord.gg"];
 
@@ -12,6 +13,8 @@ $("html").on("keydown", function(e) {
         dew.show("console");
     }
 });
+
+//#region Functions
 
 function textWithNewLines(text) {
     var htmls = [];
@@ -42,7 +45,7 @@ function updateProgress(progress) {
 
 function loadMap(mapName) {
     $(".mapLoader").show();
-    $(".mapLoader").css({backgroundImage: "url('dew://assets/maps/large/" + mapName + ".jpg'), url('dew://assets/maps/large/unknown.jpg')"});
+    $(".mapLoader").css({backgroundImage: "url('dew://assets/maps/large/" + ((mapImage && mapImage != '') ? mapImage : mapName)  + ".jpg'), url('dew://assets/maps/large/unknown.jpg')"});
     $(".genericLoader").hide();
     dew.getMapVariantInfo().then(function (info) {
         $("#title").text(info.name);
@@ -78,6 +81,7 @@ function loadMap(mapName) {
             $(".serverMessage").hide();
         }
     });
+    mapImage = null;
 }
 
 function loadGeneric() {
@@ -104,6 +108,9 @@ function unescapeHtml(str) {
     return e.childNodes.str === 0 ? "" : e.childNodes[0].nodeValue;
 }
 
+//#endregion
+//#region Dew
+
 dew.on("show", function (event) {
     mapName = event.data.map || "";
     if (mapName != "mainmenu") {
@@ -124,3 +131,9 @@ dew.on("loadprogress", function (event) {
     var progress = event.data.currentBytes / event.data.totalBytes * 100;
     updateProgress(progress);
 });
+
+dew.on('custommap', (map) => {
+    mapImage = map.data || null;
+});
+
+//#endregion
