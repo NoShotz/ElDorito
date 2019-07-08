@@ -459,7 +459,7 @@ dew.on('show', function(e){
         if(i.mapName == "mainmenu"){
             $('#blackLayer').fadeIn(200, function() {
                 dew.command('Player.Armor.Update');
-				dew.command('Player.Armor.SetUiModelPosition 16.6759 1.75339 -1.534238');
+                dew.command('Player.Armor.SetUiModelPosition 16.6759 1.75339 -1.534238');
                 dew.command('Player.Armor.SetUiModelRotation 30');
                 dew.command('game.hideh3ui 1');
                 dew.command('Game.ScenarioScript matchmaking_cam');
