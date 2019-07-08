@@ -55,7 +55,7 @@ var settingsToLoad = [
     ['armorRightShoulder', 'Player.Armor.RightShoulder','Right Shoulder','Right there on that shoulder.', 4],
     ['armorLeftShoulder', 'Player.Armor.LeftShoulder','Left Shoulder','The only shoulder that\'s left.', 5],
     ['gender', 'Player.Gender','Gender','', 6],
-	['playerRep', 'Player.Representation', 'Player Representation','', 6],
+    ['playerRep', 'Player.Representation', 'Player Representation','', 6],
     ['colorsPrimary', 'Player.Colors.Primary','Primary Color','The primary armor color will serve you in individual combat but will be overwritten in team scenarios.',0],
     ['colorsSecondary', 'Player.Colors.Secondary','Secondary Color','The secondary armor color accents your primary color and will be overwritten in team scenarios.',1],
     ['colorsVisor', 'Player.Colors.Visor','Visor Color','Adjust the tint of your Spartan\'s visor.',2],
@@ -163,7 +163,7 @@ $(document).ready(function(){
     setRadioList('armorRightShoulder', armorShoulderList, true);
     setRadioList('armorLeftShoulder', armorShoulderList, true);
     setRadioList('gender', genderList, true);
-	setRadioList('playerRep', playerRepList, true);
+    setRadioList('playerRep', playerRepList, true);
     setRadioList('colorsPrimary', h3ColorArray);
     setRadioList('colorsSecondary', h3ColorArray);
     setRadioList('colorsVisor', h3ColorArray);
