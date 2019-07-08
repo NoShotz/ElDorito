@@ -70,6 +70,7 @@ body{
 #infoBox{
     display:none;
     height:140px;
+    padding-top: 17%;
 }
 
 .emblem-tile img{

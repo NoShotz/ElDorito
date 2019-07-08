@@ -55,6 +55,7 @@ var settingsToLoad = [
     ['armorRightShoulder', 'Player.Armor.RightShoulder','Right Shoulder','Right there on that shoulder.', 4],
     ['armorLeftShoulder', 'Player.Armor.LeftShoulder','Left Shoulder','The only shoulder that\'s left.', 5],
     ['gender', 'Player.Gender','Gender','', 6],
+    ['playerRep', 'Player.Representation', 'Player Representation','', 6],
     ['colorsPrimary', 'Player.Colors.Primary','Primary Color','The primary armor color will serve you in individual combat but will be overwritten in team scenarios.',0],
     ['colorsSecondary', 'Player.Colors.Secondary','Secondary Color','The secondary armor color accents your primary color and will be overwritten in team scenarios.',1],
     ['colorsVisor', 'Player.Colors.Visor','Visor Color','Adjust the tint of your Spartan\'s visor.',2],
@@ -98,6 +99,11 @@ var colorPicker;
 var genderList = [
     ['Male','male','State your gender. This will not be displayed to other players, but combat effects will be tailored to your gender.'],
     ['Female','female','State your gender. This will not be displayed to other players, but combat effects will be tailored to your gender.']    
+];
+
+var playerRepList = [
+    ['Spartan','spartan','Spartans are members of a series of United Nations Space Command projects designed to create physically, genetically, technologically, and mentally superior supersoldiers as special fighting units.'],
+    ['Elite','elite','The Sangheili, known to humans as Elites, are a saurian species of strong, proud, and intelligent warriors, as well as skilled combat tacticians.']
 ];
 
 $(document).ready(function(){
@@ -157,6 +163,7 @@ $(document).ready(function(){
     setRadioList('armorRightShoulder', armorShoulderList, true);
     setRadioList('armorLeftShoulder', armorShoulderList, true);
     setRadioList('gender', genderList, true);
+    setRadioList('playerRep', playerRepList, true);
     setRadioList('colorsPrimary', h3ColorArray);
     setRadioList('colorsSecondary', h3ColorArray);
     setRadioList('colorsVisor', h3ColorArray);
@@ -452,9 +459,10 @@ dew.on('show', function(e){
         if(i.mapName == "mainmenu"){
             $('#blackLayer').fadeIn(200, function() {
                 dew.command('Player.Armor.Update');
-                dew.command('Player.Armor.SetUiModelRotation 270');
+                dew.command('Player.Armor.SetUiModelPosition 16.6759 1.75339 -1.534238');
+                dew.command('Player.Armor.SetUiModelRotation 30');
                 dew.command('game.hideh3ui 1');
-                dew.command('Game.ScenarioScript settings_cam');
+                dew.command('Game.ScenarioScript matchmaking_cam');
                 dew.command('Game.ScreenEffectRange 0 0');
                 $('#settingsWindow').show();
                 $('#blueHeader, #blueFooter, #blackLayer').show();
@@ -577,7 +585,7 @@ function effectReset(){
     dew.getSessionInfo().then(function(i){
         if(i.mapName == "mainmenu"){
             $('#blackLayer').fadeIn(200, function(){
-                dew.command('Game.ScenarioScript leave_settings');
+                dew.command('Game.ScenarioScript mainmenu_cam');
                 dew.command('Game.ScreenEffectRange 0 1E+19');
                 dew.command('Player.Armor.SetUiModelRotation 270');
                 dew.command('game.hideh3ui 0');
@@ -746,7 +754,7 @@ function downNav(){
             updateSelection(itemNumber, true, true);
         }
     }else{
-        if((activePage.split(' ').length < 2 && itemNumber < 3 && activePage == '#page2') || ((activePage.split(' ').length < 2 && itemNumber < 5 && activePage == '#page3')) || (activePage.split(' ').length < 2 && itemNumber < 6 && activePage == '#page1') ||  (activePage.split(' ').length > 1 && itemNumber < $(activePage + ' label:visible').length-1)){
+        if((activePage.split(' ').length < 2 && itemNumber < 3 && activePage == '#page2') || ((activePage.split(' ').length < 2 && itemNumber < 5 && activePage == '#page3')) || (activePage.split(' ').length < 2 && itemNumber < 7 && activePage == '#page1') ||  (activePage.split(' ').length > 1 && itemNumber < $(activePage + ' label:visible').length-1)){
             itemNumber++;
             updateSelection(itemNumber, true, true);
         }
