@@ -3,7 +3,7 @@
 <img src="http://i.imgur.com/IkTrjna.png" width="190" height="164" align="right"/>
 
 # ElDewrito
-[![Build status](https://ci.appveyor.com/api/projects/status/3y5603c0svd05hoy/branch/master?svg=true)](https://ci.appveyor.com/project/medsouz/eldorito/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/60q567o9u50kc9xj?svg=true)](https://ci.appveyor.com/project/NoShotz11716/eldorito)
 [![Discord](https://img.shields.io/discord/84694847729963008.svg)](https://discord.gg/0TKY0SDEUHAWL4sG)
 
 ## What is ElDewrito?
