@@ -420,7 +420,8 @@ let GameMaps = [
     { known: ["bunkerworld", "standoff"], value: "bunkerworld"},
     { known: ["armory", "rat's nest"], value: "armory"},
     { known: ["mp_shadow_bridge", "vadum"], value: "mp_shadow_bridge"},
-    { known: ["roundabout", "cabin fever"], value: "roundabout"}
+    { known: ["roundabout", "cabin fever"], value: "roundabout"},
+	{ known: ["jungle_dam", "damage"], value: "jungle_dam"}
 ];
 function loadMapImage(map) {
     var name = map.mapname.toLowerCase() || null;
