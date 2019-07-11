@@ -633,6 +633,10 @@ namespace Patches::Core
 		// Patch to allow spawning AI through effects
 		Patch::NopFill(Pointer::Base(0x1033321), 2);
 
+		// Fix secondary color override in team games
+		Patch(0x2EE51, { 0x0C }).Apply();
+		Patch(0x2EE54, { 0x14 }).Apply();
+
 		// Fix random colored lighting
 		Patch(0x14F2FFC, { 0x0, 0x0, 0x0, 0x0 }).Apply();
 
