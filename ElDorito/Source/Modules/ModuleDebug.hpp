@@ -11,6 +11,8 @@ namespace Modules
 		Command* VarMemsetDst;
 		Command *VarPrintHsEvaluations;
 
+		Command *VarDirtyDiskContinueType;
+
 		ModuleDebug();
 	};
 }
