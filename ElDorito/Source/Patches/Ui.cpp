@@ -289,10 +289,9 @@ namespace Patches::Ui
 		//Fix HUD Distortion in third person.
 		Hook(0x193370, CameraModeChangedHook, HookFlags::IsCall).Apply();
 
-		// TODO: FIX THESE:
 		// use the correct hud globals for the player representation
-		//Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
-		//Hook(0x6895FF, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
+		Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
+		Hook(0x6895FF, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 
 		// TODO: FIX THESE:
 		//Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
@@ -1254,6 +1253,7 @@ namespace
 		c_main_menu_screen_widget_item_select(thisptr, a2, screenName, a4, a5);
 	}
 
+	// todo: update 'eliteHUD' command as an override
 	int GetHUDGlobalsIndexForRepresentation(void* playerRepresentation)
 	{
 		if (!playerRepresentation)
@@ -1266,8 +1266,9 @@ namespace
 			return 2;
 		case 0x1119: //mp_elite
 		case 0xCC: // dervish
+			return 1;
 		default:
-			return eliteHUD;
+			return 0;
 		}
 	}
 
