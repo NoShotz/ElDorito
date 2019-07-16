@@ -356,6 +356,8 @@ namespace Patches::Ui
 		// Fixes some broken hud state strings, including the respawn timer. 
 		Hook(0x6963C6, HUDStateDisplayHook, HookFlags::IsCall).Apply();
 
+		Patch::NopFill(Pointer::Base(0x207D1F), 7);
+		
 		Patches::Events::OnEvent(OnEvent);
 	}
 
