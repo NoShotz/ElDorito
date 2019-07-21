@@ -106,6 +106,11 @@ namespace Modules
 		VarPrintHsEvaluations = AddVariableInt("PrintHsEvaluations", "print_hs_eval", "Sets whether hs_macro_function_evaluate should print debug info to the console.", eCommandFlagsNone, 0, PrintHsEvaluationsUpdate);
 		Hook(0x7EF260, Debug_MemcpyHook).Apply();
 		Hook(0x7EF2E0, Debug_MemsetHook).Apply();
-//#endif
+
+#ifdef _DEBUG
+		VarDirtyDiskContinueType = AddVariableInt("DirtyDiskContinueType", "dirty_disk_continue_type", "0 = CRASH (DEFAULT).\n1 = CONTINUE EXECUTION.\n2 = GOTO MAINMENU.\n", eCommandFlagsNone, 0);
+		VarDirtyDiskContinueType->ValueIntMin = 0;
+		VarDirtyDiskContinueType->ValueIntMax = 2;
+#endif
 	}
 }
