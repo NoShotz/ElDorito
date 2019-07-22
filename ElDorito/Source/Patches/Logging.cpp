@@ -9,7 +9,6 @@
 #include "Core.hpp"
 #include "../Modules/ModuleDebug.hpp"
 #include "../Console.hpp"
-#include "../Blam/Tags/TagInstance.hpp"
 
 namespace
 {
@@ -262,14 +261,10 @@ namespace
 
 		Utils::Logger::Instance().Log(Utils::LogTypes::Debug, Utils::LogLevel::Error, std::string(msg));
 
-		auto lastTagIndexName = Blam::Tags::TagInstance::GetTagName(lastTagIndex).c_str();
-		auto lastTagResource = *(uint32_t *)0x0190E460;
-		auto lastTagResourceName = Blam::Tags::TagInstance::GetTagName(lastTagResource).c_str();
-
 		Utils::Logger::Instance().Log(Utils::LogTypes::Debug, Utils::LogLevel::Error,
-			"Code: 0x%X, flags: 0x%X, record: 0x%X, addr: 0x%X, numparams: 0x%X, last tag accessed: [0x%X, %s], last tag resource: [0x%X, %s], last script op: 0x%X",
-			except->ExceptionCode, except->ExceptionFlags, except->ExceptionRecord, except->ExceptionAddress, 
-			except->NumberParameters, lastTagIndex, lastTagIndexName, lastTagResource, lastTagResourceName, lastScriptOpcode);
+			"Code: 0x%x, flags: 0x%x, record: 0x%x, addr: 0x%x, numparams: 0x%x, last tag accessed: 0x%x,  last tag resource: 0x%x, last script op: 0x%x",
+			except->ExceptionCode, except->ExceptionFlags, except->ExceptionRecord,
+			except->ExceptionAddress, except->NumberParameters, lastTagIndex, *(uint32_t*)0x0190E460, lastScriptOpcode);
 
 		// identify problematic module, log the location and dump its contents
 		auto modules = GetLoadedModules();
