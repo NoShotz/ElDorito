@@ -1294,7 +1294,8 @@ namespace
 			data->CampaignInsertionPoint = (Blam::CampaignInsertionPoint)moduleCampaign->VarInsertionPoint->ValueInt;
 			data->CampaignMetagameScoringOption = (Blam::CampaignMetagameScoringOption)moduleCampaign->VarMetagameScoringOption->ValueInt;
 			data->CampaignMetagameEnabled = (bool)moduleCampaign->VarMetagameEnabled->ValueInt;
-			data->SurvivalModeEnabled = (bool)moduleCampaign->VarSurvivalModeEnabled->ValueInt;
+			if (moduleCampaign->VarSurvivalModeEnabled->ValueInt)
+				data->SurvivalModeEnabled = true;
 		}
 		else
 			if (Pointer(0x165C83C).Read<int>() != 60)

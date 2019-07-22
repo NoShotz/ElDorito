@@ -77,7 +77,7 @@ namespace Patches::Tweaks
 		if (masterChiefDefinition->Unit.HudInterfaces.Count < 3) 
 			return; 
  
-		if (Modules::ModuleTweaks::ModuleTweaks::Instance().VarEliteHUD->ValueInt) 
+		if (Modules::ModuleTweaks::ModuleTweaks::Instance().VarChudGlobalsIndex->ValueInt) 
 			masterChiefDefinition->Unit.HudInterfaces[0].UnitHudInterface = masterChiefDefinition->Unit.HudInterfaces[2].UnitHudInterface; 
 		else 
 			masterChiefDefinition->Unit.HudInterfaces[0].UnitHudInterface = masterChiefDefinition->Unit.HudInterfaces[1].UnitHudInterface; 
