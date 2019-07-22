@@ -175,7 +175,7 @@ namespace Patches::Ui
 	int customPrimaryHUDColor = -1;
 	int customSecondaryHUDColor = 0;
 
-	bool eliteHUD = false;
+	int chudIndex = -1;
 
 	void ApplyAfterTagsLoaded()
 	{
@@ -1255,11 +1255,16 @@ namespace
 		c_main_menu_screen_widget_item_select(thisptr, a2, screenName, a4, a5);
 	}
 
-	// todo: update 'eliteHUD' command as an override
 	int GetHUDGlobalsIndexForRepresentation(void* playerRepresentation)
 	{
 		if (!playerRepresentation)
 			return 0;
+
+		using Blam::Tags::UI::ChudGlobalsDefinition;
+		auto *chgd = Blam::Tags::TagInstance(chgdIndex).GetDefinition<ChudGlobalsDefinition>();
+
+		if (chudIndex > 0 && chudIndex <= chgd->HudGlobals.Count)
+			return chudIndex - 1;
 
 		auto nameId = *(uint32_t*)playerRepresentation;
 		switch (nameId)
@@ -1389,7 +1394,7 @@ namespace
 		case 0x1119: //mp_elite
 		case 0xCC: // dervish
 		default:
-			return eliteHUD + 1;
+			return chudIndex + 1;
 		}
 	}
 

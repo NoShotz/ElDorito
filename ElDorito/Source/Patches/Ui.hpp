@@ -52,5 +52,5 @@ namespace Patches::Ui
 	extern int customPrimaryHUDColor;
 	extern int customSecondaryHUDColor;
 
-	extern bool eliteHUD;
+	extern int chudIndex;
 }
