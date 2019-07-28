@@ -548,32 +548,35 @@ namespace
 	template<size_t addr>
 	void dirty_disk_error_debug()
 	{
-		std::unordered_map<size_t, const char *> errors = {
-			{ 0x505847, "0x505847, inside damaged_media_halt_and_display_error." },
-			{ 0x50F56E, "0x50F56E, inside sub_50F370\nBecause game_state hash verification failed." },
-			{ 0x510239, "0x510239, inside sub_510110\nBecause game_state hash verification failed." },
-			{ 0x510830, "0x510830, inside game_state_security_verify_signature_internal\nBecause argument a1." },
-			{ 0x510E4E, "0x510E4E, inside game_state_try_and_load_from_persistent_storage\nBecause game_state hash verification failed." },
-			{ 0x5679FC, "0x5679FC, inside sub_567850 called from main_game_change_immediate\nBecause sub_52F180 returned false, c_cache_file_tag_resource_runtime_manager related." },
-			{ 0x4EA78C, "0x4EA78C, inside sub_4EA730\nbecause (++iterator >= 3), c_cache_file_tag_resource_runtime_manager related." },
-			{ 0x5FB40C, "0x5FB40C, inside c_simple_io_result::vftable02\nBecause byte_244627D was true." },
-			{ 0x5FB42C, "0x5FB42C, inside c_simple_io_result::vftable01\nBecause byte_244627D was true." },
-			{ 0x5FB44C, "0x5FB44C, inside c_simple_io_result::vftable00\nbecause byte_244627D was true" },
-			{ 0x6EBD90, "0x6EBD90, unknown\nunused function?" },
-			{ 0x6EC10C, "0x6EC10C, inside sub_6EC010\nbecause CreateFileW returned a bad handle" },
-			{ 0x6EC21C, "0x6EC21C, inside sub_6EC120\nbecause CreateFileW returned a bad handle" }
-		};
+		auto continue_type = Modules::ModuleDebug::Instance().VarDirtyDiskContinueType->ValueInt;
 
+		std::unordered_map<size_t, const char *> errors = {
+			{ 0x505847, "damaged_media_halt_and_display_error." },
+			{ 0x50F56E, "sub_50F370\nReason: SHA1::Verify failed for gamestate->lpAddress." },
+			{ 0x510239, "sub_510110\nReason: SHA1::Verify failed for gamestate->lpAddress." },
+			{ 0x510830, "game_state_security_verify_signature_internal\nReason: SHA1::Verify failed for &game_state_header." },
+			{ 0x510E4E, "game_state_try_and_load_from_persistent_storage\nReason: SHA1::Verify failed for gamestate->lpAddress." },
+			{ 0x5679FC, "main_game_load_map\nReason: map_load or sub_52F180 returned false, c_cache_file_tag_resource_runtime_manager related." },
+			{ 0x4EA78C, "sub_4EA730\nReason: (++iterator >= 3), scenario_zone_set_resources related." },
+			{ 0x5FB40C, "c_simple_io_result::vftable02\nReason: byte_244627D was true." },
+			{ 0x5FB42C, "c_simple_io_result::vftable01\nReason: byte_244627D was true." },
+			{ 0x5FB44C, "c_simple_io_result::vftable00\nReason: byte_244627D was true" },
+			{ 0x6EBD90, "unknown\nunused function?" },
+			{ 0x6EC10C, "sub_6EC010\nReason: CreateFileW returned a bad handle" },
+			{ 0x6EC21C, "sub_6EC120\nReason: CreateFileW returned a bad handle" }
+		};
 		const char *continue_types[] = {
 			"dirty_disk_error, crashing as normal",
 			"dirty_disk_error, continuing execution",
 			"dirty_disk_error, returning to mainmenu"
 		};
 
-		auto continue_type = Modules::ModuleDebug::Instance().VarDirtyDiskContinueType->ValueInt;
-
 		if (!ElDorito::Instance().IsDedicated())
-			MessageBoxA(NULL, errors.at(addr), continue_types[continue_type], MB_ICONERROR);
+		{
+			char caption[64] = {};
+			sprintf_s(caption, "0x%08X, %s", addr, continue_types[continue_type]);
+			MessageBoxA(NULL, errors.at(addr), caption, MB_ICONERROR);
+		}
 
 		switch (continue_type)
 		{
