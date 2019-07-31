@@ -1,15 +1,15 @@
 @font-face{font-family:"Conduit ITC";src:url(dew://lib/Conduit-ITC.woff);}
 
 html {
-    color: #FFF;
+    color: #DCDADB;
     font-family: "Conduit ITC", sans-serif;
     overflow: hidden;
 }
 
 .player{
     text-align: center;
-    font-size: 2.5vh;
-    line-height: 3.5vh;
+    font-size: 3.29vh;
+    line-height: 4.05vh;
     padding: 0.5vw;
     margin: 0.1vw;
     z-index: 1;
@@ -18,10 +18,16 @@ html {
         1px -1px 0 #000,
         -1px 1px 0 #000,
          1px 1px 0 #000;
-    letter-spacing: 0.02vw;
+    letter-spacing: 0.0vw;
     cursor: default;
     display:table-row;
     width:100%;
+}
+
+.square{
+	width: 3.9vh;
+	height: 3.9 vh;
+	z-index: -1;
 }
 
 .stat{
@@ -30,29 +36,37 @@ html {
 
 .name{
     text-align:left;
-    padding-left:1.5%;
-    border-top:1px solid grey;
-    border-bottom: 1px solid grey;
+    padding-left:1.3%;
+	border-top: 0.15vw solid rgba(100, 100, 100, 1);
+    border-bottom: 0.15vw solid rgba(100, 100, 100, 1);
 }
 
 .emblem{
-    height:1.7vw;
-    margin-bottom:-0.35vw;
-    margin-right:0.5vw;
+    /*height:1.65vw;*/
+	height:1.91vw;
+	position: relative;
+	left: -0.084vw;
+	top: 0.091vw;
+    margin-right: 0.22vw;
+	margin-bottom: -0.5vh;
 }
 
 #spectatingOverlay{
-    width:24vw;
+    width:19.87vw;
     margin-left:auto;
     margin-right:auto;
     position: relative;
-    top:80vh;
-    left: -2.5vw;
+    top:86.85vh;
+    left: 0.025vw;
+    /*border-top: 0.15vw solid rgba(200, 200, 200, 0.6);
+    border-bottom: 0.15vw solid rgba(200, 200, 200, 0.6);*/
 }
 
 .arrows{
-    height:1.7vw;
-    margin-bottom:-0.5vw;
-    margin-right:0vw;
+	position: relative;
+	top: 0.2vh;
+    height:1.8vw;
+    margin-bottom: -1.0vw;
+    margin-right: 0.07vw;
     float:right;
 }

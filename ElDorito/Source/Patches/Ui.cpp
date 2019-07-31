@@ -175,7 +175,7 @@ namespace Patches::Ui
 	int customPrimaryHUDColor = -1;
 	int customSecondaryHUDColor = 0;
 
-	bool eliteHUD = false;
+	int chudIndex = -1;
 
 	void ApplyAfterTagsLoaded()
 	{
@@ -289,10 +289,9 @@ namespace Patches::Ui
 		//Fix HUD Distortion in third person.
 		Hook(0x193370, CameraModeChangedHook, HookFlags::IsCall).Apply();
 
-		// TODO: FIX THESE:
 		// use the correct hud globals for the player representation
-		//Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
-		//Hook(0x6895FF, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
+		Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
+		Hook(0x6895FF, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 
 		// TODO: FIX THESE:
 		//Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
@@ -357,6 +356,8 @@ namespace Patches::Ui
 		// Fixes some broken hud state strings, including the respawn timer. 
 		Hook(0x6963C6, HUDStateDisplayHook, HookFlags::IsCall).Apply();
 
+		Patch::NopFill(Pointer::Base(0x207D1F), 7);
+		
 		Patches::Events::OnEvent(OnEvent);
 	}
 
@@ -1259,6 +1260,12 @@ namespace
 		if (!playerRepresentation)
 			return 0;
 
+		using Blam::Tags::UI::ChudGlobalsDefinition;
+		auto *chgd = Blam::Tags::TagInstance(chgdIndex).GetDefinition<ChudGlobalsDefinition>();
+
+		if (chudIndex > 0 && chudIndex <= chgd->HudGlobals.Count)
+			return chudIndex - 1;
+
 		auto nameId = *(uint32_t*)playerRepresentation;
 		switch (nameId)
 		{
@@ -1266,8 +1273,9 @@ namespace
 			return 2;
 		case 0x1119: //mp_elite
 		case 0xCC: // dervish
+			return 1;
 		default:
-			return eliteHUD;
+			return 0;
 		}
 	}
 
@@ -1386,7 +1394,7 @@ namespace
 		case 0x1119: //mp_elite
 		case 0xCC: // dervish
 		default:
-			return eliteHUD + 1;
+			return chudIndex + 1;
 		}
 	}
 

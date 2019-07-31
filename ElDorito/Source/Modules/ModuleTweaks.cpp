@@ -10,9 +10,9 @@ namespace
 		return true;
 	}
 
-	bool VariableEliteHUDUpdated(const std::vector<std::string>& arguments, std::string& returnInfo)
+	bool VariableChudGlobalsIndexUpdated(const std::vector<std::string>& arguments, std::string& returnInfo)
 	{
-		Patches::Ui::eliteHUD = Modules::ModuleTweaks::Instance().VarEliteHUD->ValueInt;
+		Patches::Ui::chudIndex = Modules::ModuleTweaks::Instance().VarChudGlobalsIndex->ValueInt;
 		Patches::Tweaks::UpdateUnitHUD();
 		return true;
 	}
@@ -50,9 +50,8 @@ namespace Modules
 		VarFlatHUD->ValueIntMin = 0;
 		VarFlatHUD->ValueIntMax = 1;
 
-		VarEliteHUD = AddVariableInt("EliteHUD", "elitehud", "Switches to the elite HUD.", eCommandFlagsArchived, 0, VariableEliteHUDUpdated);
-		VarEliteHUD->ValueIntMin = 0;
-		VarEliteHUD->ValueIntMax = 1;
+		VarChudGlobalsIndex = AddVariableInt("ChudGlobalsIndex", "chudglobalsindex", "Switches HUD globals to the specified index.", eCommandFlagsArchived, 0, VariableChudGlobalsIndexUpdated);
+		VarChudGlobalsIndex->ValueIntMin = 0;
 
 		VarSinglethreaded = AddVariableInt("Singlethreaded", "singlethreaded", "Enables singlethreaded mode.", eCommandFlagsArchived, 0);
 		VarSinglethreaded->ValueIntMin = 0;

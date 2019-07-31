@@ -13,7 +13,7 @@ namespace Modules
 		Command *VarDisableHitMarkers;
 		Command *VarReachStyleFrags;
 		Command *VarFlatHUD;
-		Command *VarEliteHUD;
+		Command *VarChudGlobalsIndex;
 		Command *VarSinglethreaded;
 		Command *VarDisableMetagame;
 

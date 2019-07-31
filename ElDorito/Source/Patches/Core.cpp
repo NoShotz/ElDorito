@@ -31,6 +31,7 @@
 
 #include "../Modules/ModuleCamera.hpp"
 #include "../Modules/ModuleCampaign.hpp"
+#include "../Modules/ModuleDebug.hpp"
 #include "../Modules/ModuleGame.hpp"
 #include "../Modules/ModuleInput.hpp"
 #include "../Modules/ModulePlayer.hpp"
@@ -544,65 +545,52 @@ namespace
 		return ((bool(__cdecl *)(void *))0x4A81D0)(a1);
 	}
 
-	void dirty_disk_error_debug(const char *name)
+	template<size_t addr>
+	void dirty_disk_error_debug()
 	{
-		if (!ElDorito::Instance().IsDedicated())
-			MessageBoxA(NULL, name, "dirty_disk_error", MB_ICONERROR);
-		((void(*)())0xA9F6C0)(); // 0xA9F6C0 crashes right away whereas 0xA9F6D0 only crashes if 0x5260711 returns true otherwise returns to mainmenu
-	}
+		auto continue_type = Modules::ModuleDebug::Instance().VarDirtyDiskContinueType->ValueInt;
 
-	// if there's a way to do this in a single function lmk
-	void dirty_disk_error_505847()
-	{
-		dirty_disk_error_debug("0x505847, inside damaged_media_halt_and_display_error.");
-	}
-	void dirty_disk_error_50F56E()
-	{
-		dirty_disk_error_debug("0x50F56E, inside sub_50F370\nBecause game_state hash verification failed.");
-	}
-	void dirty_disk_error_510239()
-	{
-		dirty_disk_error_debug("0x510239, inside sub_510110\nBecause game_state hash verification failed.");
-	}
-	void dirty_disk_error_510830()
-	{
-		dirty_disk_error_debug("0x510830, inside game_state_security_verify_signature_internal\nBecause argument a1.");
-	}
-	void dirty_disk_error_510E4E()
-	{
-		dirty_disk_error_debug("0x510E4E, inside game_state_try_and_load_from_persistent_storage\nBecause game_state hash verification failed.");
-	}
-	void dirty_disk_error_5679FC()
-	{
-		dirty_disk_error_debug("0x5679FC, inside sub_567850 called from main_game_change_immediate\nBecause sub_52F180 returned false, c_cache_file_tag_resource_runtime_manager related.");
-	}
-	void dirty_disk_error_4EA78C()
-	{
-		dirty_disk_error_debug("0x4EA78C, inside sub_4EA730\nbecause (++iterator >= 3), c_cache_file_tag_resource_runtime_manager related.");
-	}
-	void dirty_disk_error_5FB40C()
-	{
-		dirty_disk_error_debug("0x5FB40C, inside c_simple_io_result::vftable02\nBecause byte_244627D was true.");
-	}
-	void dirty_disk_error_5FB42C()
-	{
-		dirty_disk_error_debug("0x5FB42C, inside c_simple_io_result::vftable01\nBecause byte_244627D was true.");
-	}
-	void dirty_disk_error_5FB44C()
-	{
-		dirty_disk_error_debug("0x5FB44C, inside c_simple_io_result::vftable00\nbecause byte_244627D was true");
-	}
-	void dirty_disk_error_6EBD90()
-	{
-		dirty_disk_error_debug("0x6EBD90, unknown\nunused function?");
-	}
-	void dirty_disk_error_6EC10C()
-	{
-		dirty_disk_error_debug("0x6EC10C, inside sub_6EC010\nbecause CreateFileW returned a bad handle");
-	}
-	void dirty_disk_error_6EC21C()
-	{
-		dirty_disk_error_debug("0x6EC21C, inside sub_6EC120\nbecause CreateFileW returned a bad handle");
+		std::unordered_map<size_t, const char *> errors = {
+			{ 0x505847, "damaged_media_halt_and_display_error." },
+			{ 0x50F56E, "sub_50F370\nReason: SHA1::Verify failed for gamestate->lpAddress." },
+			{ 0x510239, "sub_510110\nReason: SHA1::Verify failed for gamestate->lpAddress." },
+			{ 0x510830, "game_state_security_verify_signature_internal\nReason: SHA1::Verify failed for &game_state_header." },
+			{ 0x510E4E, "game_state_try_and_load_from_persistent_storage\nReason: SHA1::Verify failed for gamestate->lpAddress." },
+			{ 0x5679FC, "main_game_load_map\nReason: map_load or sub_52F180 returned false, c_cache_file_tag_resource_runtime_manager related." },
+			{ 0x4EA78C, "sub_4EA730\nReason: (++iterator >= 3), scenario_zone_set_resources related." },
+			{ 0x5FB40C, "c_simple_io_result::vftable02\nReason: byte_244627D was true." },
+			{ 0x5FB42C, "c_simple_io_result::vftable01\nReason: byte_244627D was true." },
+			{ 0x5FB44C, "c_simple_io_result::vftable00\nReason: byte_244627D was true" },
+			{ 0x6EBD90, "unknown\nunused function?" },
+			{ 0x6EC10C, "sub_6EC010\nReason: CreateFileW returned a bad handle" },
+			{ 0x6EC21C, "sub_6EC120\nReason: CreateFileW returned a bad handle" }
+		};
+		const char *continue_types[] = {
+			"dirty_disk_error, crashing as normal",
+			"dirty_disk_error, continuing execution",
+			"dirty_disk_error, returning to mainmenu"
+		};
+
+		if (!ElDorito::Instance().IsDedicated())
+		{
+			char caption[64] = {};
+			sprintf_s(caption, "0x%08X, %s", addr, continue_types[continue_type]);
+			MessageBoxA(NULL, errors.at(addr), caption, MB_ICONERROR);
+		}
+
+		switch (continue_type)
+		{
+		case 0:
+			((void(*)())0xA9F6C0)();
+			break;
+		case 1:
+			break;
+		case 2:
+			*(const char **)0x7B5E8C = "levels\\ui\\mainmenu\\mainmenu";
+			*(int *)0x7B5E97 = Blam::MapType::eMapTypeMainmenu;
+			((void(__cdecl *)())0x7B5E40)();
+			break;
+		}
 	}
 }
 
@@ -632,6 +620,10 @@ namespace Patches::Core
 
 		// Patch to allow spawning AI through effects
 		Patch::NopFill(Pointer::Base(0x1033321), 2);
+
+		// Fix secondary color override in team games
+		Patch(0x2EE51, { 0x0C }).Apply();
+		Patch(0x2EE54, { 0x14 }).Apply();
 
 		// Fix random colored lighting
 		Patch(0x14F2FFC, { 0x0, 0x0, 0x0, 0x0 }).Apply();
@@ -671,19 +663,19 @@ namespace Patches::Core
 
 #ifdef _DEBUG
 		// Dirty disk error at 0xA9F6C0
-		Hook(0x105847, dirty_disk_error_505847, HookFlags::IsCall).Apply();
-		Hook(0x10F56E, dirty_disk_error_50F56E, HookFlags::IsCall).Apply();
-		Hook(0x110239, dirty_disk_error_510239, HookFlags::IsCall).Apply();
-		Hook(0x110830, dirty_disk_error_510830, HookFlags::IsCall).Apply();
-		Hook(0x110E4E, dirty_disk_error_510E4E, HookFlags::IsCall).Apply();
-		Hook(0x1679FC, dirty_disk_error_5679FC, HookFlags::IsCall).Apply();
-		Hook(0x0EA78C, dirty_disk_error_4EA78C, HookFlags::IsCall).Apply();
-		Hook(0x1FB40C, dirty_disk_error_5FB40C, HookFlags::IsCall).Apply();
-		Hook(0x1FB42C, dirty_disk_error_5FB42C, HookFlags::IsCall).Apply();
-		Hook(0x1FB44C, dirty_disk_error_5FB44C, HookFlags::IsCall).Apply();
-		Hook(0x2EBD90, dirty_disk_error_6EBD90, HookFlags::IsCall).Apply();
-		Hook(0x2EC10C, dirty_disk_error_6EC10C, HookFlags::IsCall).Apply();
-		Hook(0x2EC21C, dirty_disk_error_6EC21C, HookFlags::IsCall).Apply();
+		Hook(0x105847, dirty_disk_error_debug<0x505847>, HookFlags::IsCall).Apply();
+		Hook(0x10F56E, dirty_disk_error_debug<0x50F56E>, HookFlags::IsCall).Apply();
+		Hook(0x110239, dirty_disk_error_debug<0x510239>, HookFlags::IsCall).Apply();
+		Hook(0x110830, dirty_disk_error_debug<0x510830>, HookFlags::IsCall).Apply();
+		Hook(0x110E4E, dirty_disk_error_debug<0x510E4E>, HookFlags::IsCall).Apply();
+		Hook(0x1679FC, dirty_disk_error_debug<0x5679FC>, HookFlags::IsCall).Apply();
+		Hook(0x0EA78C, dirty_disk_error_debug<0x4EA78C>, HookFlags::IsCall).Apply();
+		Hook(0x1FB40C, dirty_disk_error_debug<0x5FB40C>, HookFlags::IsCall).Apply();
+		Hook(0x1FB42C, dirty_disk_error_debug<0x5FB42C>, HookFlags::IsCall).Apply();
+		Hook(0x1FB44C, dirty_disk_error_debug<0x5FB44C>, HookFlags::IsCall).Apply();
+		Hook(0x2EBD90, dirty_disk_error_debug<0x6EBD90>, HookFlags::IsCall).Apply();
+		Hook(0x2EC10C, dirty_disk_error_debug<0x6EC10C>, HookFlags::IsCall).Apply();
+		Hook(0x2EC21C, dirty_disk_error_debug<0x6EC21C>, HookFlags::IsCall).Apply();
 #endif
 
 		// Prevent FOV from being overridden when the game loads
@@ -1305,7 +1297,8 @@ namespace
 			data->CampaignInsertionPoint = (Blam::CampaignInsertionPoint)moduleCampaign->VarInsertionPoint->ValueInt;
 			data->CampaignMetagameScoringOption = (Blam::CampaignMetagameScoringOption)moduleCampaign->VarMetagameScoringOption->ValueInt;
 			data->CampaignMetagameEnabled = (bool)moduleCampaign->VarMetagameEnabled->ValueInt;
-			data->SurvivalModeEnabled = (bool)moduleCampaign->VarSurvivalModeEnabled->ValueInt;
+			if (moduleCampaign->VarSurvivalModeEnabled->ValueInt)
+				data->SurvivalModeEnabled = true;
 		}
 		else
 			if (Pointer(0x165C83C).Read<int>() != 60)
