@@ -109,6 +109,23 @@ namespace Blam::Objects
 		uint32_t UnknownC8;
 		uint32_t UnknownCC;
 		DatumHandle SimulationEntity;
+		char unknownD4[39];
+		float UnitCurrentHealth;
+		float UnitCurrentShield;
+		char unknown115[133];
+		uint32_t ActorIndex;
+		uint32_t unknown18C;
+		uint32_t PositionFlags;
+		uint32_t TeamIndex;
+		DatumHandle PlayerHandle;
+		uint32_t unknown19C;
+		uint32_t unknown1A0;
+		uint32_t unknown1A4;
+		char unknown1A8[196];
+		DatumHandle unknown_handle;
+		char unknown270[212];
+		float UnitCurrentFlashlight;
+		float FlashlightFadeTime;
 		// ...
 
 		MultiplayerProperties* GetMultiplayerProperties() const
