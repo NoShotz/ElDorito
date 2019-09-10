@@ -112,7 +112,7 @@ namespace
 
 		do {
 
-			if (eqipObject->TagIndex == unitTag->RevivingEquipment[count].HealthPack.TagIndex)
+			if (unitTag->RevivingEquipment && eqipObject->TagIndex == unitTag->RevivingEquipment[count].HealthPack.TagIndex)
 			{
 				is_reviving_equipment = true;
 				break;
