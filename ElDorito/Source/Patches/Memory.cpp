@@ -4,7 +4,7 @@
 
 namespace
 {
-	size_t globalCachIncrease = 100;
+	size_t globalCachIncrease = 1200;
 }
 
 namespace Patches::Memory
