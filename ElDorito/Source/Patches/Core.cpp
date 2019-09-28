@@ -625,6 +625,10 @@ namespace Patches::Core
 		Patch(0x2EE51, { 0x0C }).Apply();
 		Patch(0x2EE54, { 0x14 }).Apply();
 
+		// Fix default weapon fov value to match H3
+		Patch::NopFill(Pointer::Base(0x25FAB6), 8);
+		Patch(0x01913434, { 0xAE, 0x47, 0x61, 0x3F }).Apply();
+
 		// Fix random colored lighting
 		Patch(0x14F2FFC, { 0x0, 0x0, 0x0, 0x0 }).Apply();
 
