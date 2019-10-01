@@ -1286,6 +1286,21 @@ namespace
 		return true;
 	}
 
+	// TODO: find a way to support halo 3 insertions
+	unsigned short game_insertion_point_set(char is_survival)
+	{
+		uint16_t mapinfo_current_insertion_index = Pointer(0x19A5EC4).Read<short>();
+		auto scnrDefinition = Blam::Tags::Scenario::GetCurrentScenario();
+
+		if (!is_survival)
+			return 0;
+
+		if (scnrDefinition->ScenarioMetagame2 && scnrDefinition->ScenarioMetagame2[0].Survival2.Count >= (mapinfo_current_insertion_index + 1))
+			return scnrDefinition->ScenarioMetagame2[0].Survival2[mapinfo_current_insertion_index].InsertionIndex;
+
+		return 0;
+	}
+
 	// todo: make these user configurable, campaign_prefs.cfg?
 	void *NewGameOptions(Blam::GameOptions *data)
 	{
@@ -1294,11 +1309,13 @@ namespace
 			auto moduleCampaign = &Modules::ModuleCampaign::Instance();
 			data->FrameLimit = (int16_t)moduleCampaign->VarFrameLimit->ValueInt;
 			data->CampaignDifficultyLevel = (Blam::CampaignDifficultyLevel)moduleCampaign->VarDifficultyLevel->ValueInt;
-			data->CampaignInsertionPoint = (Blam::CampaignInsertionPoint)moduleCampaign->VarInsertionPoint->ValueInt;
 			data->CampaignMetagameScoringOption = (Blam::CampaignMetagameScoringOption)moduleCampaign->VarMetagameScoringOption->ValueInt;
 			data->CampaignMetagameEnabled = (bool)moduleCampaign->VarMetagameEnabled->ValueInt;
 			if (moduleCampaign->VarSurvivalModeEnabled->ValueInt)
 				data->SurvivalModeEnabled = true;
+			data->CampaignInsertionPoint = (Blam::CampaignInsertionPoint)game_insertion_point_set(data->SurvivalModeEnabled);
+			if (moduleCampaign->VarInsertionPoint->ValueInt)
+				data->CampaignInsertionPoint = (Blam::CampaignInsertionPoint)moduleCampaign->VarInsertionPoint->ValueInt;
 		}
 		else
 			if (Pointer(0x165C83C).Read<int>() != 60)
