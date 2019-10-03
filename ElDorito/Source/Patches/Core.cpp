@@ -788,6 +788,14 @@ namespace Patches::Core
 
 		// campaign simulation hacks
 		//Hook(0x1A857B, simulation_player_left_game_hook).Apply(); // jmp, not call
+
+		// Fix default weapon fov value to match H3
+		Patch::NopFill(Pointer::Base(0x25FAB6), 8);
+		Patch(0x01913434, { 0xAE, 0x47, 0x61, 0x3F }).Apply();
+
+		// Fix spartan lights color, match primary as in H3
+		Patch(0x63CD03, { 0x8B, 0x00, 0x90 }).Apply();
+		Patch(0x63CD07, { 0x20 }).Apply();
 	}
 
 	void OnShutdown(ShutdownCallback callback)
