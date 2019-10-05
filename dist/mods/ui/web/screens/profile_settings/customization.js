@@ -59,7 +59,6 @@ var settingsToLoad = [
     ['colorsPrimary', 'Player.Colors.Primary','Armor Primary','The primary armor color will serve you in individual combat but will be overwritten in team scenarios.',0],
     ['colorsSecondary', 'Player.Colors.Secondary','Armor Secondary','The secondary armor color accents your primary color and will be overwritten in team scenarios.',1],
     ['colorsVisor', 'Player.Colors.Visor','Armor Detail','The armor detail color preserves your individual identity in all multiplayer scenarios.',2],
-    ['colorsLights', 'Player.Colors.Lights','Light Color','Like Christmas, but more subtle.',3]
 ];
 var armorShoulderList = [
     ['Mark VI','base','Supplemental Armor, Pauldron, Mjolnir: This standard-issue shoulder armor for the Mjolnir Mark VI Powered Assault Armor has been in use since October 2552. It is compatible with all Mjolnir variants.'],
