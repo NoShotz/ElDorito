@@ -58,7 +58,7 @@ $(document).ready(function () {
         veto();
     });
     $('#showButton').off('click').on('click', function () {
-        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\b_button.snd!');
         compactMode = false;
         onShow();
 
@@ -224,7 +224,7 @@ dew.on("show", function (event) {
 
 
     if (event.data.userInvoked && compactMode && !event.data.compact) {
-        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\x_button');
+        dew.command('Game.PlaySound sound\\game_sfx\\ui\\button_based_ui_sounds\\x_button.snd!');
     }
     compactMode = event.data.compact;
     onShow();
