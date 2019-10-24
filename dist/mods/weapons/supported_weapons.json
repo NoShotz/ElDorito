@@ -27,6 +27,7 @@
   {"name":"covenant_carbine","tagname":"objects\\weapons\\rifle\\covenant_carbine\\covenant_carbine"},
 
   {"name":"plasma_rifle","tagname":"objects\\weapons\\rifle\\plasma_rifle\\plasma_rifle"},
+  {"name":"plasma_rifle_red","tagname":"objects\\weapons\\rifle\\plasma_rifle_red\\plasma_rifle_red"},
 
   {"name":"shotgun","tagname":"objects\\weapons\\rifle\\shotgun\\shotgun"},
 
