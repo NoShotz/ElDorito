@@ -50,6 +50,7 @@
 
 #include <codecvt>
 #include <Shlobj.h>
+#include <psapi.h>
 
 // new headers
 #include <effects\particles.hpp>
@@ -62,6 +63,86 @@
 
 namespace
 {
+	auto CopyToClipboard = [=](const std::string &s)
+	{
+		OpenClipboard(GetDesktopWindow());
+		EmptyClipboard();
+		HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, s.size() + 1);
+		if (!hg) {
+			CloseClipboard();
+			return;
+		}
+		memcpy(GlobalLock(hg), s.c_str(), s.size() + 1);
+		GlobalUnlock(hg);
+		SetClipboardData(CF_TEXT, hg);
+		CloseClipboard();
+		GlobalFree(hg);
+	};
+
+	auto WriteStackBackTrace = [=](LPCSTR pCallingFunction, DWORD size = 1024)
+	{
+		std::stringstream ss;
+
+		auto format = [=](LPCSTR format/*, size_t bufferSize*/, ...)
+		{
+			va_list args;
+			va_start(args, format);
+
+			//static char *buffer;
+			//buffer = new char[bufferSize];
+			//int result = vsnprintf_s(buffer, bufferSize, _TRUNCATE, format, args);
+
+			static char buffer[512];
+			int result = vsnprintf_s(buffer, sizeof(buffer), _TRUNCATE, format, args);
+			va_end(args);
+
+			return buffer;
+		};
+
+		ss << format("```\nTRACE(%s)", pCallingFunction) << std::endl;
+		ss << "{" << std::endl;
+
+		LPVOID *traces = new LPVOID[size];
+		for (int traceIndex = 0; traceIndex < CaptureStackBackTrace(0, size, traces, NULL); traceIndex++)
+		{
+			HANDLE hProcess = GetCurrentProcess();
+			HMODULE hModules[1024]; DWORD cbNeeded;
+			if (EnumProcessModules(hProcess, hModules, sizeof(hModules), &cbNeeded))
+			{
+				for (unsigned int moduleIndex = 0; moduleIndex < (cbNeeded / sizeof(HMODULE)); moduleIndex++)
+				{
+					MODULEINFO moduleInformation;
+					if (GetModuleInformation(hProcess, hModules[moduleIndex], &moduleInformation, sizeof(moduleInformation)))
+					{
+						if (traces[traceIndex] >= moduleInformation.lpBaseOfDll && (UINT32)traces[traceIndex] < (UINT32)moduleInformation.lpBaseOfDll + (UINT32)moduleInformation.SizeOfImage)
+						{
+							UINT32 moduleOffset = 0;
+							if (moduleOffset = (UINT32)traces[traceIndex] - (UINT32)moduleInformation.lpBaseOfDll)
+							{
+								char szModName[MAX_PATH];
+								if (GetModuleFileNameEx(hProcess, hModules[moduleIndex], szModName, sizeof(szModName) / sizeof(char)))
+								{
+									ss << format("\t%s+0x%08IX", std::string(szModName).substr(std::string(szModName).find_last_of("/\\") + 1).c_str(), moduleOffset);
+
+									if (strstr(szModName, "eldorado.exe"))
+									{
+										ss << format(",\t0x%08IX", 0x400000 + moduleOffset);
+									}
+
+									ss << std::endl;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		ss << "};\n```" << std::endl;
+
+		return ss.str();
+	};
+
 	void GameTickHook();
 	void TagsLoadedHook();
 	void FovHook();
@@ -545,43 +626,30 @@ namespace
 		return ((bool(__cdecl *)(void *))0x4A81D0)(a1);
 	}
 
-	template<size_t addr>
 	void dirty_disk_error_debug()
 	{
-		auto continue_type = Modules::ModuleDebug::Instance().VarDirtyDiskContinueType->ValueInt;
+		auto stack_trace = WriteStackBackTrace("dirty_disk_error");
+		CopyToClipboard(stack_trace);
 
-		std::unordered_map<size_t, const char *> errors = {
-			{ 0x505847, "damaged_media_halt_and_display_error." },
-			{ 0x50F56E, "sub_50F370\nReason: SHA1::Verify failed for gamestate->lpAddress." },
-			{ 0x510239, "sub_510110\nReason: SHA1::Verify failed for gamestate->lpAddress." },
-			{ 0x510830, "game_state_security_verify_signature_internal\nReason: SHA1::Verify failed for &game_state_header." },
-			{ 0x510E4E, "game_state_try_and_load_from_persistent_storage\nReason: SHA1::Verify failed for gamestate->lpAddress." },
-			{ 0x5679FC, "main_game_load_map\nReason: map_load or sub_52F180 returned false, c_cache_file_tag_resource_runtime_manager related." },
-			{ 0x4EA78C, "sub_4EA730\nReason: (++iterator >= 3), scenario_zone_set_resources related." },
-			{ 0x5FB40C, "c_simple_io_result::vftable02\nReason: byte_244627D was true." },
-			{ 0x5FB42C, "c_simple_io_result::vftable01\nReason: byte_244627D was true." },
-			{ 0x5FB44C, "c_simple_io_result::vftable00\nReason: byte_244627D was true" },
-			{ 0x6EBD90, "unknown\nunused function?" },
-			{ 0x6EC10C, "sub_6EC010\nReason: CreateFileW returned a bad handle" },
-			{ 0x6EC21C, "sub_6EC120\nReason: CreateFileW returned a bad handle" }
-		};
+		stack_trace += "\nTrace copied to clipboard please paste the results in discord, or make an issue on github";
+
+		auto continue_type = Modules::ModuleDebug::Instance().VarDirtyDiskContinueType->ValueInt;
 		const char *continue_types[] = {
-			"dirty_disk_error, crashing as normal",
-			"dirty_disk_error, continuing execution",
-			"dirty_disk_error, returning to mainmenu"
+			"shutting down",
+			"continuing",
+			"returning"
 		};
 
 		if (!ElDorito::Instance().IsDedicated())
 		{
-			char caption[64] = {};
-			sprintf_s(caption, "0x%08X, %s", addr, continue_types[continue_type]);
-			MessageBoxA(NULL, errors.at(addr), caption, MB_ICONERROR);
+			MessageBoxA(NULL, stack_trace.c_str(), continue_types[continue_type], MB_ICONERROR);
 		}
 
 		switch (continue_type)
 		{
 		case 0:
-			((void(*)())0xA9F6C0)();
+			Patches::Core::ExecuteShutdownCallbacks();
+			std::exit(0);
 			break;
 		case 1:
 			break;
@@ -662,20 +730,22 @@ namespace Patches::Core
 #endif
 
 #ifdef _DEBUG
+		Hook(0x69F6C0, dirty_disk_error_debug).Apply();
+
 		// Dirty disk error at 0xA9F6C0
-		Hook(0x105847, dirty_disk_error_debug<0x505847>, HookFlags::IsCall).Apply();
-		Hook(0x10F56E, dirty_disk_error_debug<0x50F56E>, HookFlags::IsCall).Apply();
-		Hook(0x110239, dirty_disk_error_debug<0x510239>, HookFlags::IsCall).Apply();
-		Hook(0x110830, dirty_disk_error_debug<0x510830>, HookFlags::IsCall).Apply();
-		Hook(0x110E4E, dirty_disk_error_debug<0x510E4E>, HookFlags::IsCall).Apply();
-		Hook(0x1679FC, dirty_disk_error_debug<0x5679FC>, HookFlags::IsCall).Apply();
-		Hook(0x0EA78C, dirty_disk_error_debug<0x4EA78C>, HookFlags::IsCall).Apply();
-		Hook(0x1FB40C, dirty_disk_error_debug<0x5FB40C>, HookFlags::IsCall).Apply();
-		Hook(0x1FB42C, dirty_disk_error_debug<0x5FB42C>, HookFlags::IsCall).Apply();
-		Hook(0x1FB44C, dirty_disk_error_debug<0x5FB44C>, HookFlags::IsCall).Apply();
-		Hook(0x2EBD90, dirty_disk_error_debug<0x6EBD90>, HookFlags::IsCall).Apply();
-		Hook(0x2EC10C, dirty_disk_error_debug<0x6EC10C>, HookFlags::IsCall).Apply();
-		Hook(0x2EC21C, dirty_disk_error_debug<0x6EC21C>, HookFlags::IsCall).Apply();
+		//Hook(0x105847, dirty_disk_error_debug<0x505847>, HookFlags::IsCall).Apply();
+		//Hook(0x10F56E, dirty_disk_error_debug<0x50F56E>, HookFlags::IsCall).Apply();
+		//Hook(0x110239, dirty_disk_error_debug<0x510239>, HookFlags::IsCall).Apply();
+		//Hook(0x110830, dirty_disk_error_debug<0x510830>, HookFlags::IsCall).Apply();
+		//Hook(0x110E4E, dirty_disk_error_debug<0x510E4E>, HookFlags::IsCall).Apply();
+		//Hook(0x1679FC, dirty_disk_error_debug<0x5679FC>, HookFlags::IsCall).Apply();
+		//Hook(0x0EA78C, dirty_disk_error_debug<0x4EA78C>, HookFlags::IsCall).Apply();
+		//Hook(0x1FB40C, dirty_disk_error_debug<0x5FB40C>, HookFlags::IsCall).Apply();
+		//Hook(0x1FB42C, dirty_disk_error_debug<0x5FB42C>, HookFlags::IsCall).Apply();
+		//Hook(0x1FB44C, dirty_disk_error_debug<0x5FB44C>, HookFlags::IsCall).Apply();
+		//Hook(0x2EBD90, dirty_disk_error_debug<0x6EBD90>, HookFlags::IsCall).Apply();
+		//Hook(0x2EC10C, dirty_disk_error_debug<0x6EC10C>, HookFlags::IsCall).Apply();
+		//Hook(0x2EC21C, dirty_disk_error_debug<0x6EC21C>, HookFlags::IsCall).Apply();
 #endif
 
 		// Prevent FOV from being overridden when the game loads
