@@ -63,6 +63,7 @@ namespace Patches::Simulation
 
 		// fix territories
 		Pointer(0x0163FE48).Write(uint32_t(&c_simulation_game_engine_event_definition__event_payload_encode_hook));
+		
 	}
 }
 

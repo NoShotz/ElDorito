@@ -48,6 +48,7 @@ namespace Blam
 				struct InvisibilityBlock;
 				struct InvincibilityBlock;
 				struct RegeneratorBlock;
+				struct AtlasHealthPackBlock;
 				struct ForcedReloadBlock;
 				struct ConcussiveBlastBlock;
 				struct TankModeBlock;
@@ -83,9 +84,7 @@ namespace Blam
 				TagBlock<InvisibilityBlock> Invisibility;
 				TagBlock<InvincibilityBlock> Invincibility;
 				TagBlock<RegeneratorBlock> Regenerator;
-				unsigned int Unknown15;
-				unsigned int Unknown16;
-				unsigned int  Unknown17;
+				TagBlock<AtlasHealthPackBlock> AtlasHealthPack;
 				TagBlock<ForcedReloadBlock> ForcedReload;
 				TagBlock<ConcussiveBlastBlock> ConcussiveBlast;
 				TagBlock<TankModeBlock> TankMode;
@@ -236,6 +235,13 @@ namespace Blam
 					TagReference RegeneratingEffect;
 				};
 				TAG_STRUCT_SIZE_ASSERT(RegeneratorBlock, 0x10);
+
+				struct AtlasHealthPackBlock
+				{
+					float Unknown;
+					float Unknown2;
+				};
+				TAG_STRUCT_SIZE_ASSERT(AtlasHealthPackBlock, 0x8);
 
 				struct ForcedReloadBlock
 				{

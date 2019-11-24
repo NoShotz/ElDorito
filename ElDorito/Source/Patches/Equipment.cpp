@@ -10,6 +10,7 @@
 #include "../Blam/Tags/TagInstance.hpp"
 #include "../Blam/Tags/Items/Item.hpp"
 #include "../Blam/Tags/Game/MultiplayerGlobals.hpp"
+#include "../Blam/Tags/Items/DefinitionEquipment.hpp"
 #include "../Blam/Memory/TlsData.hpp"
 #include "../ElDorito.hpp"
 #include "../Patch.hpp"
@@ -26,6 +27,7 @@ namespace
 	bool __cdecl UnitUpdateHook(uint32_t unitObjectIndex);
 	void __cdecl EquipmentUseHook(int unitObjectIndex, int slotIndex, unsigned int isClient);
 	void __cdecl UnitDeathHook(int unitObjectIndex, int a2, int a3);
+	void __cdecl PickupHealthpackHook(int playerIndex, Blam::DatumHandle eqipHandle);
 	void DespawnEquipmentHook();
 	void OvershieldDecayHook();
 	void VisionEndHook();
@@ -84,6 +86,9 @@ namespace Patches::Equipment
 
 		// allow equipment to be picked up in campaign
 		Patch::NopFill(Pointer::Base(0x13985F), 6);
+
+		// allow healthpacks to be picked up
+		Hook(0x1398A9, PickupHealthpackHook, HookFlags::IsCall).Apply();
 	}
 }
 
@@ -95,6 +100,39 @@ namespace
 	const auto IsClient = (bool(*)())(0x00531D70);
 
 	using namespace Blam::Math;
+
+	bool pickup_is_invalid(Blam::Objects::ObjectBase* unitObject, Blam::Objects::ObjectBase* eqipObject)
+	{
+		using Blam::Tags::Objects::Object;
+		using Blam::Tags::TagInstance;
+
+		auto unitTag = TagInstance(unitObject->TagIndex).GetDefinition<Object>();;
+		bool is_reviving_equipment = false;
+		int count = 0;
+
+		do {
+
+			if (unitTag->RevivingEquipment && eqipObject->TagIndex == unitTag->RevivingEquipment[count].HealthPack.TagIndex)
+			{
+				is_reviving_equipment = true;
+				break;
+			}
+
+			count++;
+		} while (count < unitTag->RevivingEquipment.Count);
+
+		if (is_reviving_equipment)
+			return false;
+
+		uint16_t index[2];
+		index[0] = TagInstance::Find('bipd', "objects\\characters\\odst_recon\\odst_recon").Index;
+		index[1] = TagInstance::Find('bipd', "objects\\characters\\odst_oni_op\\odst_oni_op_player").Index;
+
+		if (TagInstance(unitObject->TagIndex).Index == index[0] || TagInstance(unitObject->TagIndex).Index == index[1])
+			return true;
+
+		return false;
+	}
 
 	void __stdcall DoPickup(uint32_t playerIndex, uint32_t objectIndex)
 	{
@@ -134,6 +172,10 @@ namespace
 
 		auto equipmentObject = Blam::Objects::Get(objectIndex);
 		if (!equipmentObject)
+			return;
+
+		// limit odst pickups to healthpacks
+		if (pickup_is_invalid(unitObject, equipmentObject))
 			return;
 
 		// return if the unit already holds equipment
@@ -504,6 +546,65 @@ namespace
 				// notify clients that an object has been spawned
 				Simulation_SpawnObject(grenadeObjectIndex);
 			}
+		}
+	}
+
+	void __cdecl PickupHealthpackHook(int playerIndex, Blam::DatumHandle eqipHandle)
+	{
+		using Blam::Tags::Items::Equipment;
+		using Blam::Tags::Objects::Object;
+		using Blam::Tags::TagInstance;
+
+		static auto PlaySnd = (void(*)(uint32_t sndTagIndex, float volume))(0x5DE300);
+		const auto sub_B86C20 = (char(_cdecl*)(Blam::DatumHandle eqipHandle, Blam::DatumHandle unitHandle, char isClient))(0xB86C20);
+
+		auto eqipObject = Blam::Objects::Get(eqipHandle);
+		auto eqipTag = TagInstance(eqipObject->TagIndex).GetDefinition<Equipment>();;
+
+		if (eqipTag->HealthPack.Count > 0)
+		{
+			auto playerDatum = Blam::Players::GetPlayers().Get(playerIndex);
+			auto unitObject = Blam::Objects::Get(playerDatum->SlaveUnit);
+			if (!playerDatum || !unitObject || !eqipTag->AtlasHealthPack)
+				return;
+
+			auto unitTag = TagInstance(unitObject->TagIndex).GetDefinition<Object>();;
+			bool is_reviving_equipment = false;
+			int count = 0;
+
+			do {
+
+				if (eqipObject->TagIndex == unitTag->RevivingEquipment[count].HealthPack.TagIndex)
+				{
+					is_reviving_equipment = true;
+					break;
+				}
+
+				count++;
+			} while (count < unitTag->RevivingEquipment.Count);
+
+			// check conditions
+			if (!is_reviving_equipment || unitObject->UnitCurrentHealth >= 1.0f && unitObject->UnitCurrentShield >= 1.0f)
+				return;
+
+			// pickup and use as equipment
+			DoPickup(playerIndex, eqipHandle);
+
+			auto equipmentObjectIndex = Pointer(unitObject)(0x2F0).Read<uint32_t>();
+			if (equipmentObjectIndex == -1)
+				return;
+
+			sub_B86C20(equipmentObjectIndex, playerDatum->SlaveUnit, IsClient());
+
+			if (eqipTag->ActivationEffect.TagIndex != 0xFFFF)
+				PlaySnd(eqipTag->ActivationEffect.TagIndex, 1.0f);
+		}
+
+		else
+		{
+			// multiplayer powerups
+			const auto powerup_sub_5408E0 = (void(__cdecl*)(int playerIndex, Blam::DatumHandle eqipDatumHandle))(0x5408E0);
+			powerup_sub_5408E0(playerIndex, eqipHandle);
 		}
 	}
 
