@@ -1237,12 +1237,13 @@ namespace
 					ShowLanBrowser();
 					return;
 
-				case 0x1007C: // theater: Customization
+				/*case 0x1007C: // theater: Customization
 					Web::Ui::ScreenLayer::Show("profile_settings", "{}");
-					return;
+					return;*/
 
 				case 0x3FA3: // settings: Settings
-					Web::Ui::ScreenLayer::Show("settings", "{}");
+					//Web::Ui::ScreenLayer::Show("settings", "{}");
+					Patches::Ui::ShowDialog(0x10084);
 					return;
 
 				case 0x55: // exit: Exit

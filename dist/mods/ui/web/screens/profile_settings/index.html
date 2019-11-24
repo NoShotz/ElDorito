@@ -20,50 +20,53 @@
         <link rel="stylesheet" href="dew://lib/color-picker.css">
 </head>
 <body>
-    <div id="blackLayer"></div>
     <div id="container">
         <div class="page_content">
-            <div id="settingsWindow" class="menu-fullscreen">
-                <h1 class="header window-side-padding">Customization</h1>
+            <div id="appearanceWindow" class="menu-fullscreen">
+			<div id="emblemBG" class="emblemBG"></div>
+			<label id="playerNameDisplay" class="playerNameDisplay"></label>
+			<div id="playerBorder0" class="playerBorder0"></div>
+			<div id="playerBorder1" class="playerBorder1"></div>
+			<div id="playerBorder2" class="playerBorder2"></div>
+			<div id="playerBorder3" class="playerBorder3"></div>
+				<div class="emblemSmall">
+					<img id="emblemSmall" src="" />
+				</div>
                 <ul class="tabs">
-                    <li onclick="page1()"><a href="#page1"><img class="button"></img><img class="button"></img><p>Armory</p><div class="tab-bg"><div class="tab-shadow left"></div><div class="tab-shadow right"></div></div></a></li>
-                    <li onclick="page2()"><a href="#page2"><p>Colors</p><div class="tab-bg"><div class="tab-shadow left"></div><div class="tab-shadow right"></div></div></a></li>
-					<li id="EmblemTab" onclick="page3()"><a id="EmblemTabLink" href="#page3"><p>Emblem</p><div class="tab-bg"><div class="tab-shadow left"></div><div class="tab-shadow right"></div></div></a></li>
+					<li id="page1()"><a href="#page1"></a></li>
                 </ul>
                 <div class="tabpage-container window-side-padding">
+					<div class="emblemBox">
+						<img id="emblemBox" src="" />
+                    </div>
                   <div id="page1" class="tabpage grid-customization hide">
+				  <h1 class="hpad header">Appearance</h1>
                       <div id="buttonConatiner">
-                            <span><div class="setting baseNav button-list" onclick="inputBox('playerName');"><label>Player Name</label></div></span>
-                          <span><div class="setting baseNav button-list" onclick="inputBox('serviceTag');"><label>Service Tag</label></div></span>
-                          <span><div class="setting baseNav button-list" onclick="armorShow('armorHelmet',$(this));"><label>Helmet</label></div></span>
-                          <span><div class="setting baseNav button-list" onclick="armorShow('armorRightShoulder',$(this));"><label>Right Shoulder</label></div></span>
-                          <span><div class="setting baseNav button-list" onclick="armorShow('armorLeftShoulder',$(this));"><label>Left Shoulder</label></div></span>
-                          <span><div class="setting baseNav button-list" onclick="armorShow('armorChest',$(this));"><label>Chest</label></div></span>
-                            <span><div class="setting baseNav button-list" onclick="armorShow('gender',$(this));"><label>Gender</label></div></span>
-                            <span><div class="setting baseNav button-list" onclick="armorShow('playerRep',$(this));"><label>Player Unit</label></div></span>
+                          <span><div class="setting baseNav button-list" onclick="inputBox('playerName');"><label>Player Name</label></div></span>
+                          <span><div class="setting baseNav button-list" onclick="inputBox('serviceTag');"><label id="serviceTag"></label></div></span>
+						  <span onclick="page4()"><a href="#page4"><div class="setting baseNav button-list"><label>Armor</label></div></a></span>
+						  <span onclick="page3()"><a id="EmblemTabLink" href="#page3"><div onclick="emblemShow($(this));" class="setting baseNav button-list" id="EmblemTab"><label>Emblem</label></div></a></span>
+						  <span onclick="page2()"><a href="#page2"><div class="setting baseNav button-list"><label>Colors</label></div></a></span>
+						  <span><div class="setting baseNav button-list" onclick="inputBox('armorGender');"><label id="aGender"></label></div></span>
                       </div>
                       <div id="infoBox">
-                        <div class="infobox-header" id="infoHeader"></div>
+                        <div class="infobox-header info-pad" id="infoHeader"></div>
                         <div class="infobox-content" id="infoText"></div>
-                      </div>
-                      <div class="side-list has-vertical-scrollbar vertical-gradient-scroll">
-                        <form class="armorForm hide tile-button tile-large" id="armorHelmet"></form>
-                        <form class="armorForm hide tile-button tile-large" id="armorRightShoulder"></form>
-                        <form class="armorForm hide tile-button tile-large" id="armorLeftShoulder"></form>
-                        <form class="armorForm hide tile-button tile-large" id="armorChest"></form>
-                        <form class="armorForm hide tile-button tile-large" id="gender"></form>
-                        <form class="armorForm hide tile-button tile-large" id="playerRep"></form>
                       </div>
 
                   </div>
                   <div id="page2" class="tabpage grid-customization hide">
+				  <h1 class="hpad header">Colors</h1>
                       <div id="buttonConatiner">
                          <span><div class="setting baseNav button-list" onclick="colorShow('colorsPrimary',$(this));"><label>Armor Primary</label></div></span>
                          <span><div class="setting baseNav button-list" onclick="colorShow('colorsSecondary',$(this));"><label>Armor Secondary</label></div></span>
                          <span><div class="setting baseNav button-list" onclick="colorShow('colorsVisor',$(this));"><label>Armor Detail</label></div></span>
+						             <span><div class="setting baseNav button-list" onclick="colorShow('colorsEmblemPrimary',$(this));"><label>Emblem Primary</label></div></span>
+                         <span><div class="setting baseNav button-list" onclick="colorShow('colorsEmblemSecondary',$(this));"><label>Emblem Secondary</label></div></span>
+                         <span><div class="setting baseNav button-list" onclick="colorShow('colorsEmblemImage',$(this));"><label>Emblem Background</label></div></span>
                       </div>
                       <div class="side-list">
-                        <form class="colorForm hide tile-button" id="colorsPrimary">
+						<form class="colorForm hide tile-button" id="colorsPrimary">
                             <span id="customColor"><label><input type="radio" name="colorsPrimary" value="" onclick="document.getElementById('colorsPrimaryText').click()">Custom Color<input type="text" name="colorsPrimary" class="setting" id="colorsPrimaryText" value="#FFFFFF" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​</label></span>
                         </form>
                         <form class="colorForm hide tile-button" id="colorsSecondary">
@@ -75,33 +78,92 @@
                         <form class="colorForm hide tile-button" id="colorsLights">
                             <span id="customColor"><label><input type="radio" name="colorsLights" value="" onclick="document.getElementById('colorsLightsText').click()">Custom Color<input type="text" name="colorsLights" id="colorsLightsText" class="setting" value="#FFFFFF" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​</label></span>
                         </form>
-                        <form id="colorPicker" class="colorForm"></form>
+						<form id="colorPicker" class="colorForm"></form>
+						<form class="emblemColorForm hide tile-button" id="colorsEmblemPrimary"></form>
+						<form class="emblemColorForm hide tile-button" id="colorsEmblemSecondary"></form>
+						<form class="emblemColorForm hide tile-button" id="colorsEmblemImage"></form>
                       </div>
                       <div id="infoBox">
                           <div class="infobox-header" id="infoHeader"></div>
                           <div class="infobox-content" id="infoText"></div>
                       </div>
                   </div>
-				  <div id="page3" class="tabpage grid-customization hide">
+				  <div id="page3" class="tabpage grid-customization hide"><Label class="hpad Header">Emblem</label>
+				  <p class="infobox-content desc-pad">Select an icon and a background for your emblem.</p>
+                      <div class="side-list-l has-vertical-scrollbar"><Label class="iconHeader">ICONS:</label>
+						<form class="emblemForm tile-button tile-large emblem-tile" id="emblemIcon"></form>
+                      </div>
+					  <div class="side-list-r has-vertical-scrollbar"><Label class="iconHeader">BACKGROUNDS:</label>
+					    <form class="emblemForm tile-button tile-large emblem-tile" id="emblemBackgroundImage"></form>
+                      </div>
+                  </div>
+				  <div id="page4" class="tabpage grid-customization hide">
+				  <h1 class="hpad header">Armor</h1>
                       <div id="buttonConatiner">
-					     <span><div class="setting baseNav button-list" onclick="emblemShow('emblemIcon',$(this));"><label>Icon</label></div></span>
-					     <span><div class="setting baseNav button-list" onclick="emblemShow('emblemBackgroundImage',$(this));"><label>Background Image</label></div></span>
-                         <span><div class="setting baseNav button-list" onclick="emblemColorShow('colorsEmblemPrimary',$(this));"><label>Primary Color</label></div></span>
-                         <span><div class="setting baseNav button-list" onclick="emblemColorShow('colorsEmblemSecondary',$(this));"><label>Secondary Color</label></div></span>
-                         <span><div class="setting baseNav button-list" onclick="emblemColorShow('colorsEmblemImage',$(this));"><label>Background Color</label></div></span>
+						  <span><div class="setting baseNav button-list"><label for="armorClassification">Armor Classification</label></div>
+						  <select id="armorClassification" class="setting baseNav button-list-dropdown dropDown wheelable" onchange="changeClassification('Classification')">
+							  <option value="spartan">SPARTAN</option>
+							  <option value="elite">ELITE</option></select>
+							  </span>
+                          <span>
+                          <span>
+						  <div class="setting baseNav button-list"><label for="armorHelmet">Head</label></div>
+						  <select id="armorHelmet" class="setting baseNav button-list-dropdown dropDown wheelable" onchange="changeArmor('Helmet')">
+							  <option value="base">MARK VI</option>
+							  <option value="mp_markv">MARK V</option>
+							  <option value="mp_cobra">CQB</option>
+							  <option value="mp_regulator">EOD</option>
+							  <option value="mp_intruder">EVA</option>
+							  <option value="mp_ninja">RECON</option>
+							  <option value="mp_rogue">ROGUE</option>
+							  <option value="mp_scout">SCOUT</option>
+							  <option value="mp_marathon">SECURITY</option>
+							  <option value="mp_ryu">HAYABUSA</option>
+							  <option value="mp_odst">ODST</option></select>
+							  </span>
+                          <span>
+						  <div class="setting baseNav button-list"><label for="armorRightShoulder">Right Shoulder</label></div>
+						  <select id="armorRightShoulder" class="setting button-list-dropdown dropDown wheelable" onchange="changeArmor('RightShoulder')">
+							  <option value="base">MARK VI</option>
+							  <option value="mp_cobra">CQB</option>
+							  <option value="mp_regulator">EOD</option>
+							  <option value="mp_intruder">EVA</option>
+							  <option value="mp_ninja">RECON</option>
+							  <option value="mp_scout">SCOUT</option>
+							  <option value="mp_marathon">SECURITY</option>
+							  <option value="mp_ryu">HAYABUSA</option></select>
+							  </span>
+                          <span>
+						  <div class="setting baseNav button-list"><label for="armorLeftShoulder">Left Shoulder</label></div>
+						  <select id="armorLeftShoulder" class="setting button-list-dropdown dropDown wheelable" onchange="changeArmor('LeftShoulder')">
+							  <option value="base">MARK VI</option>
+							  <option value="mp_cobra">CQB</option>
+							  <option value="mp_regulator">EOD</option>
+							  <option value="mp_intruder">EVA</option>
+							  <option value="mp_ninja">RECON</option>
+							  <option value="mp_scout">SCOUT</option>
+							  <option value="mp_marathon">SECURITY</option>
+							  <option value="mp_ryu">HAYABUSA</option></select>
+							  </span>
+                          <span>
+						  <div class="setting baseNav button-list"><label for="armorChest">Body</label></div>
+						  <select id="armorChest" class="setting button-list-dropdown dropDown wheelable" onchange="changeArmor('Chest')">
+							  <option value="base">MARK VI</option>
+							  <option value="mp_bungie">BUNGIE</option>
+							  <option value="mp_cobra">CQB</option>
+							  <option value="mp_regulator">EOD</option>
+							  <option value="mp_intruder">EVA</option>
+							  <option value="mp_ninja">RECON</option>
+							  <option value="mp_scout">SCOUT</option>
+							  <option value="mp_ryu">HAYABUSA</option>
+							  <option value="mp_katana">KATANA</option></select>
+							  </span>
                       </div>
-                      <div class="emblemBox" id="infoBox">
-						<img id="emblemBox" src="" />
+                      <div class="info-pad" id="infoBox">
+                        <div class="infobox-header" id="infoHeader"></div>
+                        <div class="infobox-content" id="infoText"></div>
                       </div>
-                      <div class="side-list has-vertical-scrollbar vertical-gradient-scroll">
-						<form class="emblemForm hide tile-button tile-large emblem-tile" id="emblemIcon"></form>
-						<form class="emblemForm hide tile-button tile-large emblem-tile" id="emblemBackgroundImage"></form>
-                      </div>
-					  <div class="side-list">
-                        <form class="emblemColorForm hide tile-button" id="colorsEmblemPrimary"></form>
-						<form class="emblemColorForm hide tile-button" id="colorsEmblemSecondary"></form>
-						<form class="emblemColorForm hide tile-button" id="colorsEmblemImage"></form>
-                      </div>
+
                   </div>
 				  <div id="unavailable" class="tabpage grid-customization hide">
                       <div id="buttonConatiner">
@@ -112,6 +174,7 @@
                 </div>
                 <div class="bottomBar window-side-padding">
                     <button id="cancelButton" class="legend-button"><img class="button">Close</button>
+					<button id="backButton" class="legend-button" onclick="backButton()"><img class="button">Back</button>
 					<button id="toggleIconButton"  class="legend-button" onclick="toggleIcon();"><img class="button">Toggle Icon</button>
 					<button id="randomEmblem"  class="legend-button randomizer" onclick="randomEmblem();"><img class="button">Random Emblem</button>
                     <button id="randomColors"  class="legend-button randomizer" onclick="randomColors();"><img class="button">Random Colors</button>
@@ -122,14 +185,19 @@
 
             <div class="popup-window-container" id="inputBox">
               <div class="popup-window-wrapper">
+			  <h1 class="window-side-padding popup-window-header-bg"></h1>
                 <div class="popup-window">
-                    <h1 class="header window-side-padding"></h1>
+					<h1 class="popup-window-header popup-header-pad"></h1>
                     <div class="popup-window-area window-side-padding">
+						<p class="popup-content" id="popupText"></p>
                         <input type="text" class="popup-window-textinput textInput" id="pName" placeholder="..." spellcheck="false" maxlength="15">
                         <input type="text" class="popup-window-textinput textInput" id="sTag" placeholder="..." spellcheck="false" maxlength="4" pattern="[a-zA-Z0-9]+">
-                    </div>
-
-                    <div class="bottomBar window-side-padding">
+                        <span id="buttonConatiner aGender" class="armorGender">
+                          <div id="armorGender" class="setting baseNav button-list dropDown-gender" onclick="changeGender('male');"><label>Male</label></div>
+						  <div id="armorGender" class="setting baseNav button-list dropDown-gender" onclick="changeGender('female');"><label>Female</label></div>
+						</span>
+					</div>
+                    <div class="bottomPopupBar window-side-padding">
                         <button id="okButton" class="legend-button"><img class="button">Ok</button>
                         <button id="dismissButton" class="legend-button"><img class="button">Cancel</button>
                     </div>

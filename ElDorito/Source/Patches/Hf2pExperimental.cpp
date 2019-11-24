@@ -32,7 +32,7 @@ namespace
 	int game_engine_get_delta_ticks_hook();
 	void __fastcall c_game_engine_object_runtime_manager__update_hook(void *thisptr, void *unused);
 
-	//void UI_StartMenuScreenWidget_OnDataItemSelectedHook();
+	void UI_StartMenuScreenWidget_OnDataItemSelectedHook();
 
 	void SpawnTimerUpdate();
 }
@@ -60,7 +60,7 @@ namespace Patches::Hf2pExperimental
 		Hook(0x105F0D, Hf2pTickHook, HookFlags::IsCall).Apply();
 		//Hook(0x10CB01, Hf2pLoadPreferencesHook, HookFlags::IsCall).Apply();
 
-		//Hook(0x6F740E, UI_StartMenuScreenWidget_OnDataItemSelectedHook).Apply();
+		Hook(0x6F740E, UI_StartMenuScreenWidget_OnDataItemSelectedHook).Apply();
 
 		// fixes race condition with client respawn timer
 		Patch(0x1391B5, { 0xEB }).Apply();
@@ -189,10 +189,17 @@ namespace
 			UI_ScreenWidget_Close(screen, 0);
 	}
 
-	/*bool StartMenu_OnDataItemSelected(uint32_t nameId)
+	bool StartMenu_OnDataItemSelected(uint32_t nameId)
 	{
 		switch (nameId)
 		{
+		case 0x1012D: //appearance
+			UI_PlaySound(3, -1); // A Button
+			CloseScreen(UI_GetScreenManager(), 0x10084);
+			Patches::Ui::ShowDialog(0x10098, 0, 4, 0x10094);
+			Web::Ui::ScreenLayer::Show("profile_settings", "{}");
+			return true;
+
 		case 0x4055: // control_settings
 			UI_PlaySound(3, -1); // A Button
 			CloseScreen(UI_GetScreenManager(), 0x10084);
@@ -220,7 +227,7 @@ namespace
 			mov eax, 0xAF7436
 			jmp eax
 		}
-	}*/
+	}
 
 	uint32_t LevelStringToInt(const std::string& value)
 	{
