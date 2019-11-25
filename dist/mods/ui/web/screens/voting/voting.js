@@ -402,10 +402,6 @@ let GameMaps = [
     { known: ["sidewinder", "avalanche"], value: "sidewinder"},
     { known: ["shrine", "sandtrap"], value: "shrine"},
     { known: ["salvation", "epitaph"], value: "salvation"},
-    { known: ["s3d_turf", "icebox"], value: "s3d_turf"},
-    { known: ["s3d_reactor", "reactor"], value: "s3d_reactor"},
-    { known: ["s3d_edge", "edge"], value: "s3d_edge"},
-    { known: ["s3d_avalanche" , "diamondback"], value: "s3d_avalanche"},
     { known: ["riverworld", "valhalla"], value: "riverworld"},
     { known: ["midship", "heretic"], value: "midship"},
     { known: ["lockout", "blackout"], value: "lockout"},
@@ -421,7 +417,8 @@ let GameMaps = [
     { known: ["armory", "rat's nest"], value: "armory"},
     { known: ["mp_shadow_bridge", "vadum"], value: "mp_shadow_bridge"},
     { known: ["roundabout", "cabin fever"], value: "roundabout"},
-    { known: ["jungle_dam", "damage"], value: "jungle_dam"}
+    { known: ["jungle_dam", "damage"], value: "jungle_dam"},
+    { known: ["mp_ai_playground", "ai playground"], value: "mp_ai_playground"}
 ];
 function loadMapImage(map) {
     var name = map.mapname.toLowerCase() || null;

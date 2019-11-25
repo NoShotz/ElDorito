@@ -7,25 +7,31 @@ body {
 
 #chat{
     position: absolute;
-    font-size: 19px;
-    line-height: 26px;
+    font-size: 16px;
+    line-height: 22px;
     letter-spacing: 0.3px;
     color: white;
     overflow:hidden;
     zoom: 75%;
-    height: 37.5%;
+    height: 37.25%;
 }
 
-.inGame #chat{
+/*.inGame #chat{
     bottom: 41%;
     left: 7%;  
     width: 27%;
+}*/
+
+.inGame #chat{
+    bottom: 0%;
+    left: 29%; 
+    width: 42.1%;
 }
 
 .inLobby #chat{
     bottom: 0%;
-    left: 32%; 
-    width: 35%;
+    left: 29%; 
+    width: 42.1%;
 }
 
 #chatWindow{
@@ -40,11 +46,15 @@ body {
     letter-spacing: 0.3px;
     word-wrap: break-word;
     overflow-y:auto;
-    max-height:65%;
+    max-height:32.5%;
 }
 
-.inGame #chatWindow{
+/*.inGame #chatWindow{
     background-color: transparent;    
+}*/
+
+.inGame #chatWindow{
+    background-color: rgba(0,0,0,0.25);    
 }
 
 .inLobby #chatWindow{
