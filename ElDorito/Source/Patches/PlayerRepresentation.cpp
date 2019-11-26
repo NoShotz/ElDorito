@@ -41,8 +41,6 @@ namespace
 
 		void ApplyData(int playerIndex, Blam::Players::PlayerProperties *properties, const RepresentationData &data) override
 		{
-		#ifdef _DEBUG
-			// just elite for now...
 			switch (data.RepresentationNameId)
 			{
 			case 0xCC:
