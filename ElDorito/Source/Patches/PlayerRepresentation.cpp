@@ -50,7 +50,7 @@ namespace
 				properties->PlayerRepresentation = 0; // spartan
 				break;
 			}
-		#endif
+			
 			if(Modules::ModulePlayer::ValidServiceTag(data.ServiceTag))
 			{
 				auto wtag = Utils::String::WidenString(data.ServiceTag);
