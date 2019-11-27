@@ -293,29 +293,30 @@ namespace Patches::Ui
 		Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 		Hook(0x6895FF, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 
-		// TODO: FIX THESE:
-		//Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
-		/*Hook(0x686E7B, StateDataFlags3Hook).Apply();
-		Hook(0x687094, StateDataFlags5Hook).Apply();
-		Hook(0x687BF0, StateDataFlags21Hook).Apply();
-		Hook(0x685A5A, StateDataFlags31Hook).Apply();*/
-
-		/* TODO: Fix these: Various color fixes.
+				/* TODO: Fix these: Various color fixes.
 		Hook(0x6D5B5F, GetGlobalDynamicColorHook).Apply();
 		Hook(0x6CA009, GetWeaponOutlineColorHook).Apply();*/
 
-		//Show the talking player's name on the HUD
+        //Show the talking player's name on the HUD
 		Hook(0x6CA978, chud_talking_player_name_hook, HookFlags::IsCall).Apply();
 
+		#ifdef _DEBUG // Test "broken" hooks in debug
+		Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
+		Hook(0x686E7B, StateDataFlags3Hook).Apply();
+		Hook(0x687094, StateDataFlags5Hook).Apply();
+		Hook(0x687BF0, StateDataFlags21Hook).Apply();
+		Hook(0x685A5A, StateDataFlags31Hook).Apply();
+
 		//Show speaking player markers
-		//Hook(0x349450, chud_update_player_marker_state_hook).Apply();
+		Hook(0x349450, chud_update_player_marker_state_hook).Apply();
 
-		// TODO: FIX THIS: Restore player marker waypoints1 bitmap.
-		//Hook(0x349469, chud_update_player_marker_sprite_hook).Apply();
-		//Hook(0x6CED6A, chud_update_marker_sprite_hook).Apply();
+		//Restore player marker waypoints1 bitmap.
+		Hook(0x349469, chud_update_player_marker_sprite_hook).Apply();
+		Hook(0x6CED6A, chud_update_marker_sprite_hook).Apply();
 
-		// TODO: FIX THIS: Jump over player marker waypoints2 bitmap code.
-		//Patch(0x6C6A11, { 0xEB }).Apply();
+		//Jump over player marker waypoints2 bitmap code.
+		Patch(0x6C6A11, { 0xEB }).Apply();
+		#endif
 
 		// TODO: FIX THIS: Stop the assault bomb from overwriting the player marker bitmap sprite index.
 		//Patch(0x2E805F, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }).Apply();

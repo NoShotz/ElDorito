@@ -6,7 +6,7 @@
 
 namespace
 {
-	bool sprintEnabled = false;
+	bool sprintEnabled = true;
 	Patch disableSprintPatch(0x13E26B, { 0x90, 0xE9 });
 	Patch unlimitedSprintPatch(0x13E5D1, { 0x00 });
 }
