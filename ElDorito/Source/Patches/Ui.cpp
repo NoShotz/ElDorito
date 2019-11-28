@@ -293,11 +293,11 @@ namespace Patches::Ui
 		Hook(0x6895E7, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 		Hook(0x6895FF, UI_GetHUDGlobalsIndexHook, HookFlags::IsJmpIfEqual).Apply();
 
-				/* TODO: Fix these: Various color fixes.
+		/* TODO: Fix these: Various color fixes.
 		Hook(0x6D5B5F, GetGlobalDynamicColorHook).Apply();
 		Hook(0x6CA009, GetWeaponOutlineColorHook).Apply();*/
 
-        //Show the talking player's name on the HUD
+        	//Show the talking player's name on the HUD
 		Hook(0x6CA978, chud_talking_player_name_hook, HookFlags::IsCall).Apply();
 
 		#ifdef _DEBUG // Test "broken" hooks in debug
