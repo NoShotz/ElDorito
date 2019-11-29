@@ -49,3 +49,12 @@ Hook::Hook(size_t Offset, void* destFunc, int flags, std::initializer_list<uint8
 		Pointer::Base(Offset).Read(Orig.data(), Orig.size());
 	}
 }
+
+MultiHook::MultiHook(std::vector<size_t> Offsets, void *destFunc, int flags, std::initializer_list<uint8_t> Reset) :
+	Offsets(Offsets)
+{
+	for (auto &offset : Offsets)
+	{
+		Hooks.push_back(Hook(offset, destFunc, flags));
+	}
+}

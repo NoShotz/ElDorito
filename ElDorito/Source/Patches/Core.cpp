@@ -866,6 +866,9 @@ namespace Patches::Core
 		// Fix spartan lights color, match primary as in H3
 		Patch(0x63CD03, { 0x8B, 0x00, 0x90 }).Apply();
 		Patch(0x63CD07, { 0x20 }).Apply();
+
+		// Force Saber reflections off
+		Pointer::Base(0x1517D62).Write<bool>(false);
 	}
 
 	void OnShutdown(ShutdownCallback callback)

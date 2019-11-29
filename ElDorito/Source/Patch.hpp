@@ -78,3 +78,29 @@ private:
 	const int Flags;
 	std::vector<uint8_t> Orig;
 };
+
+class MultiHook
+{
+public:
+	MultiHook(std::vector<size_t> Offsets, void *destFunc, int flags = 0, std::initializer_list<uint8_t> Reset = {});
+
+	inline void Apply(bool revert = false, Pointer offset = Pointer::Base()) const
+	{
+		for (auto &hook : Hooks)
+		{
+			hook.Apply(revert, offset);
+		}
+	}
+
+	inline void Reset(Pointer offset = Pointer::Base()) const
+	{
+		for (auto &hook : Hooks)
+		{
+			hook.Reset(offset);
+		}
+	}
+
+private:
+	std::vector<size_t> Offsets;
+	std::vector<Hook> Hooks;
+};
