@@ -376,7 +376,7 @@ namespace
 		return true;
 	}
 
-	Hook *campaign_scoring_hooks[19];
+	MultiHook *campaignScoringHook = 0;
 	void __fastcall campaign_scoring_sub_6E59A0(char *scoreboard, void *, Blam::DatumHandle handle, Blam::Events::EventType event_type, short a4, Blam::ePlayerStatType player_stat_type, char a6)
 	{
 		static const auto data_array_sub_55B710 = reinterpret_cast<unsigned long(__cdecl *)(Blam::DataArrayBase *, Blam::DatumHandle)>(0x55B710);
@@ -631,7 +631,7 @@ namespace
 		auto stack_trace = WriteStackBackTrace("dirty_disk_error");
 		CopyToClipboard(stack_trace);
 
-		stack_trace += "\nTrace copied to clipboard please paste the results in discord, or make an issue on github";
+		stack_trace += "\nThis trace has been copied to clipboard, paste the results in discord or make an issue on github.";
 
 		auto continue_type = Modules::ModuleDebug::Instance().VarDirtyDiskContinueType->ValueInt;
 		const char *continue_types[] = {
@@ -682,9 +682,7 @@ namespace Patches::Core
 		Patch::NopFill(Pointer::Base(0x10C99A), 0x6);
 
 		// post-processing to default preferences
-		Hook(0x10A491, preferences_set_defaults_hook, HookFlags::IsCall).Apply();
-		Hook(0x10C87D, preferences_set_defaults_hook, HookFlags::IsCall).Apply();
-		Hook(0x10CA3C, preferences_set_defaults_hook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x10A491, 0x10C87D, 0x10CA3C }, preferences_set_defaults_hook, HookFlags::IsCall).Apply();
 
 		// Patch to allow spawning AI through effects
 		Patch::NopFill(Pointer::Base(0x1033321), 2);
@@ -704,22 +702,16 @@ namespace Patches::Core
 		Hook(0x2EBD7, ShutdownHook, HookFlags::IsCall).Apply();
 
 		// Map loading
-		Hook(0x10FC2C, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
-		Hook(0x1671BE, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
-		Hook(0x167B4F, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x10FC2C, 0x1671BE, 0x167B4F }, main_game_change_immediate_hook, HookFlags::IsCall).Apply();
 
 		Hook(0x14C7FF, maps_store_map_info_hook, HookFlags::IsCall).Apply();
 
-		Hook(0x152C15, GameStartHook, HookFlags::IsCall).Apply(); // game::game_engine::start_game
-		Hook(0x14EB62, GameStartHook, HookFlags::IsCall).Apply();
-		Hook(0x14EB54, GameStartHook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x152C15, 0x14EB62, 0x14EB54 }, GameStartHook, HookFlags::IsCall).Apply(); // game::game_engine::start_game
 				
 		//Hook(0x1679B5, map_load_hook, HookFlags::IsCall).Apply();
 
 		// Hook game ticks
-		Hook(0x105ABA, GameTickHook, HookFlags::IsCall).Apply(); // c_stop_watch::start
-		Hook(0x105AD7, GameTickHook, HookFlags::IsCall).Apply();
-		Hook(0x1063E6, GameTickHook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x105ABA, 0x105AD7, 0x1063E6 }, GameTickHook, HookFlags::IsCall).Apply(); // c_stop_watch::start
 
 		// Used to call Patches::ApplyAfterTagsLoaded when tags have loaded
 		Hook(0x1030EA, TagsLoadedHook).Apply();
@@ -757,8 +749,7 @@ namespace Patches::Core
 		Patch(0x66B0CE, 0x90, 6).Apply();
 
 		//Fix aspect ratio not matching resolution
-		Hook(0x6648C9, AspectRatioHook, HookFlags::IsCall).Apply();
-		Hook(0x216487, AspectRatioHook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x6648C9, 0x216487 }, AspectRatioHook, HookFlags::IsCall).Apply();
 
 		//Disable converting the game's resolution to 16:9
 		Patch::NopFill(Pointer::Base(0x62217D), 2);
@@ -793,8 +784,7 @@ namespace Patches::Core
 
 		Hook(0x10590B, GetBinkVideoPathHook, HookFlags::IsCall).Apply();
 
-		Hook(0x20F4AD, GetScreenshotFolderHook, HookFlags::IsCall).Apply();
-		Hook(0x20F44B, GetScreenshotFolderHook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x20F4AD, 0x20F44B }, GetScreenshotFolderHook, HookFlags::IsCall).Apply();
 
 		Pointer(0x530FAA).Write<float>(7); // podium duration in seconds
 
@@ -822,21 +812,14 @@ namespace Patches::Core
 
 		// campaign metagame hacks
 		//Hook(0x2E59A0, campaign_scoring_sub_6E59A0).Apply();
-		Hook(0x1332E9, campaign_metagame_update, HookFlags::IsCall).Apply();
-		Hook(0x1338E7, campaign_metagame_update, HookFlags::IsCall).Apply();
-		size_t campaign_scoring_offsets[19] = {
-			0x14D8F0, 0x14E44C, 0x14E54F, 0x1A09CF, 0x288BD5, 0x288E94, 0x2E68EA, 0x2E6905, 0x2E6CC0, 0x2E6D30,
-			0x2E6D58, 0x2E6D9C, 0x2E6E6F, 0x5DA376, 0x5DBD1C, 0x5DC982, 0x5DCA2B, 0x5DCB2C, 0x5DCC1A
-		};
-		for (size_t i = 0; i < 19; i++)
-			campaign_scoring_hooks[i] = new Hook(campaign_scoring_offsets[i], campaign_scoring_sub_6E59A0, HookFlags::IsCall);
+		MultiHook({ 0x1332E9, 0x1338E7 }, campaign_metagame_update, HookFlags::IsCall).Apply();
+
+		campaignScoringHook = new MultiHook({ 0x14D8F0, 0x14E44C, 0x14E54F, 0x1A09CF, 0x288BD5, 0x288E94, 0x2E68EA, 0x2E6905, 0x2E6CC0, 0x2E6D30, 0x2E6D58, 0x2E6D9C, 0x2E6E6F, 0x5DA376, 0x5DBD1C, 0x5DC982, 0x5DCA2B, 0x5DCB2C, 0x5DCC1A },
+			campaign_scoring_sub_6E59A0,
+			HookFlags::IsCall);
 
 		// structure hacks
-		Hook(0x35FD97, sub_5F46C0_hook, HookFlags::IsCall).Apply();
-		Hook(0x5462B9, sub_5F46C0_hook, HookFlags::IsCall).Apply();
-		Hook(0x546523, sub_5F46C0_hook, HookFlags::IsCall).Apply();
-		Hook(0x548E37, sub_5F46C0_hook, HookFlags::IsCall).Apply();
-		Hook(0x548EBE, sub_5F46C0_hook, HookFlags::IsCall).Apply();
+		MultiHook({ 0x35FD97, 0x5462B9, 0x546523, 0x548E37, 0x548EBE }, sub_5F46C0_hook, HookFlags::IsCall).Apply();
 
 		// cinematic skip hack
 		Hook(0x1D05A2, player_action_test_cinematic_skip, HookFlags::IsCall).Apply();
@@ -1052,8 +1035,7 @@ namespace
 				*(float *)((*soundSystemPtr) + 0x44) = 1.0f;
 		}
 
-		for (size_t i = 0; i < 19; i++)
-			campaign_scoring_hooks[i]->Apply(data->MapType != Blam::eMapTypeCampaign);
+		campaignScoringHook->Apply(data->MapType != Blam::eMapTypeCampaign);
 
 		for (auto &&callback : mapLoadedCallbacks)
 			callback(data->ScenarioPath); // hax
