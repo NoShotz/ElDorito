@@ -297,10 +297,9 @@ namespace Patches::Ui
 		Hook(0x6D5B5F, GetGlobalDynamicColorHook).Apply();
 		Hook(0x6CA009, GetWeaponOutlineColorHook).Apply();*/
 
-        	//Show the talking player's name on the HUD
+        //Show the talking player's name on the HUD
 		Hook(0x6CA978, chud_talking_player_name_hook, HookFlags::IsCall).Apply();
 
-		#ifdef _DEBUG // Test "broken" hooks in debug
 		Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
 		Hook(0x686E7B, StateDataFlags3Hook).Apply();
 		Hook(0x687094, StateDataFlags5Hook).Apply();
@@ -316,7 +315,6 @@ namespace Patches::Ui
 
 		//Jump over player marker waypoints2 bitmap code.
 		Patch(0x6C6A11, { 0xEB }).Apply();
-		#endif
 
 		// TODO: FIX THIS: Stop the assault bomb from overwriting the player marker bitmap sprite index.
 		//Patch(0x2E805F, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }).Apply();

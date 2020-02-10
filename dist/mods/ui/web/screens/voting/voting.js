@@ -418,7 +418,18 @@ let GameMaps = [
     { known: ["mp_shadow_bridge", "vadum"], value: "mp_shadow_bridge"},
     { known: ["roundabout", "cabin fever"], value: "roundabout"},
     { known: ["jungle_dam", "damage"], value: "jungle_dam"},
-    { known: ["mp_ai_playground", "ai playground"], value: "mp_ai_playground"}
+    { known: ["mp_ai_playground", "ai playground"], value: "mp_ai_playground"},
+    { known: ["005_intro", "arrival"], value: "arrival"},
+    { known: ["010_jungle", "sierra 117"], value: "sierra 117"},
+    { known: ["020_base", "crow's nest"], value: "crow's nest"},
+    { known: ["030_outskirts", "tsavo highway"], value: "tsavo highway"},
+    { known: ["040_voi", "the storm"], value: "the storm"},
+    { known: ["050_floodvoi", "floodgate"], value: "floodgate"},
+    { known: ["070_waste", "the ark"], value: "the ark"},
+    { known: ["100_citadel", "the covenant"], value: "the covenant"},
+    { known: ["110_hc", "cortana"], value: "cortana"},
+    { known: ["120_halo", "halo"], value: "halo"},
+    { known: ["130_epilogue", "epilogue"], value: "epilogue"}
 ];
 function loadMapImage(map) {
     var name = map.mapname.toLowerCase() || null;
