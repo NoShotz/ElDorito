@@ -429,7 +429,18 @@ let GameMaps = [
     { known: ["100_citadel", "the covenant"], value: "100_citadel"},
     { known: ["110_hc", "cortana"], value: "110_hc"},
     { known: ["120_halo", "halo"], value: "120_halo"},
-    { known: ["130_epilogue", "epilogue"], value: "130_epilogue"}
+    { known: ["130_epilogue", "epilogue"], value: "130_epilogue"},
+    { known: ["sc100","tayari plaza","crater"], value: "sc100"},
+    { known: ["sc110","uplift reserve","lost platoon"], value: "sc110"},
+    { known: ["sc120","kazingo blvd.","rally point"], value: "sc120"},
+    { known: ["sc130","oni alpha site","security zone","alpha site"], value: "sc130"},
+    { known: ["sc140","nmpd hq","windward"], value: "sc140"},
+    { known: ["sc150","kikowani stn."], value: "sc150"},
+    { known: ["l200","data hive","chasm ten"], value: "l200"},
+    { known: ["l300","coastal highway","last exit"], value: "l300"},
+    { known: ["h100","mombasa streets","crater [night]","rally point [night]"], value: "h100"},
+    { known: ["c100","prepare to drop"], value: "c100"},
+    { known: ["c200", "epilogue"], value: "c200"}
 ];
 function loadMapImage(map) {
     var name = map.mapname.toLowerCase() || null;

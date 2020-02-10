@@ -297,7 +297,7 @@ namespace Patches::Ui
 		Hook(0x6D5B5F, GetGlobalDynamicColorHook).Apply();
 		Hook(0x6CA009, GetWeaponOutlineColorHook).Apply();*/
 
-        //Show the talking player's name on the HUD
+            //Show the talking player's name on the HUD
 		Hook(0x6CA978, chud_talking_player_name_hook, HookFlags::IsCall).Apply();
 
 		Hook(0x686FA4, StateDataFlags2Hook, HookFlags::IsJmpIfEqual).Apply();
