@@ -1,6 +1,6 @@
 var mapName = "";
 var mapImage = "";
-var gameModes = ["slayer","ctf","slayer","oddball","koth","forge","vip","juggernaut","territories","assault","infection"];
+var gameModes = ["slayer","ctf","slayer","oddball","koth","forge","vip","juggernaut","territories","assault","infection","survival"];
 var safeDomains = ["discord.gg"];
 
 $("html").on("keydown", function(e) {
