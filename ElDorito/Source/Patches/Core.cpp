@@ -790,6 +790,12 @@ namespace Patches::Core
 
 		// fixes the amd freeze
 		Hook(0x658061, ContrailFixHook).Apply();
+
+		// disable contrail renderer
+		if (&Modules::ModuleTweaks::Instance().VarDisableContrails->ValueInt)
+		    Patch(0x357370, { 0xC3 }).Apply();
+
+
 		// prevent hill zone luminosity from dropping below the visible threshold
 		Hook(0x5D6B1C, HillColorHook).Apply();
 

@@ -60,5 +60,10 @@ namespace Modules
 		VarDisableMetagame = AddVariableInt("DisableMetagame", "disable_metagame", "Disables the campaign metagame.", eCommandFlagsArchived, 1);
 		VarDisableMetagame->ValueIntMin = 0;
 		VarDisableMetagame->ValueIntMax = 1;
+        
+		VarDisableContrails = AddVariableInt("DisableContrails", "disable_contrails", "Disables the contrail rendering system.", eCommandFlagsArchived, 0);
+		VarDisableContrails->ValueIntMin = 0;
+		VarDisableContrails->ValueIntMax = 1;
+
 	}
 }

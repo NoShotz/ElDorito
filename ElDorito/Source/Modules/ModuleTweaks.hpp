@@ -16,7 +16,8 @@ namespace Modules
 		Command *VarChudGlobalsIndex;
 		Command *VarSinglethreaded;
 		Command *VarDisableMetagame;
-
+		Command* VarDisableContrails;
+        
 		ModuleTweaks();
 	};
 }
