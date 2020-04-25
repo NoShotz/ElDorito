@@ -418,6 +418,7 @@ let GameMaps = [
     { known: ["mp_shadow_bridge", "vadum"], value: "mp_shadow_bridge"},
     { known: ["roundabout", "cabin fever"], value: "roundabout"},
     { known: ["jungle_dam", "damage"], value: "jungle_dam"},
+    { known: ["kizingo", "concourse"], value: "kizingo"},
     { known: ["mp_ai_playground", "ai playground"], value: "mp_ai_playground"},
     { known: ["005_intro", "arrival"], value: "005_intro"},
     { known: ["010_jungle", "sierra 117"], value: "010_jungle"},
