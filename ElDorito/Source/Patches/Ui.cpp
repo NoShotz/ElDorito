@@ -329,8 +329,8 @@ namespace Patches::Ui
 		// TODO: FIX THIS: Fixes monitor crosshair position.
 		//Patch(0x25F9D5, { 0x4c }).Apply();
 
-		// TODO: FIX THIS: Fix map images in the selection menu.
-		//Hook(0x6DA0FE, c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions).Apply();
+		// Fix map images in the selection menu.
+		Hook(0x6DA0FE, c_gui_map_subitem_selectable_item_datasource__vftable01__player_select_actions).Apply();
 
 		//Fix map images in lobby.
 		Pointer(0x016A6240).Write(uint32_t(&c_gui_bitmap_widget_update_render_data_hook));
